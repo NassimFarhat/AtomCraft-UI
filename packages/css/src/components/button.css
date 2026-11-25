@@ -1,0 +1,134 @@
+/* Variant × tone: tone rules (tokens.css) set --ac-tone-*, variants decide how to use them. */
+.ac-button {
+  --_bg: var(--ac-tone-solid);
+  --_bg-hover: var(--ac-tone-solid-hover);
+  --_fg: var(--ac-tone-on-solid);
+  --_border: transparent;
+  --_shadow: var(--ac-shadow-highlight), var(--ac-shadow-xs);
+  --_height: var(--ac-size-control-md);
+  --_padding: var(--ac-padding-control-md);
+
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ac-space-2);
+  block-size: var(--_height);
+  padding-inline: var(--_padding);
+  border: var(--ac-border-width-1) solid var(--_border);
+  border-radius: var(--ac-radius-control);
+  background: var(--_bg);
+  color: var(--_fg);
+  box-shadow: var(--_shadow);
+  font: inherit;
+  font-size: var(--ac-type-label-md-size);
+  font-weight: var(--ac-font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  transition-property: background-color, border-color, color, box-shadow, transform;
+  transition-duration: var(--ac-duration-fast);
+  transition-timing-function: var(--ac-easing-standard);
+}
+
+.ac-button:hover:not(:disabled) {
+  background: var(--_bg-hover);
+}
+
+.ac-button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+.ac-button:disabled {
+  opacity: var(--ac-opacity-disabled);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.ac-button[data-loading] {
+  cursor: progress;
+}
+
+.ac-button .ac-icon {
+  inline-size: 1rem;
+  block-size: 1rem;
+}
+
+.ac-button[data-variant="soft"] {
+  --_bg: var(--ac-tone-soft);
+  --_bg-hover: var(--ac-tone-soft-hover);
+  --_fg: var(--ac-tone-text);
+  --_shadow: none;
+}
+
+.ac-button[data-variant="outline"] {
+  --_bg: var(--ac-color-bg-surface);
+  --_bg-hover: var(--ac-tone-soft);
+  --_fg: var(--ac-tone-text);
+  --_border: var(--ac-tone-border);
+  --_shadow: var(--ac-shadow-xs);
+}
+
+.ac-button[data-variant="outline"][data-tone="neutral"] {
+  --_border: var(--ac-color-border-default);
+  --_bg-hover: var(--ac-color-bg-muted);
+}
+
+.ac-button[data-variant="ghost"] {
+  --_bg: transparent;
+  --_bg-hover: var(--ac-tone-soft);
+  --_fg: var(--ac-tone-text);
+  --_shadow: none;
+}
+
+.ac-button[data-variant="ghost"][data-tone="neutral"] {
+  --_bg-hover: var(--ac-color-bg-muted);
+}
+
+.ac-button[data-variant="link"] {
+  --_bg: transparent;
+  --_bg-hover: transparent;
+  --_fg: var(--ac-tone-text);
+  --_shadow: none;
+  --_padding: 0;
+  block-size: auto;
+  text-underline-offset: 0.25em;
+}
+
+.ac-button[data-variant="link"]:hover:not(:disabled) {
+  text-decoration: underline;
+}
+
+.ac-button[data-size="xs"] {
+  --_height: var(--ac-size-control-xs);
+  --_padding: var(--ac-space-2);
+  gap: var(--ac-space-1);
+  font-size: var(--ac-type-label-sm-size);
+  border-radius: min(var(--ac-radius-control), var(--ac-radius-md));
+}
+
+.ac-button[data-size="sm"] {
+  --_height: var(--ac-size-control-sm);
+  --_padding: var(--ac-padding-control-sm);
+  gap: var(--ac-space-1-5);
+}
+
+.ac-button[data-size="lg"] {
+  --_height: var(--ac-size-control-lg);
+  --_padding: var(--ac-padding-control-lg);
+  font-size: var(--ac-type-body-md-size);
+}
+
+.ac-button[data-icon-only] {
+  inline-size: var(--_height);
+  padding-inline: 0;
+}
+
+.ac-button[data-block] {
+  flex-shrink: 1;
+  inline-size: 100%;
+  min-inline-size: 0;
+}

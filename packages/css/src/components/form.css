@@ -1,0 +1,111 @@
+/* Form: rhythm for a set of fields, plus the summary of what went wrong. */
+.ac-form {
+  display: grid;
+  gap: var(--ac-space-5);
+}
+
+.ac-form[data-gap="3"] {
+  gap: var(--ac-space-3);
+}
+
+.ac-form[data-gap="4"] {
+  gap: var(--ac-space-4);
+}
+
+.ac-form[data-gap="6"] {
+  gap: var(--ac-space-6);
+}
+
+@media (min-width: 48rem) {
+  .ac-form[data-layout="grid"] {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .ac-form[data-layout="grid"] > [data-full] {
+    grid-column: 1 / -1;
+  }
+}
+
+.ac-form__section {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.ac-form__legend {
+  padding: 0;
+  color: var(--ac-color-text-primary);
+  font-size: var(--ac-type-heading-6-size);
+  font-weight: var(--ac-font-weight-semibold);
+}
+
+.ac-form__section-description {
+  margin-block-start: var(--ac-space-1);
+  color: var(--ac-color-text-secondary);
+  font-size: var(--ac-type-body-sm-size);
+}
+
+.ac-form__fields {
+  display: grid;
+  gap: var(--ac-space-4);
+  margin-block-start: var(--ac-space-3);
+}
+
+.ac-form__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ac-space-2);
+  justify-content: flex-end;
+}
+
+.ac-form__actions[data-align="start"] {
+  justify-content: flex-start;
+}
+
+.ac-form__actions[data-align="between"] {
+  justify-content: space-between;
+}
+
+.ac-error-summary {
+  display: grid;
+  gap: var(--ac-space-2);
+  padding: var(--ac-space-inset-md);
+  border: var(--ac-border-width-1) solid var(--ac-color-danger-border);
+  border-radius: var(--ac-radius-card);
+  background: var(--ac-color-danger-soft);
+  color: var(--ac-color-danger-text);
+}
+
+.ac-error-summary:focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-danger-solid);
+  outline-offset: var(--ac-focus-ring-offset);
+}
+
+.ac-error-summary__title {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-2);
+  font-size: var(--ac-type-body-sm-size);
+  font-weight: var(--ac-font-weight-semibold);
+}
+
+.ac-error-summary__list {
+  display: grid;
+  gap: var(--ac-space-1);
+  margin: 0;
+  padding-inline-start: var(--ac-space-6);
+  font-size: var(--ac-type-body-sm-size);
+}
+
+.ac-error-summary__list a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ac-error-summary__list a:focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-danger-solid);
+  outline-offset: var(--ac-focus-ring-offset);
+}

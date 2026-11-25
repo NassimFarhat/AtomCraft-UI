@@ -1,0 +1,78 @@
+/* CodeBlock: a read-only listing with an optional header. */
+.ac-code-block {
+  --_max-lines: none;
+
+  overflow: hidden;
+  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-radius: var(--ac-radius-card);
+  background: var(--ac-color-bg-subtle);
+}
+
+.ac-code-block__header {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-2);
+  padding: var(--ac-space-1-5) var(--ac-space-2) var(--ac-space-1-5) var(--ac-space-3);
+  border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
+  background: var(--ac-color-bg-muted);
+}
+
+.ac-code-block__filename {
+  flex: 1;
+  overflow: hidden;
+  color: var(--ac-color-text-secondary);
+  font-family: var(--ac-font-family-mono);
+  font-size: var(--ac-type-caption-size);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ac-code-block__copy {
+  margin-inline-start: auto;
+}
+
+.ac-code-block__pre {
+  max-block-size: calc(
+    var(--_max-lines) * var(--ac-type-code-line-height) * var(--ac-type-code-size)
+  );
+  margin: 0;
+  overflow: auto;
+  padding: var(--ac-space-3);
+  font-family: var(--ac-font-family-mono);
+  font-size: var(--ac-type-code-size);
+  line-height: var(--ac-type-code-line-height);
+  tab-size: 2;
+}
+
+.ac-code-block__pre:focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: calc(var(--ac-focus-ring-offset) * -1);
+}
+
+.ac-code-block[data-wrap] .ac-code-block__pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+/* Line numbers come from a counter, so they are never copied with the code. */
+.ac-code-block__pre[data-numbered] code {
+  counter-reset: ac-code-line;
+}
+
+.ac-code-block__pre[data-numbered] .ac-code-block__line {
+  counter-increment: ac-code-line;
+}
+
+.ac-code-block__pre[data-numbered] .ac-code-block__line::before {
+  content: counter(ac-code-line);
+  display: inline-block;
+  inline-size: 2em;
+  margin-inline-end: var(--ac-space-3);
+  color: var(--ac-color-text-tertiary);
+  text-align: end;
+  user-select: none;
+}
+
+.ac-code-block__line {
+  display: block;
+}

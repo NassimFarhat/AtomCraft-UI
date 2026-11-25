@@ -1,0 +1,49 @@
+/* CommandPalette: a search box over a listbox, inside a dialog near the top. */
+.ac-command.ac-dialog {
+  --_width: 36rem;
+
+  /* A modal dialog is centred by its auto margins; this lifts it towards the top. */
+  margin-block: 12vh auto;
+}
+
+.ac-command .ac-dialog__panel {
+  gap: 0;
+  padding: 0;
+}
+
+.ac-command__search {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-2);
+  padding-inline: var(--ac-space-4);
+  border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
+}
+
+.ac-command__search-icon {
+  flex: none;
+  inline-size: 1rem;
+  block-size: 1rem;
+  color: var(--ac-color-text-secondary);
+}
+
+.ac-command__input {
+  flex: 1;
+  min-inline-size: 0;
+  block-size: var(--ac-size-control-lg);
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-size: var(--ac-type-body-md-size);
+  outline: none;
+}
+
+.ac-command__input::placeholder {
+  color: var(--ac-color-text-tertiary);
+}
+
+.ac-command__list {
+  max-block-size: min(24rem, 60vh);
+  overflow-y: auto;
+  padding: var(--ac-space-1);
+}

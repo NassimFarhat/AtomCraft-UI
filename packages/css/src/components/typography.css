@@ -1,0 +1,155 @@
+.ac-text {
+  margin: 0;
+  color: var(--_color, var(--ac-color-text-primary));
+  font-size: var(--ac-type-body-md-size);
+  font-weight: var(--ac-font-weight-regular);
+  line-height: var(--ac-type-body-md-line-height);
+}
+
+.ac-text[data-size="lg"] {
+  font-size: var(--ac-type-body-lg-size);
+  line-height: var(--ac-type-body-lg-line-height);
+}
+
+.ac-text[data-size="sm"] {
+  font-size: var(--ac-type-body-sm-size);
+  line-height: var(--ac-type-body-sm-line-height);
+}
+
+.ac-text[data-size="xs"] {
+  font-size: var(--ac-type-caption-size);
+  line-height: var(--ac-type-caption-line-height);
+}
+
+.ac-text[data-tone="secondary"],
+.ac-heading[data-tone="secondary"] {
+  --_color: var(--ac-color-text-secondary);
+}
+
+.ac-text[data-tone="tertiary"] {
+  --_color: var(--ac-color-text-tertiary);
+}
+
+.ac-text:is(
+  [data-tone="info"],
+  [data-tone="success"],
+  [data-tone="warning"],
+  [data-tone="danger"]
+) {
+  --_color: var(--ac-tone-text);
+}
+
+.ac-text[data-weight="medium"] {
+  font-weight: var(--ac-font-weight-medium);
+}
+
+.ac-text[data-weight="semibold"] {
+  font-weight: var(--ac-font-weight-semibold);
+}
+
+.ac-text[data-weight="bold"] {
+  font-weight: var(--ac-font-weight-bold);
+}
+
+.ac-text[data-truncate] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ac-heading {
+  margin: 0;
+  color: var(--_color, var(--ac-color-text-primary));
+  text-wrap: balance;
+}
+
+.ac-heading[data-size="display-lg"] {
+  font-size: var(--ac-type-display-lg-size);
+  font-weight: var(--ac-type-display-lg-weight);
+  line-height: var(--ac-type-display-lg-line-height);
+  letter-spacing: var(--ac-type-display-lg-tracking);
+}
+
+.ac-heading[data-size="display-md"] {
+  font-size: var(--ac-type-display-md-size);
+  font-weight: var(--ac-type-display-md-weight);
+  line-height: var(--ac-type-display-md-line-height);
+  letter-spacing: var(--ac-type-display-md-tracking);
+}
+
+.ac-heading[data-size="display-sm"] {
+  font-size: var(--ac-type-display-sm-size);
+  font-weight: var(--ac-type-display-sm-weight);
+  line-height: var(--ac-type-display-sm-line-height);
+  letter-spacing: var(--ac-type-display-sm-tracking);
+}
+
+.ac-heading[data-size="1"] {
+  font-size: var(--ac-type-heading-1-size);
+  font-weight: var(--ac-type-heading-1-weight);
+  line-height: var(--ac-type-heading-1-line-height);
+  letter-spacing: var(--ac-type-heading-1-tracking);
+}
+
+.ac-heading[data-size="2"] {
+  font-size: var(--ac-type-heading-2-size);
+  font-weight: var(--ac-type-heading-2-weight);
+  line-height: var(--ac-type-heading-2-line-height);
+  letter-spacing: var(--ac-type-heading-2-tracking);
+}
+
+.ac-heading[data-size="3"] {
+  font-size: var(--ac-type-heading-3-size);
+  font-weight: var(--ac-type-heading-3-weight);
+  line-height: var(--ac-type-heading-3-line-height);
+  letter-spacing: var(--ac-type-heading-3-tracking);
+}
+
+.ac-heading[data-size="4"] {
+  font-size: var(--ac-type-heading-4-size);
+  font-weight: var(--ac-type-heading-4-weight);
+  line-height: var(--ac-type-heading-4-line-height);
+}
+
+.ac-heading[data-size="5"] {
+  font-size: var(--ac-type-heading-5-size);
+  font-weight: var(--ac-type-heading-5-weight);
+  line-height: var(--ac-type-heading-5-line-height);
+}
+
+.ac-heading[data-size="6"] {
+  font-size: var(--ac-type-heading-6-size);
+  font-weight: var(--ac-type-heading-6-weight);
+  line-height: var(--ac-type-heading-6-line-height);
+}
+
+[lang|="ar"] :is(.ac-heading, .ac-text) {
+  letter-spacing: 0;
+  line-height: var(--ac-line-height-relaxed);
+}
+
+.ac-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ac-space-1);
+  border-radius: var(--ac-radius-xs);
+  color: var(--ac-color-primary-text);
+  font-weight: var(--ac-font-weight-medium);
+  text-decoration: none;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: from-font;
+}
+
+.ac-link[data-tone="neutral"] {
+  color: var(--ac-color-text-primary);
+}
+
+.ac-link[data-underline="always"],
+.ac-link[data-underline="hover"]:hover {
+  text-decoration-line: underline;
+}
+
+.ac-link__external {
+  inline-size: 0.875em;
+  block-size: 0.875em;
+}

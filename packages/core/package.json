@@ -1,0 +1,16 @@
+{
+  "name": "@atomcraft/core",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Framework-agnostic behavior primitives for AtomCraft.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "^5.1.1"
+  }
+}

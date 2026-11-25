@@ -1,0 +1,150 @@
+/* Text-like controls share one look: Input, Textarea, Select. */
+.ac-input,
+.ac-textarea,
+.ac-select__control {
+  --_ring: var(--ac-color-focus-ring);
+
+  inline-size: 100%;
+  min-inline-size: 0;
+  padding-inline: var(--ac-space-3);
+  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
+  border-radius: var(--ac-radius-control);
+  background: var(--ac-color-bg-canvas);
+  color: var(--ac-color-text-primary);
+  box-shadow: var(--ac-shadow-xs);
+  font: inherit;
+  font-size: var(--ac-type-body-sm-size);
+  transition-property: border-color, box-shadow, background-color;
+  transition-duration: var(--ac-duration-fast);
+  transition-timing-function: var(--ac-easing-standard);
+}
+
+.ac-input,
+.ac-select__control {
+  block-size: var(--ac-size-control-md);
+}
+
+.ac-input:hover:not(:disabled, :focus),
+.ac-textarea:hover:not(:disabled, :focus),
+.ac-select__control:hover:not(:disabled, :focus) {
+  border-color: var(--ac-color-text-tertiary);
+}
+
+.ac-input:focus-visible,
+.ac-textarea:focus-visible,
+.ac-select__control:focus-visible {
+  outline: none;
+  border-color: var(--_ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--_ring) 28%, transparent);
+}
+
+.ac-input[data-invalid],
+.ac-textarea[data-invalid],
+.ac-select__control[data-invalid] {
+  --_ring: var(--ac-color-danger-solid);
+  border-color: var(--ac-color-danger-solid);
+}
+
+.ac-input:disabled,
+.ac-textarea:disabled,
+.ac-select__control:disabled {
+  background: var(--ac-color-bg-muted);
+  box-shadow: none;
+  opacity: var(--ac-opacity-disabled);
+  cursor: not-allowed;
+}
+
+.ac-input:read-only:not(:disabled),
+.ac-textarea:read-only:not(:disabled) {
+  background: var(--ac-color-bg-subtle);
+}
+
+.ac-input::placeholder,
+.ac-textarea::placeholder {
+  color: var(--ac-color-text-tertiary);
+  opacity: 1;
+}
+
+.ac-input[data-size="sm"],
+.ac-select[data-size="sm"] .ac-select__control {
+  block-size: var(--ac-size-control-sm);
+  padding-inline: var(--ac-space-2-5);
+}
+
+.ac-input[data-size="lg"],
+.ac-select[data-size="lg"] .ac-select__control {
+  block-size: var(--ac-size-control-lg);
+  padding-inline: var(--ac-space-4);
+  font-size: var(--ac-type-body-md-size);
+}
+
+.ac-input::file-selector-button {
+  margin-block: var(--ac-space-1);
+  margin-inline-end: var(--ac-space-3);
+  padding: var(--ac-space-1) var(--ac-space-2);
+  border: 0;
+  border-radius: var(--ac-radius-sm);
+  background: var(--ac-color-bg-muted);
+  color: var(--ac-color-text-primary);
+  font: inherit;
+  font-weight: var(--ac-font-weight-medium);
+}
+
+.ac-textarea {
+  display: block;
+  min-block-size: calc(var(--ac-size-control-md) * 2);
+  padding-block: var(--ac-space-2);
+  line-height: var(--ac-line-height-normal);
+  resize: vertical;
+}
+
+.ac-textarea[data-resize="none"] {
+  resize: none;
+}
+
+.ac-textarea[data-resize="auto"] {
+  field-sizing: content;
+  resize: none;
+}
+
+.ac-select {
+  position: relative;
+  display: inline-flex;
+  inline-size: 100%;
+}
+
+.ac-select__control {
+  appearance: none;
+  padding-inline-end: var(--ac-space-8);
+  cursor: pointer;
+}
+
+.ac-select__chevron {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: var(--ac-space-3);
+  margin-block: auto;
+  inline-size: 1rem;
+  block-size: 1rem;
+  color: var(--ac-color-text-secondary);
+  pointer-events: none;
+}
+
+.ac-label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--ac-space-1);
+  color: var(--ac-color-text-primary);
+  font-size: var(--ac-type-label-md-size);
+  font-weight: var(--ac-type-label-md-weight);
+  line-height: var(--ac-type-label-md-line-height);
+}
+
+.ac-label__required {
+  color: var(--ac-color-danger-text);
+}
+
+.ac-label__hint {
+  color: var(--ac-color-text-secondary);
+  font-weight: var(--ac-font-weight-regular);
+}

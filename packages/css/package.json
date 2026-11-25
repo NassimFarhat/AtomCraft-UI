@@ -1,0 +1,12 @@
+{
+  "name": "@atomcraft/css",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Framework-agnostic stylesheet for AtomCraft components (ac-* classes).",
+  "license": "MIT",
+  "files": [
+    "src"
+  ],
+  "style": "./src/index.css",
+  "type": "module"
+}

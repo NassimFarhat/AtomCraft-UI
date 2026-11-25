@@ -1,0 +1,55 @@
+/* Base layer: only what every AtomCraft surface relies on. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+body,
+.ac-root {
+  background: var(--ac-color-bg-canvas);
+  color: var(--ac-color-text-primary);
+  font-family: var(--ac-font-family-sans);
+  font-size: var(--ac-type-body-md-size);
+  line-height: var(--ac-type-body-md-line-height);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:where(.ac-root) :focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: var(--ac-focus-ring-offset);
+}
+
+::selection {
+  background: var(--ac-color-primary-soft-hover);
+  color: var(--ac-color-primary-text);
+}
+
+:where([dir="rtl"]) :is(.ac-icon[data-mirror]) {
+  transform: scaleX(-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.ac-root {
+  min-block-size: 100%;
+}

@@ -1,0 +1,43 @@
+{
+  "name": "atomcraft-monorepo",
+  "private": true,
+  "version": "0.0.0",
+  "description": "AtomCraft: a zero-dependency, accessible design system for React, Next.js and any JS front-end.",
+  "license": "MIT",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepare": "husky",
+    "test": "pnpm -r --if-present test",
+    "generate": "pnpm -r --if-present generate",
+    "storybook": "pnpm --filter @atomcraft/storybook storybook",
+    "build-storybook": "pnpm --filter @atomcraft/storybook build-storybook"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,js,mjs,cjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,yaml,css}": [
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.6.0",
+    "@commitlint/config-conventional": "^19.6.0",
+    "@eslint/js": "^10.0.1",
+    "eslint": "^10.15.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.2.10",
+    "prettier": "^3.4.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.16.0"
+  }
+}

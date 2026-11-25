@@ -1,0 +1,249 @@
+.ac-table-container {
+  position: relative;
+  inline-size: 100%;
+  overflow-x: auto;
+  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-radius: var(--ac-radius-card);
+  background: var(--ac-color-bg-surface);
+}
+
+.ac-table-container[data-sticky-header] {
+  max-block-size: 32rem;
+  overflow-y: auto;
+}
+
+.ac-table {
+  --_cell-y: var(--ac-space-3);
+
+  inline-size: 100%;
+  border-collapse: collapse;
+  font-size: var(--ac-type-body-sm-size);
+  font-variant-numeric: tabular-nums;
+}
+
+.ac-table[data-density="compact"] {
+  --_cell-y: var(--ac-space-1-5);
+}
+
+.ac-table__caption {
+  padding: var(--ac-space-3) var(--ac-space-4);
+  color: var(--ac-color-text-secondary);
+  font-size: var(--ac-type-body-sm-size);
+  text-align: start;
+  caption-side: top;
+}
+
+.ac-table__head,
+.ac-table__cell {
+  padding: var(--_cell-y) var(--ac-space-4);
+  border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  text-align: start;
+  white-space: nowrap;
+}
+
+.ac-table__head {
+  background: var(--ac-color-bg-subtle);
+  color: var(--ac-color-text-secondary);
+  font-size: var(--ac-type-label-md-size);
+  font-weight: var(--ac-font-weight-medium);
+}
+
+.ac-table-container[data-sticky-header] .ac-table__head {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: var(--ac-z-raised);
+}
+
+.ac-table__body .ac-table__row:last-child .ac-table__cell {
+  border-block-end: 0;
+}
+
+.ac-table__body .ac-table__row {
+  transition: background-color var(--ac-duration-fast);
+}
+
+.ac-table__body .ac-table__row:hover {
+  background: var(--ac-color-bg-subtle);
+}
+
+.ac-table[data-striped] .ac-table__body .ac-table__row:nth-child(even) {
+  background: var(--ac-color-bg-subtle);
+}
+
+.ac-table__row[data-state="selected"],
+.ac-table__body .ac-table__row[data-state="selected"]:hover {
+  background: var(--ac-color-primary-soft);
+}
+
+.ac-table :is(.ac-table__head, .ac-table__cell)[data-align="center"] {
+  text-align: center;
+}
+
+.ac-table :is(.ac-table__head, .ac-table__cell)[data-align="end"] {
+  text-align: end;
+}
+
+.ac-table__select {
+  inline-size: 1%;
+  padding-inline-end: 0;
+}
+
+.ac-table__sort {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ac-space-1);
+  margin-inline: calc(var(--ac-space-1-5) * -1);
+  padding: var(--ac-space-1) var(--ac-space-1-5);
+  border: 0;
+  border-radius: var(--ac-radius-sm);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ac-table__sort:hover {
+  background: var(--ac-color-bg-muted);
+  color: var(--ac-color-text-primary);
+}
+
+.ac-table__sort .ac-icon {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+}
+
+.ac-table__sort-idle {
+  opacity: 0.45;
+}
+
+.ac-table__empty {
+  padding-block: var(--ac-space-10);
+  color: var(--ac-color-text-secondary);
+  text-align: center;
+  white-space: normal;
+}
+
+.ac-table__footer .ac-table__cell {
+  border-block-start: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-block-end: 0;
+  font-weight: var(--ac-font-weight-medium);
+}
+
+.ac-table__error {
+  padding-block: var(--ac-space-10);
+  text-align: center;
+  white-space: normal;
+}
+
+.ac-table__error-text {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ac-space-2);
+  color: var(--ac-color-danger-text);
+}
+
+/* DataTable: the toolbar above the table and the page controls below it. */
+.ac-data-table {
+  display: grid;
+  gap: var(--ac-space-3);
+}
+
+.ac-data-table__toolbar,
+.ac-data-table__footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ac-space-2);
+  justify-content: space-between;
+}
+
+.ac-data-table__filters,
+.ac-data-table__actions,
+.ac-data-table__pages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ac-space-2);
+}
+
+/* The filters take the free space, so the search box and the facets share a row. */
+.ac-data-table__filters {
+  flex: 1 1 auto;
+}
+
+.ac-data-table__search {
+  flex: 0 1 18rem;
+}
+
+.ac-data-table__status {
+  color: var(--ac-color-text-secondary);
+  font-size: var(--ac-type-body-sm-size);
+}
+
+.ac-data-table__page-size {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ac-space-2);
+  color: var(--ac-color-text-secondary);
+  font-size: var(--ac-type-body-sm-size);
+}
+
+.ac-data-table__page-size .ac-select {
+  inline-size: auto;
+  min-inline-size: 4.5rem;
+}
+
+/* Filters sit next to the search box instead of stretching across the toolbar. */
+.ac-data-table__filters > :is(.ac-select-menu, .ac-combobox, .ac-select) {
+  inline-size: auto;
+  min-inline-size: 10rem;
+}
+
+/* Below the medium breakpoint each row becomes a card of labelled values. */
+@media (max-width: 47.99rem) {
+  .ac-data-table[data-responsive] .ac-table__header {
+    position: absolute;
+    overflow: hidden;
+    inline-size: 1px;
+    block-size: 1px;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ac-data-table[data-responsive] .ac-table,
+  .ac-data-table[data-responsive] .ac-table__body,
+  .ac-data-table[data-responsive] .ac-table__row,
+  .ac-data-table[data-responsive] .ac-table__cell {
+    display: block;
+    inline-size: 100%;
+  }
+
+  .ac-data-table[data-responsive] .ac-table__row {
+    margin-block-end: var(--ac-space-3);
+    border: var(--ac-border-width-1) solid var(--ac-color-border-default);
+    border-radius: var(--ac-radius-card);
+    padding: var(--ac-space-2);
+  }
+
+  .ac-data-table[data-responsive] .ac-table__cell {
+    display: flex;
+    align-items: center;
+    gap: var(--ac-space-3);
+    justify-content: space-between;
+    border: 0;
+    padding-inline: var(--ac-space-1);
+    white-space: normal;
+  }
+
+  .ac-data-table[data-responsive] .ac-table__cell[data-label]::before {
+    content: attr(data-label);
+    flex: none;
+    color: var(--ac-color-text-secondary);
+    font-size: var(--ac-type-caption-size);
+    font-weight: var(--ac-font-weight-medium);
+  }
+
+  .ac-data-table[data-responsive] .ac-table__cell[data-align="end"] {
+    justify-content: space-between;
+  }
+}

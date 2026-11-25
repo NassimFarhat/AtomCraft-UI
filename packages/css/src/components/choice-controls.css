@@ -1,0 +1,175 @@
+/* Checkbox and Radio: the native input stays on top (invisible) and drives the visual box. */
+.ac-checkbox,
+.ac-radio {
+  --_size: 1rem;
+
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  inline-size: var(--_size);
+  block-size: var(--_size);
+  vertical-align: middle;
+}
+
+.ac-checkbox[data-size="sm"],
+.ac-radio[data-size="sm"] {
+  --_size: 0.875rem;
+}
+
+.ac-checkbox[data-size="lg"],
+.ac-radio[data-size="lg"] {
+  --_size: 1.25rem;
+}
+
+.ac-checkbox__input,
+.ac-radio__input {
+  position: absolute;
+  inset: 0;
+  z-index: var(--ac-z-raised);
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.ac-checkbox__input:disabled,
+.ac-radio__input:disabled {
+  cursor: not-allowed;
+}
+
+.ac-checkbox__box,
+.ac-radio__circle {
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100%;
+  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
+  background: var(--ac-color-bg-canvas);
+  color: var(--ac-tone-on-solid);
+  box-shadow: var(--ac-shadow-xs);
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: var(--ac-duration-fast);
+}
+
+.ac-checkbox__box {
+  border-radius: min(var(--ac-radius-control), 0.3rem);
+}
+
+.ac-radio__circle {
+  border-radius: var(--ac-radius-full);
+}
+
+.ac-checkbox__input:hover:not(:disabled) + .ac-checkbox__box,
+.ac-radio__input:hover:not(:disabled) + .ac-radio__circle {
+  border-color: var(--ac-tone-solid);
+}
+
+.ac-checkbox__input:checked + .ac-checkbox__box,
+.ac-checkbox__input:indeterminate + .ac-checkbox__box,
+.ac-radio__input:checked + .ac-radio__circle {
+  border-color: var(--ac-tone-solid);
+  background: var(--ac-tone-solid);
+}
+
+.ac-checkbox__input:focus-visible + .ac-checkbox__box,
+.ac-radio__input:focus-visible + .ac-radio__circle {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: var(--ac-focus-ring-offset);
+}
+
+.ac-checkbox[data-invalid] .ac-checkbox__box {
+  border-color: var(--ac-color-danger-solid);
+}
+
+.ac-checkbox__input:disabled + .ac-checkbox__box,
+.ac-radio__input:disabled + .ac-radio__circle {
+  opacity: var(--ac-opacity-disabled);
+  box-shadow: none;
+}
+
+.ac-checkbox__check,
+.ac-checkbox__dash {
+  grid-area: 1 / 1;
+  inline-size: 80%;
+  block-size: 80%;
+  stroke-width: 3;
+  opacity: 0;
+  transform: scale(0.6);
+  transition-property: opacity, transform;
+  transition-duration: var(--ac-duration-fast);
+  transition-timing-function: var(--ac-easing-emphasized);
+}
+
+.ac-checkbox__input:checked:not(:indeterminate) + .ac-checkbox__box .ac-checkbox__check,
+.ac-checkbox__input:indeterminate + .ac-checkbox__box .ac-checkbox__dash {
+  opacity: 1;
+  transform: none;
+}
+
+.ac-radio__circle::after {
+  content: "";
+  inline-size: 40%;
+  block-size: 40%;
+  border-radius: var(--ac-radius-full);
+  background: var(--ac-tone-on-solid);
+  transform: scale(0);
+  transition: transform var(--ac-duration-fast) var(--ac-easing-emphasized);
+}
+
+.ac-radio__input:checked + .ac-radio__circle::after {
+  transform: scale(1);
+}
+
+.ac-switch {
+  --_width: 2.25rem;
+  --_height: 1.25rem;
+  --_thumb: calc(var(--_height) - 4px);
+
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  inline-size: var(--_width);
+  block-size: var(--_height);
+  padding: 2px;
+  border: 0;
+  border-radius: var(--ac-radius-full);
+  background: var(--ac-color-border-control);
+  cursor: pointer;
+  transition: background-color var(--ac-duration-normal) var(--ac-easing-standard);
+}
+
+.ac-switch[data-size="sm"] {
+  --_width: 1.75rem;
+  --_height: 1rem;
+}
+
+.ac-switch[data-size="lg"] {
+  --_width: 2.75rem;
+  --_height: 1.5rem;
+}
+
+.ac-switch[data-state="checked"] {
+  background: var(--ac-tone-solid);
+}
+
+.ac-switch:disabled {
+  opacity: var(--ac-opacity-disabled);
+  cursor: not-allowed;
+}
+
+.ac-switch__thumb {
+  inline-size: var(--_thumb);
+  block-size: var(--_thumb);
+  border-radius: var(--ac-radius-full);
+  background: var(--ac-color-bg-canvas);
+  box-shadow: var(--ac-shadow-sm);
+  transition: transform var(--ac-duration-normal) var(--ac-easing-emphasized);
+}
+
+.ac-switch[data-state="checked"] .ac-switch__thumb {
+  transform: translateX(calc(var(--_width) - var(--_height)));
+}
+
+[dir="rtl"] .ac-switch[data-state="checked"] .ac-switch__thumb {
+  transform: translateX(calc(var(--_height) - var(--_width)));
+}

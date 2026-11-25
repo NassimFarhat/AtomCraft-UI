@@ -1,0 +1,162 @@
+/* Native <dialog>: the browser provides the top layer, focus containment and Escape. */
+:root:has(.ac-dialog[open]) {
+  overflow: hidden;
+}
+
+.ac-dialog {
+  --_width: 32rem;
+
+  inline-size: min(var(--_width), calc(100vw - 2rem));
+  max-inline-size: none;
+  max-block-size: calc(100dvh - 2rem);
+  padding: 0;
+  overflow: visible;
+  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-radius: var(--ac-radius-dialog);
+  background: var(--ac-color-bg-surface);
+  color: var(--ac-color-text-primary);
+  box-shadow: var(--ac-elevation-dialog);
+}
+
+.ac-dialog[open] {
+  display: flex;
+  animation: ac-pop-in var(--ac-duration-normal) var(--ac-easing-emphasized);
+}
+
+.ac-dialog::backdrop {
+  background: var(--ac-color-backdrop);
+  backdrop-filter: blur(2px);
+  animation: ac-fade-in var(--ac-duration-normal) var(--ac-easing-standard);
+}
+
+.ac-dialog[data-size="sm"] {
+  --_width: 24rem;
+}
+
+.ac-dialog[data-size="lg"] {
+  --_width: 44rem;
+}
+
+.ac-dialog[data-size="xl"] {
+  --_width: 60rem;
+}
+
+.ac-dialog[data-size="full"] {
+  --_width: 100vw;
+  block-size: calc(100dvh - 2rem);
+}
+
+.ac-dialog__panel {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--ac-space-4);
+  min-block-size: 0;
+  padding: var(--ac-space-inset-lg);
+}
+
+.ac-dialog__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-1-5);
+  padding-inline-end: var(--ac-space-8);
+}
+
+.ac-dialog__title {
+  margin: 0;
+  font-size: var(--ac-type-heading-4-size);
+  font-weight: var(--ac-type-heading-4-weight);
+  line-height: var(--ac-type-heading-4-line-height);
+  letter-spacing: var(--ac-letter-spacing-tight);
+}
+
+.ac-dialog__description {
+  margin: 0;
+  color: var(--ac-color-text-secondary);
+  font-size: var(--ac-type-body-sm-size);
+}
+
+.ac-dialog__body {
+  flex: 1;
+  min-block-size: 0;
+  overflow-y: auto;
+}
+
+.ac-dialog__footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--ac-space-2);
+}
+
+.ac-dialog__close {
+  position: absolute;
+  inset-block-start: var(--ac-space-3);
+  inset-inline-end: var(--ac-space-3);
+}
+
+/* Sheets: a dialog pinned to an edge. */
+.ac-dialog:not([data-placement="center"]) {
+  margin: 0;
+  max-block-size: 100dvh;
+  border-radius: 0;
+}
+
+.ac-dialog:is([data-placement="start"], [data-placement="end"]) {
+  inline-size: min(24rem, 90vw);
+  block-size: 100dvh;
+  inset-block: 0;
+}
+
+.ac-dialog[data-placement="start"] {
+  inset-inline: 0 auto;
+  border-block: 0;
+  border-inline-start: 0;
+  --_enter-x: -100%;
+}
+
+.ac-dialog[data-placement="end"] {
+  inset-inline: auto 0;
+  border-block: 0;
+  border-inline-end: 0;
+  --_enter-x: 100%;
+}
+
+[dir="rtl"] .ac-dialog[data-placement="start"] {
+  --_enter-x: 100%;
+}
+
+[dir="rtl"] .ac-dialog[data-placement="end"] {
+  --_enter-x: -100%;
+}
+
+.ac-dialog:is([data-placement="top"], [data-placement="bottom"]) {
+  inline-size: 100vw;
+  max-block-size: 85dvh;
+  border-inline: 0;
+}
+
+.ac-dialog[data-placement="top"] {
+  inset-block: 0 auto;
+  border-block-start: 0;
+  --_enter-y-sheet: -100%;
+}
+
+.ac-dialog[data-placement="bottom"] {
+  inset-block: auto 0;
+  border-block-end: 0;
+  border-start-start-radius: var(--ac-radius-dialog);
+  border-start-end-radius: var(--ac-radius-dialog);
+  --_enter-y-sheet: 100%;
+}
+
+.ac-dialog[open]:not([data-placement="center"]) {
+  animation: ac-sheet-in var(--ac-duration-slow) var(--ac-easing-decelerate);
+}
+
+@keyframes ac-sheet-in {
+  from {
+    transform: translate(var(--_enter-x, 0), var(--_enter-y-sheet, 0));
+  }
+}
