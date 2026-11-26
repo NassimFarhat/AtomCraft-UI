@@ -10,6 +10,14 @@ organization:
 - `@atomscraft/css@0.1.0`
 - `@atomscraft/react@0.1.0`
 
+The documentation release is also public as `0.1.1` for all four packages,
+with the `latest` tag:
+
+- `@atomscraft/core@0.1.1`
+- `@atomscraft/tokens@0.1.1`
+- `@atomscraft/css@0.1.1`
+- `@atomscraft/react@0.1.1`
+
 The repository now uses the `@atomscraft/*` scope everywhere. The earlier
 `@atomcraft/*` personal-scope packages remain published as legacy packages.
 
@@ -41,6 +49,6 @@ Completed on 2026-11-26:
 
 ## Next release steps
 
-The documentation changes are versioned as `0.1.1`. Review the generated
-changes and commit them to GitHub before publishing the new npm version. Then
-run the release workflow described in `docs/RELEASING.md`.
+The documentation release was committed to GitHub as `2d32074`, and the four
+`0.1.1` package tags were pushed to the repository. Future changes should use
+the Changesets workflow described in `docs/RELEASING.md`.
