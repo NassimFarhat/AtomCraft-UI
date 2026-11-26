@@ -1,4 +1,4 @@
-import { cn, dataAttr } from "@atomcraft/core";
+import { cn, dataAttr } from "@atomscraft/core";
 import { DataTableBody, DataTableHead } from "./data-table-parts";
 import { DataTableFooter } from "./data-table-footer";
 import { DataTableToolbar } from "./data-table-toolbar";

@@ -1,5 +1,5 @@
-import { BASE_TOKENS, INTENTS, INTENT_ROLES, palettes } from "@atomcraft/tokens";
-import { Grid, Heading, Stack, Text } from "@atomcraft/react";
+import { BASE_TOKENS, INTENTS, INTENT_ROLES, palettes } from "@atomscraft/tokens";
+import { Grid, Heading, Stack, Text } from "@atomscraft/react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = { title: "Foundations/Colors", parameters: { layout: "padded" } } satisfies Meta;

@@ -1,5 +1,5 @@
 {
-  "name": "@atomcraft/storybook",
+  "name": "@atomscraft/storybook",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -8,9 +8,9 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
-    "@atomcraft/css": "workspace:*",
-    "@atomcraft/react": "workspace:*",
-    "@atomcraft/tokens": "workspace:*",
+    "@atomscraft/css": "workspace:*",
+    "@atomscraft/react": "workspace:*",
+    "@atomscraft/tokens": "workspace:*",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
   },

@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { Button, IconButton } from "../../atoms/button";
 import { IconCircleAlert, IconCircleCheck, IconInfo, IconTriangleAlert, IconX } from "../../icons";

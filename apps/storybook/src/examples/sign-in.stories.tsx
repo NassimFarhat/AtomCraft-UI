@@ -14,7 +14,7 @@ import {
   Separator,
   Stack,
   Text,
-} from "@atomcraft/react";
+} from "@atomscraft/react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import type { FormEvent } from "react";

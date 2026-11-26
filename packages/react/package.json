@@ -1,18 +1,50 @@
 {
-  "name": "@atomcraft/react",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@atomscraft/react",
+  "version": "0.1.1",
   "description": "Accessible React components for AtomCraft, built with Atomic Design.",
   "license": "MIT",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NassimFarhat/AtomCraft-UI.git",
+    "directory": "packages/react"
+  },
+  "homepage": "https://github.com/NassimFarhat/AtomCraft-UI#readme",
+  "bugs": {
+    "url": "https://github.com/NassimFarhat/AtomCraft-UI/issues"
+  },
+  "keywords": [
+    "atomcraft",
+    "react",
+    "design-system",
+    "accessible",
+    "ui"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "sideEffects": false,
   "scripts": {
+    "build": "tsup",
+    "pack:check": "npm pack --dry-run",
     "test": "vitest run"
   },
   "dependencies": {
-    "@atomcraft/core": "workspace:*"
+    "@atomscraft/core": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18",

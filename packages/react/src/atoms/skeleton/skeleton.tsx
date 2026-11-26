@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import { forwardRef } from "react";
 import type { HTMLAttributes } from "react";
 

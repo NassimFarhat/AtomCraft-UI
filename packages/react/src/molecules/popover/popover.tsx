@@ -1,4 +1,4 @@
-import { cn, getFocusableElements } from "@atomcraft/core";
+import { cn, getFocusableElements } from "@atomscraft/core";
 import { createContext, forwardRef, useContext, useEffect } from "react";
 import type { HTMLAttributes, ReactElement, ReactNode } from "react";
 import { useFloatingLayer } from "../../hooks";

@@ -1,4 +1,4 @@
-import { cn, dataAttr } from "@atomcraft/core";
+import { cn, dataAttr } from "@atomscraft/core";
 import type { ControlSize } from "../types";
 
 export type ControlStateOptions = {

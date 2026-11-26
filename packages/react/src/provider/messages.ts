@@ -66,6 +66,7 @@ export type Messages = {
   lastPage: string;
   selectionCount: string;
   error: string;
+  dialog: string;
 };
 
 export const en: Messages = {
@@ -135,6 +136,7 @@ export const en: Messages = {
   lastPage: "Last page",
   selectionCount: "{count} of {total} selected",
   error: "Error",
+  dialog: "Dialog",
 };
 
 export const fr: Messages = {
@@ -204,6 +206,7 @@ export const fr: Messages = {
   lastPage: "Dernière page",
   selectionCount: "{count} sur {total} sélectionné(s)",
   error: "Erreur",
+  dialog: "Boîte de dialogue",
 };
 
 export const ar: Messages = {
@@ -273,6 +276,7 @@ export const ar: Messages = {
   lastPage: "الصفحة الأخيرة",
   selectionCount: "تم تحديد {count} من {total}",
   error: "خطأ",
+  dialog: "مربع حوار",
 };
 
 /** Replaces `{name}` placeholders. Plural-aware formatting belongs to the application's i18n layer. */

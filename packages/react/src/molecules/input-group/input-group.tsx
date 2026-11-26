@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import type { HTMLAttributes, ReactElement, ReactNode } from "react";
 import type { ControlSize } from "../../types";
 import { Slot } from "../../utils";

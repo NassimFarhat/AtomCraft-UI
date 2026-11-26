@@ -118,7 +118,13 @@ export function useSelection(ids: readonly string[], options: SelectionOptions) 
     selected,
     allSelected,
     someSelected,
-    toggleAll: () => setSelected(allSelected ? [] : [...ids]),
+    /** Select or clear only this page, while preserving selections on other pages. */
+    toggleAll: () =>
+      setSelected((current) =>
+        allSelected
+          ? current.filter((item) => !ids.includes(item))
+          : [...current, ...ids.filter((id) => !current.includes(id))],
+      ),
     toggle: (id: string) =>
       setSelected((current) =>
         current.includes(id) ? current.filter((item) => item !== id) : [...current, id],

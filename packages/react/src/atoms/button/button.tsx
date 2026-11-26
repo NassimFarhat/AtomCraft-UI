@@ -1,6 +1,6 @@
-import { cn, dataAttr } from "@atomcraft/core";
+import { cn, dataAttr } from "@atomscraft/core";
 import { forwardRef } from "react";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
+import type { ButtonHTMLAttributes, KeyboardEvent, MouseEvent, ReactNode } from "react";
 import type { Tone } from "../../types";
 import { Slot } from "../../utils";
 import { Spinner } from "../spinner";
@@ -62,10 +62,13 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
     type = "button",
     className,
     children,
+    onClick,
+    onKeyDown,
     ...props
   },
   ref,
 ) {
+  const isDisabled = Boolean(disabled || loading);
   const shared = {
     ...props,
     ...buttonAttributes({ variant, tone, size, block, loading, className }),
@@ -73,7 +76,31 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
 
   if (asChild) {
     return (
-      <Slot {...shared} ref={ref}>
+      <Slot
+        {...shared}
+        ref={ref}
+        eventOrder="slot-first"
+        aria-busy={loading || undefined}
+        aria-disabled={isDisabled || undefined}
+        data-disabled={dataAttr(isDisabled)}
+        tabIndex={isDisabled ? -1 : props.tabIndex}
+        onClick={(event: MouseEvent<HTMLElement>) => {
+          if (isDisabled) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+          onClick?.(event as unknown as MouseEvent<HTMLButtonElement>);
+        }}
+        onKeyDown={(event: KeyboardEvent<HTMLElement>) => {
+          if (isDisabled && (event.key === "Enter" || event.key === " ")) {
+            event.preventDefault();
+            event.stopPropagation();
+            return;
+          }
+          onKeyDown?.(event as unknown as KeyboardEvent<HTMLButtonElement>);
+        }}
+      >
         {children}
       </Slot>
     );
@@ -84,8 +111,10 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(function Button
       {...shared}
       ref={ref}
       type={type}
-      disabled={disabled || loading}
+      disabled={isDisabled}
       aria-busy={loading || undefined}
+      onClick={onClick}
+      onKeyDown={onKeyDown}
     >
       {loading && <Spinner size="sm" label="" />}
       {children}

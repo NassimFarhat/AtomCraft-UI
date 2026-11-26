@@ -1,4 +1,4 @@
-import { dataAttr } from "@atomcraft/core";
+import { dataAttr } from "@atomscraft/core";
 import type { ButtonHTMLAttributes, KeyboardEvent, ReactNode } from "react";
 import { useTypeahead } from "../../hooks";
 import { IconChevronsUpDown } from "../../icons";

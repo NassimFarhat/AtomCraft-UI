@@ -1,4 +1,4 @@
-import { cn, dataAttr } from "@atomcraft/core";
+import { cn, dataAttr } from "@atomscraft/core";
 import { forwardRef } from "react";
 import type { HTMLAttributes, ReactNode } from "react";
 

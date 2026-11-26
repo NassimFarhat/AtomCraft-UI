@@ -1,0 +1,65 @@
+name: Quality
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: Validate workspace
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.15.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Regenerate design tokens
+        run: pnpm generate
+
+      - name: Verify generated files are committed
+        run: git diff --exit-code -- packages/css/src/tokens.css packages/tokens/tokens.json
+
+      - name: Build publishable packages
+        run: pnpm build
+
+      - name: Verify npm package contents
+        run: pnpm pack:check
+
+      - name: Test workspace
+        run: pnpm test
+
+      - name: Build Storybook
+        run: pnpm build-storybook

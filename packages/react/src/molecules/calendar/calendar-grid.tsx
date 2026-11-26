@@ -6,7 +6,7 @@ import {
   isSameMonth,
   toIsoDate,
   toWeeks,
-} from "@atomcraft/core";
+} from "@atomscraft/core";
 import type { KeyboardEvent } from "react";
 import { useCalendarLabels } from "./use-calendar";
 

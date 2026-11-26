@@ -1,5 +1,5 @@
-import { dataAttr, ratioOf } from "@atomcraft/core";
-import type { SliderScale } from "@atomcraft/core";
+import { dataAttr, ratioOf } from "@atomscraft/core";
+import type { SliderScale } from "@atomscraft/core";
 import type { CSSProperties, KeyboardEvent, RefObject } from "react";
 import type { SliderMark, SliderOrientation } from "./types";
 

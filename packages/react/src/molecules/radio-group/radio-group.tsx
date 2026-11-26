@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import { createContext, useContext, useId } from "react";
 import type { ReactNode } from "react";
 import { Radio } from "../../atoms/radio";

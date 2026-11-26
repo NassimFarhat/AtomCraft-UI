@@ -1,4 +1,4 @@
-import { cn, getPageItems } from "@atomcraft/core";
+import { cn, getPageItems } from "@atomscraft/core";
 import type { HTMLAttributes } from "react";
 import { Button, IconButton } from "../../atoms/button";
 import { useControllableState } from "../../hooks";

@@ -1,13 +1,44 @@
 {
-  "name": "@atomcraft/core",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@atomscraft/core",
+  "version": "0.1.1",
   "description": "Framework-agnostic behavior primitives for AtomCraft.",
   "license": "MIT",
   "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NassimFarhat/AtomCraft-UI.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://github.com/NassimFarhat/AtomCraft-UI#readme",
+  "bugs": {
+    "url": "https://github.com/NassimFarhat/AtomCraft-UI/issues"
+  },
+  "keywords": [
+    "atomcraft",
+    "design-system",
+    "ui",
+    "behavior"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
+    "build": "tsup",
+    "pack:check": "npm pack --dry-run",
     "test": "vitest run"
   },
   "devDependencies": {

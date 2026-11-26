@@ -5,13 +5,13 @@ Works with React and Next.js today; the behavior core is framework-agnostic.
 
 ## Packages
 
-| Package             | Role                                                                                                            |
-| ------------------- | --------------------------------------------------------------------------------------------------------------- |
-| `@atomcraft/tokens` | Primitive palettes, semantic tokens, 8 brand themes, densities, shapes, DTCG export                             |
-| `@atomcraft/css`    | Generated `--ac-*` variables and the `ac-*` component styles                                                    |
-| `@atomcraft/core`   | Framework-agnostic behavior: positioning, keyboard navigation, dates, filtering, slider math, pagination, store |
-| `@atomcraft/react`  | Atoms, molecules, organisms, layout primitives and templates                                                    |
-| `apps/storybook`    | Living documentation: foundations, every component, full example pages                                          |
+| Package              | Role                                                                                                            |
+| -------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `@atomscraft/tokens` | Primitive palettes, semantic tokens, 8 brand themes, densities, shapes, DTCG export                             |
+| `@atomscraft/css`    | Generated `--ac-*` variables and the `ac-*` component styles                                                    |
+| `@atomscraft/core`   | Framework-agnostic behavior: positioning, keyboard navigation, dates, filtering, slider math, pagination, store |
+| `@atomscraft/react`  | Atoms, molecules, organisms, layout primitives and templates                                                    |
+| `apps/storybook`     | Living documentation: foundations, every component, full example pages                                          |
 
 ## Components
 
@@ -32,8 +32,17 @@ and `Combobox` (with `MultiSelect`) the one you can type in to filter.
 
 ## Usage
 
+For a React application, install the component package and its stylesheet:
+
+```bash
+npm install @atomscraft/react @atomscraft/css
+```
+
+Use `@atomscraft/core` when you only need framework-agnostic behavior, and use
+`@atomscraft/tokens` when you need the design values or DTCG export directly.
+
 ```tsx
-import "@atomcraft/css/src/index.css";
+import "@atomscraft/css";
 import {
   AtomCraftProvider,
   Button,
@@ -42,7 +51,7 @@ import {
   ThemeSwitcher,
   Toaster,
   toast,
-} from "@atomcraft/react";
+} from "@atomscraft/react";
 
 export function App() {
   return (
@@ -60,8 +69,9 @@ export function App() {
 
 The provider owns the appearance: `mode` (light, dark, `system` by default, which follows the
 operating system), `theme`, `density`, `shape` and `locale` are each controllable or left to it,
-and `useAtomCraft()` exposes a setter for each, which is what `ThemeSwitcher` and
-`LocaleSwitcher` use.
+`contrast` can be set to `more` for the high-contrast token overrides, and `useAtomCraft()` exposes
+a setter for each axis, which is what `ThemeSwitcher` and `LocaleSwitcher` use. Density and shape
+also accept change callbacks when controlled by an application.
 
 Theming is attribute-based and nestable: `data-ac-mode` (light, dark), `data-ac-theme`
 (indigo, blue, violet, emerald, teal, rose, orange, mono), `data-ac-density` (compact,
@@ -80,3 +90,12 @@ pnpm generate         # regenerate tokens.css and tokens.json from the tokens
 ```
 
 See `docs/CONTRIBUTING.md` for the architecture rules and the component contract.
+
+## Documentation
+
+- [React package guide](packages/react/README.md)
+- [CSS package guide](packages/css/README.md)
+- [Tokens package guide](packages/tokens/README.md)
+- [Core package guide](packages/core/README.md)
+- [Development status](docs/DEVELOPMENT-STATUS.md)
+- [Release instructions](docs/RELEASING.md)

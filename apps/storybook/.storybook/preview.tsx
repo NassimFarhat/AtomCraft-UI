@@ -1,5 +1,5 @@
-import "@atomcraft/css/src/index.css";
-import { AtomCraftProvider, Toaster } from "@atomcraft/react";
+import "@atomscraft/css";
+import { AtomCraftProvider, Toaster } from "@atomscraft/react";
 import type { Decorator, Preview } from "@storybook/react-vite";
 
 type Globals = {
@@ -7,15 +7,23 @@ type Globals = {
   theme: string;
   density: "compact" | "comfortable" | "spacious";
   shape: "rounded" | "sharp" | "pill";
+  contrast: "normal" | "more";
   locale: string;
 };
 
 /** Every story renders inside the provider, driven by the toolbar, like a real application. */
 const withAtomCraft: Decorator = (Story, context) => {
-  const { mode, theme, density, shape, locale } = context.globals as Globals;
+  const { mode, theme, density, shape, contrast, locale } = context.globals as Globals;
   document.documentElement.dataset["acMode"] = mode;
   return (
-    <AtomCraftProvider locale={locale} mode={mode} theme={theme} density={density} shape={shape}>
+    <AtomCraftProvider
+      locale={locale}
+      mode={mode}
+      theme={theme}
+      density={density}
+      shape={shape}
+      contrast={contrast === "normal" ? undefined : contrast}
+    >
       <div className="sb-canvas">
         <Story />
       </div>
@@ -46,6 +54,7 @@ const preview: Preview = {
     ]),
     density: toolbar("Density", "component", ["compact", "comfortable", "spacious"]),
     shape: toolbar("Shape", "circle", ["rounded", "sharp", "pill"]),
+    contrast: toolbar("Contrast", "contrast", ["normal", "more"]),
     locale: toolbar("Locale", "globe", ["en", "fr", "ar"]),
   },
   initialGlobals: {
@@ -53,6 +62,7 @@ const preview: Preview = {
     theme: "indigo",
     density: "comfortable",
     shape: "rounded",
+    contrast: "normal",
     locale: "en",
   },
   parameters: {

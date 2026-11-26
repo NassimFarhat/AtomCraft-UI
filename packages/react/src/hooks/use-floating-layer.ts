@@ -1,8 +1,8 @@
-import type { Align, Side } from "@atomcraft/core";
+import type { Align, Side } from "@atomscraft/core";
 import { useCallback, useEffect, useId, useRef } from "react";
 import type { RefObject } from "react";
 import { useControllableState } from "./use-controllable-state";
-import { useDismiss } from "./use-dismiss";
+import { isInsideDismissLayer, useDismiss } from "./use-dismiss";
 import { usePosition } from "./use-position";
 
 export type FloatingLayerOptions = {
@@ -62,7 +62,7 @@ export function useFloatingLayer({
       const isInside =
         next instanceof Node &&
         (contentRef.current?.contains(next) || triggerRef.current?.contains(next));
-      if (next && !isInside) setOpen(false);
+      if (next && !isInside && !isInsideDismissLayer(next)) setOpen(false);
     };
     const content = contentRef.current;
     content?.addEventListener("focusout", handleFocusOut);

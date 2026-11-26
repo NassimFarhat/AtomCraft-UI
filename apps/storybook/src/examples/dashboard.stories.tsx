@@ -54,8 +54,8 @@ import {
   TabsTrigger,
   Text,
   toast,
-} from "@atomcraft/react";
-import type { DataTableColumn } from "@atomcraft/react";
+} from "@atomscraft/react";
+import type { DataTableColumn } from "@atomscraft/react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = { title: "Examples/Dashboard", parameters: { layout: "fullscreen" } } satisfies Meta;

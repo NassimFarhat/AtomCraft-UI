@@ -1,4 +1,4 @@
-import { dataAttr, splitMatch } from "@atomcraft/core";
+import { dataAttr, splitMatch } from "@atomscraft/core";
 import type { ReactNode } from "react";
 import { useMessages } from "../../provider";
 import { groupCommands } from "./commands";

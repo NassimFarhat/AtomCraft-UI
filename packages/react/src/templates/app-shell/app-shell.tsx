@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import type { HTMLAttributes, ReactNode } from "react";
 import { SidebarProvider } from "../../organisms/sidebar";
 import type { SidebarProviderProps } from "../../organisms/sidebar";

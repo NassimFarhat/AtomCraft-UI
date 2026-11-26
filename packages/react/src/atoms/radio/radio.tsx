@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import { forwardRef } from "react";
 import type { InputHTMLAttributes } from "react";
 import type { ControlSize, Tone } from "../../types";

@@ -41,6 +41,7 @@ describe("renderTokensCss", () => {
 
   it("supports high contrast", () => {
     expect(css).toContain('[data-ac-contrast="more"]');
+    expect(css).toContain('[data-ac-contrast="normal"]');
     expect(css).toContain("@media (prefers-contrast: more)");
   });
 

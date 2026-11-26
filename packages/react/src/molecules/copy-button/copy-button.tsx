@@ -1,4 +1,4 @@
-import { copyText } from "@atomcraft/core";
+import { copyText } from "@atomscraft/core";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { Button, IconButton } from "../../atoms/button";

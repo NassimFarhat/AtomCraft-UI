@@ -3,10 +3,10 @@ import { Stack } from "../../layout";
 import { CopyButton } from "../copy-button";
 import { CodeBlock } from "./code-block";
 
-const install = "pnpm add @atomcraft/react @atomcraft/css";
+const install = "pnpm add @atomscraft/react @atomscraft/css";
 
-const usage = `import "@atomcraft/css";
-import { AtomCraftProvider, Button } from "@atomcraft/react";
+const usage = `import "@atomscraft/css";
+import { AtomCraftProvider, Button } from "@atomscraft/react";
 
 export function App() {
   return (

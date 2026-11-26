@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import { useEffect, useRef } from "react";
 import type { MouseEvent, ReactNode } from "react";
 import { IconCircleAlert } from "../../icons";
@@ -49,7 +49,7 @@ export function ErrorSummary({ errors, title, autoFocus = true, className }: Err
     if (!field) return;
     event.preventDefault();
     field.focus();
-    field.scrollIntoView({ block: "center", behavior: "smooth" });
+    field.scrollIntoView?.({ block: "center", behavior: "smooth" });
   };
 
   return (

@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { describe, expect, it, vi } from "vitest";
 import { AtomCraftProvider } from "../provider";
-import { useMessages } from "../provider";
+import { useAtomCraft, useMessages } from "../provider";
+import type { Density, Shape } from "../provider";
 import { Container, Grid, Stack } from "./layout";
 
 describe("layout primitives", () => {
@@ -27,6 +29,20 @@ describe("AtomCraftProvider", () => {
     return <span>{useMessages().close}</span>;
   }
 
+  function AppearanceControls() {
+    const { setDensity, setShape } = useAtomCraft();
+    return (
+      <>
+        <button type="button" onClick={() => setDensity("compact")}>
+          Compact
+        </button>
+        <button type="button" onClick={() => setShape("pill")}>
+          Pill
+        </button>
+      </>
+    );
+  }
+
   it("derives RTL from Arabic locales and translates built-in labels", () => {
     const { container } = render(
       <AtomCraftProvider locale="ar-TN" mode="dark" theme="emerald">
@@ -38,6 +54,33 @@ describe("AtomCraftProvider", () => {
     expect(root).toHaveAttribute("lang", "ar-TN");
     expect(root).toHaveAttribute("data-ac-mode", "dark");
     expect(root).toHaveAttribute("data-ac-theme", "emerald");
+  });
+
+  it("applies explicit contrast and keeps density and shape controllable", async () => {
+    const onDensityChange = vi.fn<(density: Density | undefined) => void>();
+    const onShapeChange = vi.fn<(shape: Shape | undefined) => void>();
+    const { container } = render(
+      <AtomCraftProvider
+        defaultDensity="comfortable"
+        defaultShape="rounded"
+        contrast="more"
+        onDensityChange={onDensityChange}
+        onShapeChange={onShapeChange}
+      >
+        <AppearanceControls />
+      </AtomCraftProvider>,
+    );
+
+    const root = container.firstElementChild as HTMLElement;
+    expect(root).toHaveAttribute("data-ac-contrast", "more");
+
+    await userEvent.click(screen.getByRole("button", { name: "Compact" }));
+    await userEvent.click(screen.getByRole("button", { name: "Pill" }));
+
+    expect(root).toHaveAttribute("data-ac-density", "compact");
+    expect(root).toHaveAttribute("data-ac-shape", "pill");
+    expect(onDensityChange).toHaveBeenCalledWith("compact");
+    expect(onShapeChange).toHaveBeenCalledWith("pill");
   });
 
   it("lets the application override any label", () => {

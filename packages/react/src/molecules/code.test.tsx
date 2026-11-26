@@ -13,10 +13,10 @@ beforeEach(() => {
 
 describe("CopyButton", () => {
   it("copies the value and confirms it", async () => {
-    render(<CopyButton value="pnpm add @atomcraft/react" />);
+    render(<CopyButton value="pnpm add @atomscraft/react" />);
     await userEvent.click(screen.getByRole("button", { name: "Copy" }));
 
-    expect(writeText).toHaveBeenCalledWith("pnpm add @atomcraft/react");
+    expect(writeText).toHaveBeenCalledWith("pnpm add @atomscraft/react");
     expect(await screen.findByRole("button", { name: "Copied" })).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent("Copied");
   });

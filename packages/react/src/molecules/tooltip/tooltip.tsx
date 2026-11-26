@@ -1,5 +1,5 @@
-import { cn } from "@atomcraft/core";
-import type { Align, Side } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
+import type { Align, Side } from "@atomscraft/core";
 import { useEffect, useId, useRef, useState } from "react";
 import type { ReactElement, ReactNode } from "react";
 import { usePosition } from "../../hooks";

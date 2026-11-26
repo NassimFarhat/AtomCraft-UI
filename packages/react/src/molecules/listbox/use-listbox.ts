@@ -1,4 +1,4 @@
-import { includesText } from "@atomcraft/core";
+import { includesText } from "@atomscraft/core";
 import { useId, useMemo, useState } from "react";
 import type { KeyboardEvent } from "react";
 import { useControllableState, useFloatingLayer } from "../../hooks";

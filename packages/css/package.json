@@ -1,12 +1,41 @@
 {
-  "name": "@atomcraft/css",
-  "version": "0.0.0",
-  "private": true,
+  "name": "@atomscraft/css",
+  "version": "0.1.1",
   "description": "Framework-agnostic stylesheet for AtomCraft components (ac-* classes).",
   "license": "MIT",
   "files": [
-    "src"
+    "dist"
   ],
-  "style": "./src/index.css",
-  "type": "module"
+  "style": "./dist/index.css",
+  "type": "module",
+  "exports": {
+    ".": "./dist/index.css",
+    "./tokens.css": "./dist/tokens.css",
+    "./package.json": "./package.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NassimFarhat/AtomCraft-UI.git",
+    "directory": "packages/css"
+  },
+  "homepage": "https://github.com/NassimFarhat/AtomCraft-UI#readme",
+  "bugs": {
+    "url": "https://github.com/NassimFarhat/AtomCraft-UI/issues"
+  },
+  "keywords": [
+    "atomcraft",
+    "css",
+    "design-system",
+    "ui"
+  ],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "node scripts/build-css.mjs",
+    "pack:check": "npm pack --dry-run"
+  }
 }

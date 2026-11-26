@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import { createContext, forwardRef, useContext, useState } from "react";
 import type { HTMLAttributes, MouseEvent, ReactNode } from "react";
 import { IconButton } from "../../atoms/button";

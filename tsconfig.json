@@ -1,6 +1,15 @@
 {
   "extends": "./tsconfig.base.json",
-  "compilerOptions": { "noEmit": true, "allowJs": false },
+  "compilerOptions": {
+    "noEmit": true,
+    "allowJs": false,
+    "baseUrl": ".",
+    "paths": {
+      "@atomscraft/core": ["packages/core/src/index.ts"],
+      "@atomscraft/react": ["packages/react/src/index.ts"],
+      "@atomscraft/tokens": ["packages/tokens/src/index.ts"]
+    }
+  },
   "include": [
     "packages/*/src",
     "packages/*/scripts",

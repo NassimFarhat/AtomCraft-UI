@@ -1,4 +1,4 @@
-import { cn, getInitials } from "@atomcraft/core";
+import { cn, getInitials } from "@atomscraft/core";
 import { forwardRef, useState } from "react";
 import type { HTMLAttributes } from "react";
 import type { Tone } from "../../types";

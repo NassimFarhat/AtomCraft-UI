@@ -1,4 +1,4 @@
-import { includesText } from "@atomcraft/core";
+import { includesText } from "@atomscraft/core";
 import type { SortValue } from "./sorting";
 
 /** True when any of the row's searchable values contains the query. */

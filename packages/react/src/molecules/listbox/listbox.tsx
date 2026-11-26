@@ -1,4 +1,4 @@
-import { cn, dataAttr, splitMatch } from "@atomcraft/core";
+import { cn, dataAttr, splitMatch } from "@atomscraft/core";
 import { useEffect } from "react";
 import type { ReactNode } from "react";
 import { IconCheck } from "../../icons";

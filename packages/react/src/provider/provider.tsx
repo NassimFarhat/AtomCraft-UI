@@ -4,7 +4,7 @@ import { useControllableState, useMediaQuery } from "../hooks";
 import { ar, en, fr } from "./messages";
 import type { Messages } from "./messages";
 import { DARK_SCHEME_QUERY, resolveColorMode } from "./theme";
-import type { ColorMode, Density, ResolvedColorMode, Shape } from "./theme";
+import type { ColorMode, Contrast, Density, ResolvedColorMode, Shape } from "./theme";
 
 export type Direction = "ltr" | "rtl";
 
@@ -19,11 +19,13 @@ type AtomCraftContextValue = {
   resolvedMode: ResolvedColorMode;
   setMode: (mode: ColorMode) => void;
   theme: string | undefined;
-  setTheme: (theme: string) => void;
+  setTheme: (theme: string | undefined) => void;
   density: Density | undefined;
-  setDensity: (density: Density) => void;
+  setDensity: (density: Density | undefined) => void;
   shape: Shape | undefined;
-  setShape: (shape: Shape) => void;
+  setShape: (shape: Shape | undefined) => void;
+  contrast: Contrast | undefined;
+  setContrast: (contrast: Contrast | undefined) => void;
   portalContainer: HTMLElement | null;
 };
 
@@ -43,6 +45,8 @@ const AtomCraftContext = createContext<AtomCraftContextValue>({
   setDensity: noop,
   shape: undefined,
   setShape: noop,
+  contrast: undefined,
+  setContrast: noop,
   portalContainer: null,
 });
 
@@ -63,11 +67,17 @@ export type AtomCraftProviderProps = {
   onModeChange?: ((mode: ColorMode) => void) | undefined;
   theme?: string | undefined;
   defaultTheme?: string | undefined;
-  onThemeChange?: ((theme: string) => void) | undefined;
+  onThemeChange?: ((theme: string | undefined) => void) | undefined;
   density?: Density | undefined;
   defaultDensity?: Density | undefined;
+  onDensityChange?: ((density: Density | undefined) => void) | undefined;
   shape?: Shape | undefined;
   defaultShape?: Shape | undefined;
+  onShapeChange?: ((shape: Shape | undefined) => void) | undefined;
+  /** Opt into the stronger text and boundary tokens. Omit to follow the OS preference. */
+  contrast?: Contrast | undefined;
+  defaultContrast?: Contrast | undefined;
+  onContrastChange?: ((contrast: Contrast | undefined) => void) | undefined;
 };
 
 const RTL_LANGUAGES = new Set(["ar", "he", "fa", "ur"]);
@@ -76,6 +86,14 @@ const BUILT_IN_MESSAGES: Readonly<Record<string, Messages>> = { en, fr, ar };
 const languageOf = (locale: string): string => locale.split("-")[0]?.toLowerCase() ?? "en";
 const directionOf = (locale: string): Direction =>
   RTL_LANGUAGES.has(languageOf(locale)) ? "rtl" : "ltr";
+
+function useOptionalState<T>(
+  value: T | undefined,
+  defaultValue: T | undefined,
+  onChange: ((value: T | undefined) => void) | undefined,
+) {
+  return useControllableState<T | undefined>({ value, defaultValue, onChange });
+}
 
 /** Appearance and locale state, each axis controlled or owned by the provider. */
 function useAppearance(props: Omit<AtomCraftProviderProps, "children" | "dir" | "messages">) {
@@ -89,19 +107,18 @@ function useAppearance(props: Omit<AtomCraftProviderProps, "children" | "dir" | 
     defaultValue: props.defaultMode ?? "system",
     onChange: props.onModeChange,
   });
-  const [theme, setTheme] = useControllableState<string | undefined>({
-    value: props.theme,
-    defaultValue: props.defaultTheme,
-    onChange: props.onThemeChange as ((theme: string | undefined) => void) | undefined,
-  });
-  const [density, setDensity] = useControllableState<Density | undefined>({
-    value: props.density,
-    defaultValue: props.defaultDensity,
-  });
-  const [shape, setShape] = useControllableState<Shape | undefined>({
-    value: props.shape,
-    defaultValue: props.defaultShape,
-  });
+  const [theme, setTheme] = useOptionalState(props.theme, props.defaultTheme, props.onThemeChange);
+  const [density, setDensity] = useOptionalState(
+    props.density,
+    props.defaultDensity,
+    props.onDensityChange,
+  );
+  const [shape, setShape] = useOptionalState(props.shape, props.defaultShape, props.onShapeChange);
+  const [contrast, setContrast] = useOptionalState(
+    props.contrast,
+    props.defaultContrast,
+    props.onContrastChange,
+  );
   return useMemo(
     () => ({
       locale,
@@ -114,8 +131,23 @@ function useAppearance(props: Omit<AtomCraftProviderProps, "children" | "dir" | 
       setDensity,
       shape,
       setShape,
+      contrast,
+      setContrast,
     }),
-    [locale, setLocale, mode, setMode, theme, setTheme, density, setDensity, shape, setShape],
+    [
+      locale,
+      setLocale,
+      mode,
+      setMode,
+      theme,
+      setTheme,
+      density,
+      setDensity,
+      shape,
+      setShape,
+      contrast,
+      setContrast,
+    ],
   );
 }
 
@@ -153,6 +185,7 @@ export function AtomCraftProvider({ children, dir, messages, ...props }: AtomCra
         data-ac-theme={appearance.theme}
         data-ac-density={appearance.density}
         data-ac-shape={appearance.shape}
+        data-ac-contrast={appearance.contrast}
       >
         {children}
         <div ref={setPortalContainer} data-slot="portal-root" />

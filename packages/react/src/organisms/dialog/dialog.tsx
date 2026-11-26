@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import {
   createContext,
   forwardRef,
@@ -20,6 +20,8 @@ type DialogContextValue = {
   setOpen: (open: boolean) => void;
   titleId: string;
   descriptionId: string;
+  hasTitle: boolean;
+  setHasTitle: (value: boolean) => void;
   hasDescription: boolean;
   setHasDescription: (value: boolean) => void;
 };
@@ -47,12 +49,15 @@ export function Dialog({ open, defaultOpen = false, onOpenChange, children }: Di
     onChange: onOpenChange,
   });
   const [hasDescription, setHasDescription] = useState(false);
+  const [hasTitle, setHasTitle] = useState(false);
   const id = useId();
   const value = {
     open: isOpen,
     setOpen,
     titleId: `${id}-title`,
     descriptionId: `${id}-description`,
+    hasTitle,
+    setHasTitle,
     hasDescription,
     setHasDescription,
   };
@@ -109,6 +114,7 @@ export const DialogContent = forwardRef<HTMLDialogElement, DialogContentProps>(
       showCloseButton = true,
       className,
       children,
+      "aria-label": ariaLabel,
       onClick,
       ...props
     },
@@ -129,7 +135,8 @@ export const DialogContent = forwardRef<HTMLDialogElement, DialogContentProps>(
         {...props}
         ref={ref}
         role={alert ? "alertdialog" : undefined}
-        aria-labelledby={dialog.titleId}
+        aria-labelledby={dialog.hasTitle ? dialog.titleId : undefined}
+        aria-label={ariaLabel ?? (!dialog.hasTitle ? messages.dialog : undefined)}
         aria-describedby={dialog.hasDescription ? dialog.descriptionId : undefined}
         data-slot="dialog"
         data-size={size}
@@ -177,7 +184,11 @@ export function DialogFooter({ className, ...props }: DivProps) {
 }
 
 export function DialogTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) {
-  const { titleId } = useDialog();
+  const { titleId, setHasTitle } = useDialog();
+  useLayoutEffect(() => {
+    setHasTitle(true);
+    return () => setHasTitle(false);
+  }, [setHasTitle]);
   return (
     <h2
       {...props}

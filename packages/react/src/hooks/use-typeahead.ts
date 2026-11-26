@@ -1,4 +1,4 @@
-import { findTypeaheadMatch } from "@atomcraft/core";
+import { findTypeaheadMatch } from "@atomscraft/core";
 import { useCallback, useRef } from "react";
 import type { KeyboardEvent } from "react";
 

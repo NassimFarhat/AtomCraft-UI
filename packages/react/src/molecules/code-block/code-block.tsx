@@ -1,4 +1,4 @@
-import { cn, dataAttr } from "@atomcraft/core";
+import { cn, dataAttr } from "@atomscraft/core";
 import type { CSSProperties, HTMLAttributes } from "react";
 import { Badge } from "../../atoms/badge";
 import { CopyButton } from "../copy-button";

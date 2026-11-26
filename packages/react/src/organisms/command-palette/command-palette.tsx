@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import type { ReactNode } from "react";
 import { IconSearch } from "../../icons";
 import { useMessages } from "../../provider";

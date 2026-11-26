@@ -116,6 +116,35 @@ describe("DataTable", () => {
     expect(screen.getByText("1 of 12 selected")).toBeInTheDocument();
   });
 
+  it("preserves selected rows when selecting across paginated pages", async () => {
+    const onSelectionChange = vi.fn();
+    render(table({ selectable: true, paginated: true, defaultPageSize: 5, onSelectionChange }));
+    await userEvent.click(screen.getByRole("checkbox", { name: "Select all rows" }));
+    expect(onSelectionChange).toHaveBeenLastCalledWith([
+      "INV-2040",
+      "INV-2041",
+      "INV-2042",
+      "INV-2043",
+      "INV-2044",
+    ]);
+
+    await userEvent.click(screen.getByRole("button", { name: "Page 2" }));
+    await userEvent.click(screen.getByRole("checkbox", { name: "Select all rows" }));
+    expect(onSelectionChange).toHaveBeenLastCalledWith([
+      "INV-2040",
+      "INV-2041",
+      "INV-2042",
+      "INV-2043",
+      "INV-2044",
+      "INV-2045",
+      "INV-2046",
+      "INV-2047",
+      "INV-2048",
+      "INV-2049",
+    ]);
+    expect(screen.getByText("10 of 12 selected")).toBeInTheDocument();
+  });
+
   it("shows the error instead of the rows", () => {
     render(table({ error: "Could not load invoices" }));
     expect(screen.getByRole("alert")).toHaveTextContent("Could not load invoices");

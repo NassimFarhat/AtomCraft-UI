@@ -7,7 +7,7 @@ import {
   isSameMonth,
   startOfDay,
   startOfWeek,
-} from "@atomcraft/core";
+} from "@atomscraft/core";
 import { useMemo, useState } from "react";
 import type { KeyboardEvent } from "react";
 import { useControllableState } from "../../hooks";

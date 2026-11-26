@@ -1,5 +1,5 @@
-import { getNextIndex } from "@atomcraft/core";
-import type { Orientation } from "@atomcraft/core";
+import { getNextIndex } from "@atomscraft/core";
+import type { Orientation } from "@atomscraft/core";
 import { useCallback } from "react";
 import type { KeyboardEvent, RefObject } from "react";
 import { useAtomCraft } from "../provider";

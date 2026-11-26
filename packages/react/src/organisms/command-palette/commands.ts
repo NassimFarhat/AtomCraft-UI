@@ -1,4 +1,4 @@
-import { includesText } from "@atomcraft/core";
+import { includesText } from "@atomscraft/core";
 import type { ReactNode } from "react";
 
 export type Command = {

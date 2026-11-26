@@ -1,5 +1,5 @@
-import { valueFromRatio } from "@atomcraft/core";
-import type { SliderScale } from "@atomcraft/core";
+import { valueFromRatio } from "@atomscraft/core";
+import type { SliderScale } from "@atomscraft/core";
 import { useCallback } from "react";
 import type { PointerEvent, RefObject } from "react";
 import { useAtomCraft } from "../../provider";

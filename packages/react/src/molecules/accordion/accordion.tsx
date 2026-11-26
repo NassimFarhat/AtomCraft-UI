@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import { createContext, forwardRef, useContext, useId, useRef } from "react";
 import type { ButtonHTMLAttributes, Context, HTMLAttributes, KeyboardEvent } from "react";
 import { useControllableState, useRovingFocus } from "../../hooks";

@@ -1,5 +1,5 @@
-import { cn, dataAttr, ratioOf } from "@atomcraft/core";
-import type { SliderScale } from "@atomcraft/core";
+import { cn, dataAttr, ratioOf } from "@atomscraft/core";
+import type { SliderScale } from "@atomscraft/core";
 import { useRef } from "react";
 import type { CSSProperties } from "react";
 import type { ControlSize, Tone } from "../../types";

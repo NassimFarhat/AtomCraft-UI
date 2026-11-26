@@ -1,4 +1,4 @@
-import { cn } from "@atomcraft/core";
+import { cn } from "@atomscraft/core";
 import { Children, forwardRef } from "react";
 import type { HTMLAttributes, ReactElement } from "react";
 import type { AvatarProps, AvatarSize } from "../../atoms/avatar";

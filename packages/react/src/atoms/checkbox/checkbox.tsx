@@ -1,4 +1,4 @@
-import { cn, dataAttr } from "@atomcraft/core";
+import { cn, dataAttr } from "@atomscraft/core";
 import { forwardRef, useEffect, useRef } from "react";
 import type { InputHTMLAttributes } from "react";
 import { IconCheck, IconMinus } from "../../icons";

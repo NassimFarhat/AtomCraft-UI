@@ -1,5 +1,5 @@
-import { computePosition } from "@atomcraft/core";
-import type { Align, Side } from "@atomcraft/core";
+import { computePosition } from "@atomscraft/core";
+import type { Align, Side } from "@atomscraft/core";
 import { useCallback, useLayoutEffect, useState } from "react";
 import type { CSSProperties, RefObject } from "react";
 

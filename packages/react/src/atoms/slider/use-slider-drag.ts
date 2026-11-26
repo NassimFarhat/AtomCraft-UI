@@ -1,5 +1,5 @@
-import { nextSliderValue } from "@atomcraft/core";
-import type { SliderScale } from "@atomcraft/core";
+import { nextSliderValue } from "@atomscraft/core";
+import type { SliderScale } from "@atomscraft/core";
 import { useRef, useState } from "react";
 import type { KeyboardEvent, PointerEvent, RefObject } from "react";
 import { useAtomCraft } from "../../provider";

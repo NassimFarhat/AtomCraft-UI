@@ -1,4 +1,4 @@
-import { cn, dataAttr } from "@atomcraft/core";
+import { cn, dataAttr } from "@atomscraft/core";
 import { createContext, forwardRef, useContext, useEffect, useState } from "react";
 import type { HTMLAttributes, KeyboardEvent, ReactElement, ReactNode } from "react";
 import { useFloatingLayer, useRovingFocus } from "../../hooks";

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { addDays } from "@atomcraft/core";
+import { addDays } from "@atomscraft/core";
 import { Text } from "../../atoms/text";
 import { Stack } from "../../layout";
 import { Card, CardContent } from "../card";

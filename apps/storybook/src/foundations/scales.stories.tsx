@@ -1,5 +1,5 @@
-import { typeStyles } from "@atomcraft/tokens";
-import { Card, CardContent, Grid, Stack, Text } from "@atomcraft/react";
+import { typeStyles } from "@atomscraft/tokens";
+import { Card, CardContent, Grid, Stack, Text } from "@atomscraft/react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 
 const meta = { title: "Foundations/Scales", parameters: { layout: "padded" } } satisfies Meta;

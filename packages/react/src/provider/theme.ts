@@ -4,6 +4,7 @@ export type ColorMode = "light" | "dark" | "system";
 export type ResolvedColorMode = "light" | "dark";
 export type Density = "compact" | "comfortable" | "spacious";
 export type Shape = "rounded" | "sharp" | "pill";
+export type Contrast = "normal" | "more";
 
 export const DARK_SCHEME_QUERY = "(prefers-color-scheme: dark)";
 

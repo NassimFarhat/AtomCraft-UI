@@ -1,4 +1,4 @@
-import { createStore } from "@atomcraft/core";
+import { createStore } from "@atomscraft/core";
 import type { ReactNode } from "react";
 import type { Tone } from "../../types";
 
