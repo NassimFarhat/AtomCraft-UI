@@ -45,7 +45,14 @@ Completed on 2026-11-26:
 - `pnpm -r publish --dry-run --no-git-checks --access public`
 - npm organization access check — all four packages have `read-write` access
 - npm public status check — all four packages are public with `latest` at
-  `0.1.0`
+  `0.1.1`
+- `pnpm test` after the CI runtime fix — 278 tests passed locally
+
+## CI runtime note
+
+The quality workflow uses Node 22 because the locked `jsdom@31.0.1` and
+`undici@8.13.1` test dependencies require Node 22+. Node 20 caused Vitest
+workers to fail before React tests could start.
 
 ## Next release steps
 
