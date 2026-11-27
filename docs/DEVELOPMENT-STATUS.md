@@ -232,8 +232,8 @@ Final verification:
 - `pnpm build-storybook` passed; the generated index contains 456 entries,
   including all 136 component titles. Vite reports the existing chunk-size
   warning above 500 kB and slow React docgen transforms.
-- `git diff --check` passed. No package was published and nothing was pushed or
-  deployed.
+- `git diff --check` passed. No package had been published or changes pushed at
+  the time of this visual audit; the later 0.2.0 release is recorded below.
 
 ## Individual Storybook route visual follow-up (2026-11-27)
 
@@ -265,8 +265,21 @@ Final verification:
   and slow React docgen transforms.
 - No package was published; nothing was pushed or deployed.
 
-## Next release steps
+## 0.2.0 release (2026-11-27)
 
-The documentation release was committed to GitHub as `2d32074`, and the four
-`0.1.1` package tags were pushed to the repository. Future changes should use
-the Changesets workflow described in `docs/RELEASING.md`.
+- Published the fixed package group at `0.2.0`: `@atomscraft/core`,
+  `@atomscraft/tokens`, `@atomscraft/css` and `@atomscraft/react`.
+- Verified all four `latest` versions and `0.2.0` tarball metadata on npm. A
+  clean npm install of React, CSS and tokens also installed `core@0.2.0`; React,
+  core and token module imports passed, and the CSS entry was present.
+- Pushed commit `234b9ed` to GitHub `main` and pushed the four matching
+  `@atomscraft/*@0.2.0` tags.
+- Release checks passed: frozen-lockfile install, build, package dry-run,
+  formatting, typecheck and 337 tests. Lint passed with 28 warnings and no
+  errors. Storybook built successfully with its existing chunk-size/docgen
+  warnings.
+- The unrelated local lockfile entry for the absent `apps/studio` workspace was
+  left out of the GitHub commit.
+
+Future changes should use the Changesets workflow described in
+`docs/RELEASING.md`.
