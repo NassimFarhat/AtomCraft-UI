@@ -3,7 +3,7 @@ import { Text } from "../text";
 import { Icon, iconNames } from "./icon";
 
 const meta = {
-  title: "Foundations/Icons",
+  title: "Atoms/Icon",
   component: Icon,
   args: { name: "Sparkles" },
   parameters: { layout: "padded" },

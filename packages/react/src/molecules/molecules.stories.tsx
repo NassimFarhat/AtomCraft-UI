@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { toast } from "./toast";
 import { Avatar } from "../atoms/avatar";
 import { Button } from "../atoms/button";
 import { Input } from "../atoms/input";
@@ -20,9 +21,8 @@ import { SearchField } from "./search-field";
 import { SelectMenu } from "./select-menu";
 import { Stat } from "./stat";
 import { Tooltip } from "./tooltip";
-import { toast } from "./toast";
 
-const meta = { title: "Molecules/Library" } satisfies Meta;
+const meta = { title: "Examples/Molecule patterns" } satisfies Meta;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

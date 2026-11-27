@@ -4,7 +4,7 @@ import { describe, expect, it, vi } from "vitest";
 import { AtomCraftProvider } from "../provider";
 import { useAtomCraft, useMessages } from "../provider";
 import type { Density, Shape } from "../provider";
-import { Container, Grid, Stack } from "./layout";
+import { AspectRatio, Container, Flex, Grid, ResizablePanel, ScrollArea, Stack } from "./layout";
 
 describe("layout primitives", () => {
   it("map props to token-based CSS variables", () => {
@@ -21,6 +21,24 @@ describe("layout primitives", () => {
     expect(screen.getByTestId("grid").style.getPropertyValue("--_columns-lg")).toBe("3");
     expect(screen.getByTestId("fluid")).toHaveAttribute("data-fluid");
     expect(screen.getByTestId("container")).toHaveAttribute("data-size", "md");
+  });
+
+  it("provides flexible composition, ratio, scrolling and resizing primitives", () => {
+    render(
+      <>
+        <Flex direction={{ base: "column", md: "row" }} data-testid="flex" />
+        <AspectRatio ratio={4 / 3} data-testid="ratio" />
+        <ScrollArea aria-label="Activity" data-testid="scroll" />
+        <ResizablePanel axis="block" data-testid="panel" />
+      </>,
+    );
+
+    expect(screen.getByTestId("flex").style.getPropertyValue("--_direction-md")).toBe("row");
+    expect(screen.getByTestId("ratio").style.getPropertyValue("--_aspect-ratio")).toBe(
+      "1.3333333333333333",
+    );
+    expect(screen.getByTestId("scroll")).toHaveAttribute("tabindex", "0");
+    expect(screen.getByTestId("panel")).toHaveAttribute("data-axis", "block");
   });
 });
 

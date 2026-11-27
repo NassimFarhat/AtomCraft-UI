@@ -1,0 +1,175 @@
+.ac-date-range-picker {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ac-date-range-picker__label {
+  margin-block-end: var(--ac-space-2);
+  color: var(--ac-color-text-primary);
+  font-size: var(--ac-type-label-md-size);
+  font-weight: var(--ac-font-weight-medium);
+}
+
+.ac-date-range-picker__fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--ac-space-3);
+}
+
+.ac-color-picker {
+  inline-size: 3.25rem;
+  padding: var(--ac-space-1);
+  cursor: pointer;
+}
+
+.ac-color-picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.ac-color-picker::-webkit-color-swatch {
+  border: 0;
+  border-radius: var(--ac-radius-sm);
+}
+
+.ac-color-picker::-moz-color-swatch {
+  border: 0;
+  border-radius: var(--ac-radius-sm);
+}
+
+.ac-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ac-space-1);
+}
+
+.ac-rating__item {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 2rem;
+  block-size: 2rem;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ac-radius-sm);
+  background: transparent;
+  color: var(--ac-color-text-tertiary);
+  font-size: var(--ac-type-heading-3-size);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.ac-rating__item[data-filled] {
+  color: var(--ac-color-warning-solid);
+}
+
+.ac-rating__item:hover:not(:disabled) {
+  color: var(--ac-color-warning-text);
+}
+
+.ac-rating__item:focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: var(--ac-focus-ring-offset);
+}
+
+.ac-rating__item:disabled {
+  opacity: var(--ac-opacity-disabled);
+  cursor: not-allowed;
+}
+
+.ac-file-upload {
+  display: grid;
+  gap: var(--ac-space-3);
+  min-inline-size: 0;
+}
+
+.ac-file-upload__dropzone {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: var(--ac-space-2);
+  padding: var(--ac-space-8) var(--ac-space-4);
+  border: var(--ac-border-width-1) dashed var(--ac-color-border-control);
+  border-radius: var(--ac-radius-card);
+  background: var(--ac-color-bg-subtle);
+  color: var(--ac-color-text-primary);
+  text-align: center;
+  cursor: pointer;
+  transition:
+    border-color var(--ac-duration-fast) var(--ac-easing-standard),
+    background-color var(--ac-duration-fast) var(--ac-easing-standard),
+    box-shadow var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+.ac-file-upload__dropzone:focus-within,
+.ac-file-upload__dropzone[data-dragging="true"] {
+  border-color: var(--ac-color-focus-ring);
+  background: var(--ac-color-primary-soft);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 20%, transparent);
+}
+
+.ac-file-upload[data-disabled="true"] .ac-file-upload__dropzone {
+  background: var(--ac-color-bg-muted);
+  opacity: var(--ac-opacity-disabled);
+  cursor: not-allowed;
+}
+
+.ac-file-upload__label {
+  font-size: var(--ac-type-label-md-size);
+  font-weight: var(--ac-font-weight-medium);
+}
+
+.ac-file-upload__description {
+  color: var(--ac-color-text-secondary);
+  font-size: var(--ac-type-body-sm-size);
+}
+
+.ac-file-upload__input {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.ac-file-upload__list {
+  display: grid;
+  gap: var(--ac-space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ac-file-upload__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-2);
+  min-inline-size: 0;
+  padding: var(--ac-space-2) var(--ac-space-3);
+  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-radius: var(--ac-radius-item);
+  background: var(--ac-color-bg-surface);
+}
+
+.ac-file-upload__name {
+  flex: 1 1 auto;
+  overflow: hidden;
+  color: var(--ac-color-text-primary);
+  font-size: var(--ac-type-body-sm-size);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ac-file-upload__size {
+  flex: none;
+  color: var(--ac-color-text-secondary);
+  font-size: var(--ac-type-caption-size);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 639px) {
+  .ac-date-range-picker__fields {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

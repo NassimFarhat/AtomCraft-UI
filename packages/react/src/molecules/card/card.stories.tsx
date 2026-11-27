@@ -19,7 +19,7 @@ import {
 } from "./card";
 
 const meta = {
-  title: "Molecules/Card & Stat",
+  title: "Molecules/Card",
   component: Card,
   parameters: { layout: "padded" },
 } satisfies Meta<typeof Card>;

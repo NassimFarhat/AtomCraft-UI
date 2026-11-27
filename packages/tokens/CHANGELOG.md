@@ -1,5 +1,13 @@
 # @atomscraft/tokens
 
+## 0.2.0
+
+### Minor Changes
+
+- Add the expanded AtomCraft component catalogue, including reusable form,
+  picker, overlay, navigation, calendar and workspace patterns with matching
+  styles, public exports and Storybook examples.
+
 ## 0.1.1
 
 ### Patch Changes

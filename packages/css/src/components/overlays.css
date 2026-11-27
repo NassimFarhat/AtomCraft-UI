@@ -40,6 +40,7 @@
 .ac-menu {
   z-index: var(--ac-z-popover);
   min-inline-size: 12rem;
+  max-inline-size: min(22rem, calc(100vw - 1rem));
   max-block-size: min(24rem, calc(100vh - 2rem));
   overflow-y: auto;
   padding: var(--ac-space-1);

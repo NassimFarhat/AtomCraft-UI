@@ -1,13 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Button } from "../../atoms/button";
-import { IconInbox } from "../../icons";
 import { Stack } from "../../layout";
-import { EmptyState } from "../empty-state";
-import { toast } from "../toast";
 import { Alert } from "./alert";
 
 const meta = {
-  title: "Molecules/Feedback",
+  title: "Molecules/Alert",
   component: Alert,
   args: {
     title: "Update available",
@@ -50,52 +47,5 @@ export const Alerts: Story = {
         Sign in again to continue.
       </Alert>
     </Stack>
-  ),
-};
-
-export const Toasts: Story = {
-  render: () => (
-    <Stack direction="row" gap="2" wrap>
-      <Button variant="outline" tone="neutral" onClick={() => toast("Draft saved")}>
-        Neutral
-      </Button>
-      <Button
-        variant="outline"
-        tone="neutral"
-        onClick={() => toast.success("Profile updated", { description: "Your changes are live." })}
-      >
-        Success
-      </Button>
-      <Button
-        variant="outline"
-        tone="neutral"
-        onClick={() =>
-          toast.error("Upload failed", {
-            description: "report.pdf is too large.",
-            action: { label: "Retry", onClick: () => undefined },
-          })
-        }
-      >
-        Error with action
-      </Button>
-    </Stack>
-  ),
-};
-
-export const Empty: Story = {
-  render: () => (
-    <EmptyState
-      icon={<IconInbox />}
-      title="No invoices yet"
-      description="Invoices appear here once a customer pays. Create one to get started."
-      actions={
-        <>
-          <Button>Create invoice</Button>
-          <Button variant="ghost" tone="neutral">
-            Import CSV
-          </Button>
-        </>
-      }
-    />
   ),
 };

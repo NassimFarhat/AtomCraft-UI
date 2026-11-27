@@ -160,3 +160,14 @@
   box-shadow: var(--ac-elevation-popover);
   animation: ac-pop-in var(--ac-duration-fast) var(--ac-easing-decelerate);
 }
+
+@media (max-width: 359px) {
+  .ac-calendar {
+    padding: var(--ac-space-2);
+  }
+
+  .ac-calendar__day {
+    inline-size: var(--ac-size-control-sm);
+    block-size: var(--ac-size-control-sm);
+  }
+}

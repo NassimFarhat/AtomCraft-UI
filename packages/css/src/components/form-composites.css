@@ -1,0 +1,210 @@
+.ac-number-input {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ac-space-1);
+  inline-size: 100%;
+}
+
+.ac-number-input__control {
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.ac-number-input__control::-webkit-inner-spin-button,
+.ac-number-input__control::-webkit-outer-spin-button {
+  margin: 0;
+  appearance: none;
+}
+
+.ac-number-input__control {
+  appearance: textfield;
+}
+
+.ac-checkbox-group {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ac-checkbox-group__legend {
+  margin-block-end: var(--ac-space-2);
+  color: var(--ac-color-text-primary);
+  font-size: var(--ac-type-label-md-size);
+  font-weight: var(--ac-font-weight-medium);
+}
+
+.ac-checkbox-group__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ac-space-3);
+}
+
+.ac-checkbox-group[data-orientation="horizontal"] .ac-checkbox-group__options {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--ac-space-4);
+}
+
+.ac-checkbox-group__option {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ac-space-2);
+}
+
+.ac-checkbox-group__option > .ac-checkbox {
+  margin-block-start: 0.125rem;
+}
+
+.ac-checkbox-group__text {
+  display: grid;
+  gap: var(--ac-space-0-5);
+}
+
+.ac-checkbox-group__label {
+  color: var(--ac-color-text-primary);
+  font-size: var(--ac-type-body-sm-size);
+  cursor: pointer;
+}
+
+.ac-checkbox-group__description {
+  margin: 0;
+  color: var(--ac-color-text-secondary);
+  font-size: var(--ac-type-caption-size);
+}
+
+.ac-otp-input {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ac-space-2);
+  max-inline-size: 100%;
+}
+
+.ac-otp-input__digit {
+  inline-size: var(--ac-size-control-lg);
+  block-size: var(--ac-size-control-lg);
+  padding: 0;
+  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
+  border-radius: var(--ac-radius-control);
+  background: var(--ac-color-bg-surface);
+  color: var(--ac-color-text-primary);
+  font: inherit;
+  font-size: var(--ac-type-heading-4-size);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  transition:
+    border-color var(--ac-duration-fast) var(--ac-easing-standard),
+    box-shadow var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+.ac-otp-input__digit:focus-visible {
+  outline: none;
+  border-color: var(--ac-color-focus-ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 25%, transparent);
+}
+
+.ac-otp-input[data-invalid] .ac-otp-input__digit {
+  border-color: var(--ac-color-danger-solid);
+}
+
+.ac-otp-input__digit:disabled {
+  background: var(--ac-color-bg-muted);
+  opacity: var(--ac-opacity-disabled);
+  cursor: not-allowed;
+}
+
+@media (max-width: 359px) {
+  .ac-otp-input {
+    gap: var(--ac-space-1);
+  }
+
+  .ac-otp-input__digit {
+    inline-size: var(--ac-size-control-sm);
+    block-size: var(--ac-size-control-sm);
+    font-size: var(--ac-type-body-md-size);
+  }
+}
+
+.ac-prompt-input {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: var(--ac-space-2);
+  padding: var(--ac-space-2);
+  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
+  border-radius: var(--ac-radius-control);
+  background: var(--ac-color-bg-surface);
+}
+
+.ac-prompt-input:focus-within {
+  border-color: var(--ac-color-focus-ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 24%, transparent);
+}
+
+.ac-prompt-input__control {
+  min-block-size: 2.5rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  resize: vertical;
+}
+
+.ac-prompt-input__control:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+@media (max-width: 479px) {
+  .ac-prompt-input {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.ac-tag-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ac-space-2);
+  min-block-size: var(--ac-size-control-md);
+  padding: var(--ac-space-1-5) var(--ac-space-2);
+  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
+  border-radius: var(--ac-radius-control);
+  background: var(--ac-color-bg-surface);
+  transition:
+    border-color var(--ac-duration-fast) var(--ac-easing-standard),
+    box-shadow var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+.ac-tag-input:focus-within {
+  border-color: var(--ac-color-focus-ring);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 24%, transparent);
+}
+
+.ac-tag-input[data-disabled="true"] {
+  background: var(--ac-color-bg-muted);
+  opacity: var(--ac-opacity-disabled);
+}
+
+.ac-tag-input__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ac-space-1);
+}
+
+.ac-tag-input__control {
+  flex: 1 1 8rem;
+  inline-size: auto;
+  min-inline-size: 5rem;
+  block-size: var(--ac-size-control-sm);
+  padding-inline: var(--ac-space-1);
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ac-tag-input__control:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}

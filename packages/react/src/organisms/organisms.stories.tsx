@@ -17,7 +17,7 @@ import {
   SidebarTrigger,
 } from "./index";
 
-const meta = { title: "Organisms/Application shell" } satisfies Meta;
+const meta = { title: "Examples/Workspace shell" } satisfies Meta;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

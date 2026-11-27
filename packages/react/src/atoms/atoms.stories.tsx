@@ -13,7 +13,7 @@ import { Textarea } from "./textarea";
 import { Stack } from "../layout";
 import { Text } from "./text";
 
-const meta = { title: "Atoms/Foundations" } satisfies Meta;
+const meta = { title: "Examples/Atoms in context" } satisfies Meta;
 export default meta;
 type Story = StoryObj<typeof meta>;
 

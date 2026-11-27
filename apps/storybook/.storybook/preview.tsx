@@ -1,6 +1,21 @@
 import "@atomscraft/css";
-import { AtomCraftProvider, Toaster } from "@atomscraft/react";
+import { AtomCraftProvider, Toaster } from "../../../packages/react/src";
 import type { Decorator, Preview } from "@storybook/react-vite";
+import type { ToasterProps } from "../../../packages/react/src";
+
+type ToastPosition = NonNullable<ToasterProps["position"]>;
+const TOAST_POSITIONS: ToastPosition[] = [
+  "top-start",
+  "top-center",
+  "top-end",
+  "bottom-start",
+  "bottom-center",
+  "bottom-end",
+];
+
+function isToastPosition(value: unknown): value is ToastPosition {
+  return typeof value === "string" && TOAST_POSITIONS.includes(value as ToastPosition);
+}
 
 type Globals = {
   mode: "light" | "dark";
@@ -14,6 +29,7 @@ type Globals = {
 /** Every story renders inside the provider, driven by the toolbar, like a real application. */
 const withAtomCraft: Decorator = (Story, context) => {
   const { mode, theme, density, shape, contrast, locale } = context.globals as Globals;
+  const storyPosition = context.args["toasterPosition"] ?? context.args["position"];
   document.documentElement.dataset["acMode"] = mode;
   return (
     <AtomCraftProvider
@@ -27,7 +43,7 @@ const withAtomCraft: Decorator = (Story, context) => {
       <div className="sb-canvas">
         <Story />
       </div>
-      <Toaster />
+      <Toaster position={isToastPosition(storyPosition) ? storyPosition : "bottom-end"} />
     </AtomCraftProvider>
   );
 };

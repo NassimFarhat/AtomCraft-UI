@@ -1,12 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { Button, IconButton } from "../../atoms/button";
-import { Input } from "../../atoms/input";
+import { IconButton } from "../../atoms/button";
 import { IconCopy, IconMoreHorizontal, IconPencil, IconTrash, IconUser } from "../../icons";
-import { Stack } from "../../layout";
-import { Field } from "../field";
-import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "../popover";
-import { Tooltip } from "../tooltip";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -19,7 +14,7 @@ import {
 } from "./dropdown-menu";
 
 const meta = {
-  title: "Molecules/Overlays",
+  title: "Molecules/DropdownMenu",
   component: DropdownMenu,
   args: { children: null },
 } satisfies Meta<typeof DropdownMenu>;
@@ -62,43 +57,4 @@ export const Menu: Story = {
       </DropdownMenu>
     );
   },
-};
-
-export const PopoverForm: Story = {
-  render: () => (
-    <Popover>
-      <PopoverTrigger>
-        <Button variant="outline" tone="neutral">
-          Edit dimensions
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent aria-label="Dimensions">
-        <Stack gap="3" style={{ inlineSize: "16rem" }}>
-          <Field label="Width">
-            <Input defaultValue="100%" size="sm" />
-          </Field>
-          <Field label="Height">
-            <Input defaultValue="auto" size="sm" />
-          </Field>
-          <PopoverClose>
-            <Button size="sm">Apply</Button>
-          </PopoverClose>
-        </Stack>
-      </PopoverContent>
-    </Popover>
-  ),
-};
-
-export const Tooltips: Story = {
-  render: () => (
-    <Stack direction="row" gap="3">
-      {(["top", "bottom", "left", "right"] as const).map((side) => (
-        <Tooltip key={side} content={`Tooltip on the ${side}`} side={side}>
-          <Button variant="outline" tone="neutral">
-            {side}
-          </Button>
-        </Tooltip>
-      ))}
-    </Stack>
-  ),
 };

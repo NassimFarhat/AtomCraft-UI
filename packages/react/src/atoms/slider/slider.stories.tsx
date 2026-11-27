@@ -9,7 +9,11 @@ const meta = {
   title: "Atoms/Slider",
   component: Slider,
   args: { label: "Volume", defaultValue: 40 },
-  decorators: [(Story) => <div style={{ inlineSize: "22rem" }}>{Story()}</div>],
+  decorators: [
+    (Story) => (
+      <div style={{ inlineSize: "22rem", maxInlineSize: "calc(100vw - 5rem)" }}>{Story()}</div>
+    ),
+  ],
 } satisfies Meta<typeof Slider>;
 
 export default meta;
@@ -49,7 +53,17 @@ export const WithMarks: Story = {
     ],
   },
   decorators: [
-    (Story) => <div style={{ inlineSize: "22rem", paddingBlockEnd: "1.5rem" }}>{Story()}</div>,
+    (Story) => (
+      <div
+        style={{
+          inlineSize: "22rem",
+          maxInlineSize: "calc(100vw - 5rem)",
+          paddingBlockEnd: "1.5rem",
+        }}
+      >
+        {Story()}
+      </div>
+    ),
   ],
 };
 

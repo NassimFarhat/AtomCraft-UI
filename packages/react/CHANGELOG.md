@@ -1,5 +1,18 @@
 # @atomscraft/react
 
+## 0.2.0
+
+### Minor Changes
+
+- Add the expanded AtomCraft component catalogue, including reusable form,
+  picker, overlay, navigation, calendar and workspace patterns with matching
+  styles, public exports and Storybook examples.
+
+### Patch Changes
+
+- Updated dependencies
+  - @atomscraft/core@0.2.0
+
 ## 0.1.1
 
 ### Patch Changes

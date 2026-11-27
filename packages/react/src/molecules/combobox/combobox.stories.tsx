@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
-import { IconHome, IconMail, IconUser } from "../../icons";
 import { Stack } from "../../layout";
 import { Field } from "../field";
 import type { ListOption } from "../listbox";
-import { SelectMenu } from "../select-menu";
 import { Combobox } from "./combobox";
 import { MultiSelect } from "./multi-select";
 
@@ -18,17 +16,15 @@ const cities: ListOption[] = [
   { value: "marseille", label: "Marseille", group: "France", disabled: true },
 ];
 
-const roles: ListOption[] = [
-  { value: "owner", label: "Owner", description: "Full access", icon: <IconUser /> },
-  { value: "editor", label: "Editor", description: "Can change content", icon: <IconHome /> },
-  { value: "viewer", label: "Viewer", description: "Read only", icon: <IconMail /> },
-];
-
 const meta = {
   title: "Molecules/Combobox",
   component: Combobox,
   args: { options: cities, "aria-label": "City" },
-  decorators: [(Story) => <div style={{ inlineSize: "20rem" }}>{Story()}</div>],
+  decorators: [
+    (Story) => (
+      <div style={{ inlineSize: "20rem", maxInlineSize: "calc(100vw - 5rem)" }}>{Story()}</div>
+    ),
+  ],
 } satisfies Meta<typeof Combobox>;
 
 export default meta;
@@ -70,13 +66,4 @@ export const Multiple: Story = {
     };
     return <Demo />;
   },
-};
-
-/** The custom select: no search box, options with icons and descriptions. */
-export const SelectMenuOptions: Story = {
-  render: () => (
-    <Field label="Role">
-      <SelectMenu options={roles} defaultValue="editor" />
-    </Field>
-  ),
 };

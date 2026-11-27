@@ -6,7 +6,7 @@ import { Link } from "../link";
 import { Text } from "./text";
 
 const meta = {
-  title: "Atoms/Typography",
+  title: "Examples/Typography",
   component: Text,
   args: { children: "The quick brown fox jumps over the lazy dog." },
   parameters: { layout: "padded" },

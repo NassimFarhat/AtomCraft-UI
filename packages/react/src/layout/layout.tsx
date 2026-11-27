@@ -73,6 +73,44 @@ export const Stack = forwardRef<HTMLDivElement, StackProps>(function Stack(
   );
 });
 
+export type FlexProps = StackProps;
+
+/** Row-oriented flex layout with the same responsive direction and token gap API as Stack. */
+export const Flex = forwardRef<HTMLDivElement, FlexProps>(function Flex(
+  {
+    direction = "row",
+    gap = "4",
+    align = "center",
+    justify,
+    wrap = false,
+    asChild = false,
+    className,
+    style,
+    ...props
+  },
+  ref,
+) {
+  const Component = asChild ? Slot : "div";
+  return (
+    <Component
+      {...props}
+      ref={ref}
+      data-slot="flex"
+      data-align={align}
+      data-justify={justify}
+      data-wrap={dataAttr(wrap)}
+      className={cn("ac-flex", className)}
+      style={
+        {
+          ...style,
+          "--_gap": space(gap),
+          ...responsiveVars("direction", direction, String),
+        } as CSSProperties
+      }
+    />
+  );
+});
+
 export type GridProps = LayoutProps & {
   /** Fixed columns, per breakpoint if needed: `{ base: 1, md: 2, lg: 4 }`. */
   columns?: Responsive<number>;
@@ -100,6 +138,81 @@ export const Grid = forwardRef<HTMLDivElement, GridProps>(function Grid(
     />
   );
 });
+
+export type AspectRatioProps = LayoutProps & {
+  ratio?: number;
+};
+
+/** Keeps its content inside a stable width-to-height ratio. */
+export const AspectRatio = forwardRef<HTMLDivElement, AspectRatioProps>(function AspectRatio(
+  { ratio = 16 / 9, asChild = false, className, style, ...props },
+  ref,
+) {
+  const Component = asChild ? Slot : "div";
+  return (
+    <Component
+      {...props}
+      ref={ref}
+      data-slot="aspect-ratio"
+      className={cn("ac-aspect-ratio", className)}
+      style={{ ...style, "--_aspect-ratio": ratio } as CSSProperties}
+    />
+  );
+});
+
+export type ScrollAreaProps = HTMLAttributes<HTMLDivElement> & {
+  orientation?: "vertical" | "horizontal" | "both";
+  scrollbar?: "auto" | "always" | "hidden";
+};
+
+/** Keyboard-scrollable region with a constrained overflow axis. */
+export const ScrollArea = forwardRef<HTMLDivElement, ScrollAreaProps>(function ScrollArea(
+  { orientation = "vertical", scrollbar = "auto", className, tabIndex, ...props },
+  ref,
+) {
+  return (
+    <div
+      {...props}
+      ref={ref}
+      tabIndex={tabIndex ?? 0}
+      data-slot="scroll-area"
+      data-orientation={orientation}
+      data-scrollbar={scrollbar}
+      className={cn("ac-scroll-area", className)}
+    />
+  );
+});
+
+export type ResizablePanelProps = HTMLAttributes<HTMLDivElement> & {
+  axis?: "inline" | "block" | "both";
+  minInlineSize?: string;
+  minBlockSize?: string;
+};
+
+/** A native keyboard- and pointer-resizable panel; use CSS size props to set its initial bounds. */
+export const ResizablePanel = forwardRef<HTMLDivElement, ResizablePanelProps>(
+  function ResizablePanel(
+    { axis = "inline", minInlineSize = "8rem", minBlockSize = "4rem", className, style, ...props },
+    ref,
+  ) {
+    return (
+      <div
+        {...props}
+        ref={ref}
+        data-slot="resizable-panel"
+        data-axis={axis}
+        className={cn("ac-resizable-panel", className)}
+        style={
+          {
+            ...style,
+            "--_min-inline-size": minInlineSize,
+            "--_min-block-size": minBlockSize,
+          } as CSSProperties
+        }
+      />
+    );
+  },
+);
 
 export type ContainerProps = LayoutProps & { size?: "sm" | "md" | "lg" | "xl" | "full" };
 

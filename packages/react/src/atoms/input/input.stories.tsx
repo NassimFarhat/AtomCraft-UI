@@ -9,7 +9,11 @@ const meta = {
   component: Input,
   args: { "aria-label": "Email", placeholder: "name@company.tn" },
   argTypes: { size: { control: "inline-radio", options: ["sm", "md", "lg"] } },
-  decorators: [(Story) => <div style={{ inlineSize: "20rem" }}>{Story()}</div>],
+  decorators: [
+    (Story) => (
+      <div style={{ inlineSize: "20rem", maxInlineSize: "calc(100vw - 5rem)" }}>{Story()}</div>
+    ),
+  ],
 } satisfies Meta<typeof Input>;
 
 export default meta;

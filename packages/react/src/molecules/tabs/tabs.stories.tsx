@@ -2,11 +2,10 @@ import type { Meta, StoryObj } from "@storybook/react-vite";
 import { Text } from "../../atoms/text";
 import { IconBell, IconSettings, IconUser } from "../../icons";
 import { Stack } from "../../layout";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 
 const meta = {
-  title: "Molecules/Tabs & Accordion",
+  title: "Molecules/Tabs",
   component: Tabs,
   args: { defaultValue: "account" },
   parameters: { layout: "padded" },
@@ -62,31 +61,5 @@ export const Vertical: Story = {
       <TabsList aria-label="Settings sections">{triggers}</TabsList>
       {panels}
     </Tabs>
-  ),
-};
-
-const faq = [
-  ["What is AtomCraft?", "A zero-dependency design system for React, Next.js and any front-end."],
-  ["Is it accessible?", "Every component follows WAI-ARIA patterns and is tested with axe."],
-  [
-    "Can I customize it?",
-    "Change brand, density and shape with tokens, without touching component code.",
-  ],
-] as const;
-
-export const AccordionVariants: Story = {
-  render: () => (
-    <Stack gap="8" style={{ maxInlineSize: "36rem" }}>
-      {(["separated", "contained", "plain"] as const).map((variant) => (
-        <Accordion key={variant} variant={variant} defaultValue={["item-0"]}>
-          {faq.map(([question, answer], index) => (
-            <AccordionItem key={question} value={`item-${index}`}>
-              <AccordionTrigger>{question}</AccordionTrigger>
-              <AccordionContent>{answer}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      ))}
-    </Stack>
   ),
 };

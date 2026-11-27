@@ -19,7 +19,7 @@ import {
 import { SheetContent } from "./sheet";
 
 const meta = {
-  title: "Organisms/Dialog & Sheet",
+  title: "Examples/Dialog patterns",
   component: Dialog,
   args: { children: null },
 } satisfies Meta<typeof Dialog>;

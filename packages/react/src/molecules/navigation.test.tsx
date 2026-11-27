@@ -72,6 +72,60 @@ describe("Toast", () => {
     act(() => toast.dismiss());
     expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
+
+  it("updates a persistent loading toast when a promise settles", async () => {
+    render(<Toaster />);
+    await act(async () => {
+      await toast.promise(Promise.resolve("release.zip"), {
+        loading: { title: "Uploading", description: "Please wait." },
+        success: (fileName) => ({ title: "Upload complete", description: fileName }),
+        error: "Upload failed",
+      });
+    });
+
+    expect(screen.getByRole("status")).toHaveTextContent("Upload complete");
+    expect(screen.getByRole("status")).toHaveTextContent("release.zip");
+    act(() => toast.dismiss());
+  });
+
+  it("shows promise errors and preserves the rejected value", async () => {
+    const failure = new Error("The connection was interrupted.");
+    render(<Toaster />);
+    let caught: unknown;
+    await act(async () => {
+      try {
+        await toast.promise(Promise.reject(failure), {
+          loading: "Saving...",
+          success: "Saved",
+          error: (error) => ({
+            title: "Save failed",
+            description: error instanceof Error ? error.message : String(error),
+          }),
+        });
+      } catch (error) {
+        caught = error;
+      }
+    });
+
+    expect(caught).toBe(failure);
+    expect(screen.getByRole("alert")).toHaveTextContent("Save failed");
+    expect(screen.getByRole("alert")).toHaveTextContent(failure.message);
+    act(() => toast.dismiss());
+  });
+
+  it("limits the visible stack and runs dismissal callbacks", () => {
+    const onDismiss = vi.fn();
+    render(<Toaster limit={1} newestOnTop />);
+    act(() => {
+      toast("Earlier notification", { onDismiss });
+      toast("Latest notification");
+    });
+
+    expect(screen.queryByText("Earlier notification")).not.toBeInTheDocument();
+    expect(screen.getByText("Latest notification")).toBeInTheDocument();
+    act(() => toast.dismiss());
+    expect(onDismiss).toHaveBeenCalledOnce();
+  });
 });
 
 describe("bidirectional text", () => {

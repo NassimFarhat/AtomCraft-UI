@@ -42,6 +42,17 @@ export type Messages = {
   nextMonth: string;
   previousYear: string;
   nextYear: string;
+  eventCalendar: string;
+  eventCalendarPrevious: string;
+  eventCalendarNext: string;
+  eventCalendarMonth: string;
+  eventCalendarWeek: string;
+  eventCalendarDay: string;
+  eventCalendarAgenda: string;
+  eventCalendarAllDay: string;
+  eventCalendarNoEvents: string;
+  eventCalendarMoreEvents: string;
+  eventCalendarTime: string;
   today: string;
   dateFormatHint: string;
   commandPalette: string;
@@ -112,6 +123,17 @@ export const en: Messages = {
   nextMonth: "Next month",
   previousYear: "Previous year",
   nextYear: "Next year",
+  eventCalendar: "Event calendar",
+  eventCalendarPrevious: "Previous period",
+  eventCalendarNext: "Next period",
+  eventCalendarMonth: "Month",
+  eventCalendarWeek: "Week",
+  eventCalendarDay: "Day",
+  eventCalendarAgenda: "Agenda",
+  eventCalendarAllDay: "All day",
+  eventCalendarNoEvents: "No events in this period.",
+  eventCalendarMoreEvents: "{count} more",
+  eventCalendarTime: "Time",
   today: "Today",
   dateFormatHint: "Format: {format}",
   commandPalette: "Command palette",
@@ -182,6 +204,17 @@ export const fr: Messages = {
   nextMonth: "Mois suivant",
   previousYear: "Année précédente",
   nextYear: "Année suivante",
+  eventCalendar: "Calendrier des événements",
+  eventCalendarPrevious: "Période précédente",
+  eventCalendarNext: "Période suivante",
+  eventCalendarMonth: "Mois",
+  eventCalendarWeek: "Semaine",
+  eventCalendarDay: "Jour",
+  eventCalendarAgenda: "Agenda",
+  eventCalendarAllDay: "Toute la journée",
+  eventCalendarNoEvents: "Aucun événement sur cette période.",
+  eventCalendarMoreEvents: "{count} de plus",
+  eventCalendarTime: "Heure",
   today: "Aujourd’hui",
   dateFormatHint: "Format : {format}",
   commandPalette: "Palette de commandes",
@@ -252,6 +285,17 @@ export const ar: Messages = {
   nextMonth: "الشهر التالي",
   previousYear: "السنة السابقة",
   nextYear: "السنة التالية",
+  eventCalendar: "تقويم الفعاليات",
+  eventCalendarPrevious: "الفترة السابقة",
+  eventCalendarNext: "الفترة التالية",
+  eventCalendarMonth: "شهر",
+  eventCalendarWeek: "أسبوع",
+  eventCalendarDay: "يوم",
+  eventCalendarAgenda: "جدول الأعمال",
+  eventCalendarAllDay: "طوال اليوم",
+  eventCalendarNoEvents: "لا توجد فعاليات في هذه الفترة.",
+  eventCalendarMoreEvents: "{count} أخرى",
+  eventCalendarTime: "الوقت",
   today: "اليوم",
   dateFormatHint: "الصيغة: {format}",
   commandPalette: "لوحة الأوامر",

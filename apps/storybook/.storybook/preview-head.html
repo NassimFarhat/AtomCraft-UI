@@ -1,9 +1,18 @@
 <style>
+  #storybook-root {
+    inline-size: 100%;
+    min-inline-size: 0;
+  }
   .sb-canvas {
+    display: grid;
+    inline-size: 100%;
+    justify-items: center;
     padding: 1.5rem;
+    min-inline-size: 0;
   }
   .sb-show-main.sb-main-fullscreen .sb-canvas {
     padding: 0;
+    justify-items: stretch;
   }
 </style>
 <style>

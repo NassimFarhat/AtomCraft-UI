@@ -13,14 +13,18 @@ import { SearchField } from "../search-field";
 import { Field } from "./field";
 
 const meta = {
-  title: "Molecules/Forms",
+  title: "Examples/Form controls",
   component: Field,
   args: {
     label: "Email",
     description: "We only use it for receipts.",
     children: <Input type="email" placeholder="name@company.tn" />,
   },
-  decorators: [(Story) => <div style={{ inlineSize: "24rem" }}>{Story()}</div>],
+  decorators: [
+    (Story) => (
+      <div style={{ inlineSize: "24rem", maxInlineSize: "calc(100vw - 5rem)" }}>{Story()}</div>
+    ),
+  ],
 } satisfies Meta<typeof Field>;
 
 export default meta;

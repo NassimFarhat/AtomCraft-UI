@@ -81,3 +81,6 @@ export function DataTableToolbar({
     </div>
   );
 }
+
+export type TableToolbarProps = DataTableToolbarProps;
+export const TableToolbar = DataTableToolbar;

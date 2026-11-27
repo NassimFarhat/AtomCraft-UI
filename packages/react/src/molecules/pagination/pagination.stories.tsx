@@ -6,7 +6,7 @@ import { NavItem } from "../nav-item";
 import { Pagination } from "./pagination";
 
 const meta = {
-  title: "Molecules/Navigation",
+  title: "Examples/Navigation patterns",
   component: Pagination,
   args: { totalPages: 12, defaultPage: 5 },
 } satisfies Meta<typeof Pagination>;

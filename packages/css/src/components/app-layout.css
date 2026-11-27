@@ -262,7 +262,17 @@
   gap: var(--_gap);
 }
 
+.ac-flex {
+  display: flex;
+  flex-direction: var(--_direction-base, row);
+  gap: var(--_gap);
+}
+
 .ac-stack[data-wrap] {
+  flex-wrap: wrap;
+}
+
+.ac-flex[data-wrap] {
   flex-wrap: wrap;
 }
 
@@ -286,6 +296,26 @@
   align-items: baseline;
 }
 
+.ac-flex[data-align="start"] {
+  align-items: flex-start;
+}
+
+.ac-flex[data-align="center"] {
+  align-items: center;
+}
+
+.ac-flex[data-align="end"] {
+  align-items: flex-end;
+}
+
+.ac-flex[data-align="stretch"] {
+  align-items: stretch;
+}
+
+.ac-flex[data-align="baseline"] {
+  align-items: baseline;
+}
+
 .ac-stack[data-justify="start"] {
   justify-content: flex-start;
 }
@@ -300,6 +330,94 @@
 
 .ac-stack[data-justify="between"] {
   justify-content: space-between;
+}
+
+.ac-flex[data-justify="start"] {
+  justify-content: flex-start;
+}
+
+.ac-flex[data-justify="center"] {
+  justify-content: center;
+}
+
+.ac-flex[data-justify="end"] {
+  justify-content: flex-end;
+}
+
+.ac-flex[data-justify="between"] {
+  justify-content: space-between;
+}
+
+.ac-aspect-ratio {
+  position: relative;
+  inline-size: 100%;
+  aspect-ratio: var(--_aspect-ratio, 1.7777778);
+}
+
+.ac-aspect-ratio > * {
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.ac-scroll-area {
+  min-inline-size: 0;
+  min-block-size: 0;
+  overscroll-behavior: contain;
+  scrollbar-color: var(--ac-color-border-control) transparent;
+  scrollbar-width: thin;
+}
+
+.ac-scroll-area[data-orientation="vertical"] {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.ac-scroll-area[data-orientation="horizontal"] {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.ac-scroll-area[data-orientation="both"] {
+  overflow: auto;
+}
+
+.ac-scroll-area[data-scrollbar="always"] {
+  scrollbar-width: auto;
+}
+
+.ac-scroll-area[data-scrollbar="hidden"] {
+  scrollbar-width: none;
+}
+
+.ac-scroll-area[data-scrollbar="hidden"]::-webkit-scrollbar {
+  display: none;
+}
+
+.ac-scroll-area:focus-visible,
+.ac-resizable-panel:focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: var(--ac-focus-ring-offset);
+}
+
+.ac-resizable-panel {
+  min-inline-size: var(--_min-inline-size, 8rem);
+  min-block-size: var(--_min-block-size, 4rem);
+  overflow: auto;
+  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-radius: var(--ac-radius-card);
+  background: var(--ac-color-bg-surface);
+}
+
+.ac-resizable-panel[data-axis="inline"] {
+  resize: inline;
+}
+
+.ac-resizable-panel[data-axis="block"] {
+  resize: block;
+}
+
+.ac-resizable-panel[data-axis="both"] {
+  resize: both;
 }
 
 .ac-grid {
@@ -341,6 +459,10 @@
     flex-direction: var(--_direction-sm, var(--_direction-base, column));
   }
 
+  .ac-flex {
+    flex-direction: var(--_direction-sm, var(--_direction-base, row));
+  }
+
   .ac-grid:not([data-fluid]) {
     grid-template-columns: repeat(var(--_columns-sm, var(--_columns-base, 1)), minmax(0, 1fr));
   }
@@ -353,6 +475,10 @@
 @media (min-width: 768px) {
   .ac-stack {
     flex-direction: var(--_direction-md, var(--_direction-sm, var(--_direction-base, column)));
+  }
+
+  .ac-flex {
+    flex-direction: var(--_direction-md, var(--_direction-sm, var(--_direction-base, row)));
   }
 
   .ac-grid:not([data-fluid]) {
@@ -368,6 +494,13 @@
     flex-direction: var(
       --_direction-lg,
       var(--_direction-md, var(--_direction-sm, var(--_direction-base, column)))
+    );
+  }
+
+  .ac-flex {
+    flex-direction: var(
+      --_direction-lg,
+      var(--_direction-md, var(--_direction-sm, var(--_direction-base, row)))
     );
   }
 
