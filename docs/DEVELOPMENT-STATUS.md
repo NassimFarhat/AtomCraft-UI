@@ -1,5 +1,45 @@
 # AtomCraft UI development status
 
+## Completed: Modern Minimal redesign release (0.3.0)
+
+The latest `origin/main` was pulled from GitHub at `3a36c6c` and analyzed before
+release. The incoming Changeset described an additive Modern Minimal redesign:
+new token effects and palettes, CSS surface styles, and new Storybook blocks,
+foundations and theme-playground examples. No external component library was
+added and no React runtime API changes were introduced.
+
+The coordinated release was prepared with Changesets, committed as
+`1c8bf5a`, pushed to GitHub, and published publicly with the `latest` tag:
+
+- `@atomscraft/core@0.3.0`
+- `@atomscraft/tokens@0.3.0`
+- `@atomscraft/css@0.3.0`
+- `@atomscraft/react@0.3.0`
+
+Release tags for all four packages were also pushed to GitHub. Direct registry
+metadata verification confirmed that each package has `0.3.0` and that
+`latest` points to `0.3.0`.
+
+Release verification on 2026-11-28:
+
+- `pnpm install --frozen-lockfile` passed
+- `pnpm generate` passed; generated token CSS and JSON are synchronized
+- `pnpm format:check` passed
+- `pnpm lint` passed with zero errors and 28 existing warnings
+- `pnpm typecheck` passed
+- `pnpm test` passed: 393 tests (Core 58, Tokens 161, React 174)
+- `pnpm build` passed for CSS, Core, Tokens and React
+- `pnpm pack:check` passed; all four `0.3.0` tarballs contain the expected
+  built artifacts
+- `pnpm --filter @atomscraft/storybook build-storybook` passed
+- Static Storybook audit passed for all 329 routes: 329 captured, with zero
+  failures, overflow reports, uncaught exceptions or console errors
+- Visual review covered the new blocks, effects, theme playground and atom
+  states; no clipping or overflow was found
+
+The pre-existing local `pnpm-lock.yaml` change for the untracked Studio
+importer was intentionally preserved and excluded from the release commit.
+
 ## Completed: organization-scoped npm release
 
 The four public package workspaces are published under the `atomscraft` npm
