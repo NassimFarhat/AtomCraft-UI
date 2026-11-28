@@ -31,7 +31,8 @@
   inline-size: 100%;
   block-size: var(--_track);
   border-radius: var(--ac-radius-full);
-  background: var(--ac-color-bg-muted);
+  background: var(--ac-color-bg-active);
+  box-shadow: var(--ac-shadow-inner);
   cursor: pointer;
 }
 
@@ -49,9 +50,11 @@
   inset-inline-start: var(--_from);
   inline-size: calc(var(--_to) - var(--_from));
   border-radius: inherit;
-  background: var(--ac-tone-solid);
+  background-color: var(--ac-tone-solid);
+  background-image: var(--ac-gradient-sheen);
 }
 
+/* Thumb: a raised white puck; hover and drag grow a soft halo, focus adds the ring. */
 .ac-slider__thumb {
   position: absolute;
   inset-block-start: 50%;
@@ -60,11 +63,23 @@
   block-size: var(--_thumb);
   border: var(--ac-border-width-2) solid var(--ac-tone-solid);
   border-radius: var(--ac-radius-full);
-  background: var(--ac-color-bg-canvas);
+  background: white;
   box-shadow: var(--ac-shadow-sm);
   translate: -50% -50%;
   cursor: grab;
-  transition: box-shadow var(--ac-duration-fast) var(--ac-easing-standard);
+  transition:
+    box-shadow var(--ac-duration-fast) var(--ac-easing-standard),
+    scale var(--ac-duration-fast) var(--ac-easing-spring);
+}
+
+/* Touch screens: a 44px invisible grab area around the thumb. */
+@media (pointer: coarse) {
+  .ac-slider__thumb::before {
+    content: "";
+    position: absolute;
+    inset: min(0px, calc((var(--_thumb) - 2.75rem) / 2));
+    border-radius: inherit;
+  }
 }
 
 /* The thumb sits at the same place in both directions. */
@@ -72,14 +87,48 @@
   translate: 50% -50%;
 }
 
+@media (hover: hover) {
+  .ac-slider:not([data-disabled]) .ac-slider__thumb:hover {
+    box-shadow:
+      var(--ac-shadow-sm),
+      0 0 0 5px var(--ac-tone-soft);
+  }
+}
+
 .ac-slider__thumb:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 var(--ac-focus-ring-width)
-    color-mix(in oklab, var(--ac-tone-solid) 35%, transparent);
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: var(--ac-focus-ring-offset);
+  box-shadow:
+    var(--ac-shadow-sm),
+    0 0 0 5px var(--ac-tone-soft);
 }
 
 .ac-slider[data-dragging] .ac-slider__thumb {
   cursor: grabbing;
+  scale: 1.08;
+  box-shadow:
+    var(--ac-shadow-md),
+    0 0 0 6px var(--ac-tone-soft);
+}
+
+.ac-slider[data-disabled] .ac-slider__thumb {
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .ac-slider__track {
+    outline: 1px solid CanvasText;
+  }
+
+  .ac-slider__range {
+    background: Highlight;
+  }
+
+  .ac-slider__thumb {
+    border-color: Highlight;
+    background: Canvas;
+  }
 }
 
 .ac-slider__mark {
@@ -103,6 +152,7 @@
   inset-inline-start: 50%;
   color: var(--ac-color-text-secondary);
   font-size: var(--ac-type-caption-size);
+  font-feature-settings: var(--ac-font-features-tabular);
   white-space: nowrap;
   translate: -50% 0;
 }

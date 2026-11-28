@@ -1,12 +1,20 @@
-/* Variant × tone: tone rules (tokens.css) set --ac-tone-*, variants decide how to use them. */
+/*
+ * Button. Variant × tone: tone rules (tokens.css) set --ac-tone-*, variants decide how to
+ * use them. Solid fills get a lit top edge (sheen + highlight) and a hairline edge of their
+ * own hue, so they read as tactile without a heavy drop shadow.
+ */
 .ac-button {
   --_bg: var(--ac-tone-solid);
   --_bg-hover: var(--ac-tone-solid-hover);
   --_fg: var(--ac-tone-on-solid);
   --_border: transparent;
-  --_shadow: var(--ac-shadow-highlight), var(--ac-shadow-xs);
+  --_sheen: var(--ac-gradient-sheen);
+  --_edge: 0 0 0 1px color-mix(in oklab, var(--ac-tone-solid-hover) 70%, black);
+  --_shadow: var(--ac-shadow-highlight), var(--_edge), var(--ac-shadow-xs);
+  --_shadow-hover: var(--ac-shadow-highlight), var(--_edge), var(--ac-shadow-sm);
   --_height: var(--ac-size-control-md);
   --_padding: var(--ac-padding-control-md);
+  --_icon: var(--ac-size-icon-sm);
 
   position: relative;
   display: inline-flex;
@@ -18,108 +26,188 @@
   padding-inline: var(--_padding);
   border: var(--ac-border-width-1) solid var(--_border);
   border-radius: var(--ac-radius-control);
-  background: var(--_bg);
+  background-color: var(--_bg);
+  background-image: var(--_sheen);
   color: var(--_fg);
   box-shadow: var(--_shadow);
   font: inherit;
   font-size: var(--ac-type-label-md-size);
   font-weight: var(--ac-font-weight-medium);
+  letter-spacing: var(--ac-type-label-md-tracking);
   line-height: 1;
   white-space: nowrap;
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  transition-property: background-color, border-color, color, box-shadow, transform;
+  -webkit-tap-highlight-color: transparent;
+  transition-property: background-color, border-color, color, box-shadow, transform, opacity;
   transition-duration: var(--ac-duration-fast);
   transition-timing-function: var(--ac-easing-standard);
 }
 
-.ac-button:hover:not(:disabled) {
-  background: var(--_bg-hover);
+@media (hover: hover) {
+  .ac-button:hover:not(:disabled, [data-disabled]) {
+    background-color: var(--_bg-hover);
+    box-shadow: var(--_shadow-hover);
+  }
 }
 
-.ac-button:active:not(:disabled) {
-  transform: translateY(1px);
+.ac-button:active:not(:disabled, [data-disabled]) {
+  background-color: var(--_bg-hover);
+  box-shadow: var(--_shadow);
+  transform: translateY(0.5px) scale(0.985);
 }
 
-.ac-button:disabled {
+.ac-button:focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: var(--ac-focus-ring-offset);
+}
+
+.ac-button:disabled,
+.ac-button[data-disabled] {
+  background-image: none;
+  box-shadow: none;
   opacity: var(--ac-opacity-disabled);
   cursor: not-allowed;
-  box-shadow: none;
 }
 
+.ac-button[data-disabled] {
+  pointer-events: none;
+}
+
+/* Loading keeps the button fully legible: it is busy, not unavailable. */
 .ac-button[data-loading] {
+  background-image: var(--_sheen);
+  box-shadow: var(--_shadow);
+  opacity: 1;
   cursor: progress;
 }
 
-.ac-button .ac-icon {
-  inline-size: 1rem;
-  block-size: 1rem;
+.ac-button[data-loading] > :not(.ac-spinner) {
+  opacity: 0.72;
 }
 
+.ac-button .ac-icon {
+  inline-size: var(--_icon);
+  block-size: var(--_icon);
+}
+
+/* Soft: a tinted fill, no depth. */
 .ac-button[data-variant="soft"] {
   --_bg: var(--ac-tone-soft);
   --_bg-hover: var(--ac-tone-soft-hover);
   --_fg: var(--ac-tone-text);
+  --_sheen: none;
   --_shadow: none;
+  --_shadow-hover: none;
 }
 
+/* Outline: a raised surface with a hairline border; the primary tone tints the border. */
 .ac-button[data-variant="outline"] {
   --_bg: var(--ac-color-bg-surface);
   --_bg-hover: var(--ac-tone-soft);
   --_fg: var(--ac-tone-text);
   --_border: var(--ac-tone-border);
+  --_sheen: none;
   --_shadow: var(--ac-shadow-xs);
+  --_shadow-hover: var(--ac-shadow-sm);
 }
 
 .ac-button[data-variant="outline"][data-tone="neutral"] {
   --_border: var(--ac-color-border-default);
-  --_bg-hover: var(--ac-color-bg-muted);
+  --_bg-hover: var(--ac-color-bg-hover);
+  --_fg: var(--ac-color-text-primary);
 }
 
+@media (hover: hover) {
+  .ac-button[data-variant="outline"][data-tone="neutral"]:hover:not(:disabled, [data-disabled]) {
+    border-color: var(--ac-color-border-strong);
+  }
+}
+
+/* Ghost: no chrome until the pointer arrives. */
 .ac-button[data-variant="ghost"] {
   --_bg: transparent;
   --_bg-hover: var(--ac-tone-soft);
   --_fg: var(--ac-tone-text);
+  --_sheen: none;
   --_shadow: none;
+  --_shadow-hover: none;
 }
 
 .ac-button[data-variant="ghost"][data-tone="neutral"] {
-  --_bg-hover: var(--ac-color-bg-muted);
+  --_bg-hover: var(--ac-color-bg-hover);
+  --_fg: var(--ac-color-text-secondary);
 }
 
+@media (hover: hover) {
+  .ac-button[data-variant="ghost"][data-tone="neutral"]:hover:not(:disabled, [data-disabled]) {
+    color: var(--ac-color-text-primary);
+  }
+}
+
+.ac-button[data-variant="ghost"][data-tone="neutral"]:active:not(:disabled, [data-disabled]) {
+  background-color: var(--ac-color-bg-active);
+  color: var(--ac-color-text-primary);
+}
+
+/* Link: text only, with an underline that strengthens on hover. */
 .ac-button[data-variant="link"] {
   --_bg: transparent;
   --_bg-hover: transparent;
   --_fg: var(--ac-tone-text);
+  --_sheen: none;
   --_shadow: none;
+  --_shadow-hover: none;
   --_padding: 0;
+
   block-size: auto;
+  border-radius: var(--ac-radius-xs);
+  text-decoration-line: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: from-font;
   text-underline-offset: 0.25em;
+  transition-property: color, text-decoration-color, opacity;
 }
 
-.ac-button[data-variant="link"]:hover:not(:disabled) {
-  text-decoration: underline;
+@media (hover: hover) {
+  .ac-button[data-variant="link"]:hover:not(:disabled, [data-disabled]) {
+    text-decoration-color: currentcolor;
+  }
 }
 
+.ac-button[data-variant="link"]:active:not(:disabled, [data-disabled]) {
+  transform: none;
+}
+
+/* Sizes. Icons and the spinner scale with the control. */
 .ac-button[data-size="xs"] {
   --_height: var(--ac-size-control-xs);
   --_padding: var(--ac-space-2);
+  --_icon: var(--ac-size-icon-xs);
+
   gap: var(--ac-space-1);
-  font-size: var(--ac-type-label-sm-size);
   border-radius: min(var(--ac-radius-control), var(--ac-radius-md));
+  font-size: var(--ac-type-label-sm-size);
+  letter-spacing: var(--ac-type-label-sm-tracking);
 }
 
 .ac-button[data-size="sm"] {
   --_height: var(--ac-size-control-sm);
   --_padding: var(--ac-padding-control-sm);
+  --_icon: var(--ac-size-icon-xs);
+
   gap: var(--ac-space-1-5);
 }
 
 .ac-button[data-size="lg"] {
   --_height: var(--ac-size-control-lg);
   --_padding: var(--ac-padding-control-lg);
-  font-size: var(--ac-type-body-md-size);
+  --_icon: var(--ac-size-icon-md);
+
+  gap: var(--ac-space-2-5);
+  font-size: var(--ac-type-label-lg-size);
+  letter-spacing: var(--ac-type-label-lg-tracking);
 }
 
 .ac-button[data-icon-only] {
@@ -131,4 +219,25 @@
   flex-shrink: 1;
   inline-size: 100%;
   min-inline-size: 0;
+}
+
+/* Touch screens: at least a 24px target (WCAG 2.5.8), even for the extra-small size. */
+@media (pointer: coarse) {
+  .ac-button[data-size="xs"]::after {
+    content: "";
+    position: absolute;
+    inset: min(0px, calc((var(--_height) - 1.5rem) / 2));
+  }
+}
+
+@media (forced-colors: active) {
+  .ac-button {
+    border-color: ButtonText;
+  }
+
+  .ac-button:disabled,
+  .ac-button[data-disabled] {
+    border-color: GrayText;
+    color: GrayText;
+  }
 }

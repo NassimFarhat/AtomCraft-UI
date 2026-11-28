@@ -1,20 +1,27 @@
-/* Text-like controls share one look: Input, Textarea, Select. */
+/*
+ * Text-like controls share one look: Input, Textarea, Select. They sit on the surface
+ * color, keep a 3:1 boundary (WCAG 1.4.11), and announce focus with the ring color plus a
+ * soft halo. Invalid swaps both for the danger hue and tints the field faintly.
+ */
 .ac-input,
 .ac-textarea,
 .ac-select__control {
   --_ring: var(--ac-color-focus-ring);
+  --_halo: var(--ac-shadow-focus);
 
   inline-size: 100%;
   min-inline-size: 0;
   padding-inline: var(--ac-space-3);
   border: var(--ac-border-width-1) solid var(--ac-color-border-control);
   border-radius: var(--ac-radius-control);
-  background: var(--ac-color-bg-canvas);
+  background: var(--ac-color-bg-surface);
   color: var(--ac-color-text-primary);
   box-shadow: var(--ac-shadow-xs);
   font: inherit;
   font-size: var(--ac-type-body-sm-size);
-  transition-property: border-color, box-shadow, background-color;
+  letter-spacing: var(--ac-letter-spacing-snug);
+  caret-color: var(--ac-color-focus-ring);
+  transition-property: border-color, box-shadow, background-color, color;
   transition-duration: var(--ac-duration-fast);
   transition-timing-function: var(--ac-easing-standard);
 }
@@ -24,10 +31,12 @@
   block-size: var(--ac-size-control-md);
 }
 
-.ac-input:hover:not(:disabled, :focus),
-.ac-textarea:hover:not(:disabled, :focus),
-.ac-select__control:hover:not(:disabled, :focus) {
-  border-color: var(--ac-color-text-tertiary);
+@media (hover: hover) {
+  .ac-input:hover:not(:disabled, :focus),
+  .ac-textarea:hover:not(:disabled, :focus),
+  .ac-select__control:hover:not(:disabled, :focus) {
+    border-color: var(--ac-color-text-tertiary);
+  }
 }
 
 .ac-input:focus-visible,
@@ -35,28 +44,47 @@
 .ac-select__control:focus-visible {
   outline: none;
   border-color: var(--_ring);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--_ring) 28%, transparent);
+  box-shadow:
+    var(--ac-shadow-xs),
+    0 0 0 1px var(--_ring),
+    var(--_halo);
 }
 
 .ac-input[data-invalid],
 .ac-textarea[data-invalid],
 .ac-select__control[data-invalid] {
   --_ring: var(--ac-color-danger-solid);
+  --_halo: 0 0 0 3px color-mix(in oklab, var(--ac-color-danger-solid) 24%, transparent);
+
   border-color: var(--ac-color-danger-solid);
+  background: color-mix(in oklab, var(--ac-color-danger-soft) 45%, var(--ac-color-bg-surface));
+  caret-color: var(--ac-color-danger-solid);
 }
 
+@media (hover: hover) {
+  .ac-input[data-invalid]:hover:not(:disabled, :focus),
+  .ac-textarea[data-invalid]:hover:not(:disabled, :focus),
+  .ac-select__control[data-invalid]:hover:not(:disabled, :focus) {
+    border-color: var(--ac-color-danger-solid-hover);
+  }
+}
+
+/* Disabled: legible but clearly inert, without fading the whole box. */
 .ac-input:disabled,
 .ac-textarea:disabled,
 .ac-select__control:disabled {
+  border-color: var(--ac-color-border-default);
   background: var(--ac-color-bg-muted);
+  color: var(--ac-color-text-disabled);
   box-shadow: none;
-  opacity: var(--ac-opacity-disabled);
   cursor: not-allowed;
 }
 
 .ac-input:read-only:not(:disabled),
 .ac-textarea:read-only:not(:disabled) {
-  background: var(--ac-color-bg-subtle);
+  border-color: var(--ac-color-border-default);
+  background: var(--ac-color-bg-surface-sunken);
+  box-shadow: none;
 }
 
 .ac-input::placeholder,
@@ -65,10 +93,16 @@
   opacity: 1;
 }
 
+.ac-input:disabled::placeholder,
+.ac-textarea:disabled::placeholder {
+  color: var(--ac-color-text-disabled);
+}
+
 .ac-input[data-size="sm"],
 .ac-select[data-size="sm"] .ac-select__control {
   block-size: var(--ac-size-control-sm);
   padding-inline: var(--ac-space-2-5);
+  border-radius: min(var(--ac-radius-control), var(--ac-radius-md));
 }
 
 .ac-input[data-size="lg"],
@@ -78,16 +112,42 @@
   font-size: var(--ac-type-body-md-size);
 }
 
+/* Touch devices: 16px text stops iOS from zooming into the field on focus. */
+@media (pointer: coarse) {
+  .ac-input,
+  .ac-textarea,
+  .ac-select__control {
+    font-size: max(var(--ac-type-body-md-size), 1rem);
+  }
+}
+
+.ac-input[type="number"],
+.ac-input[type="tel"] {
+  font-feature-settings: var(--ac-font-features-tabular);
+}
+
 .ac-input::file-selector-button {
   margin-block: var(--ac-space-1);
   margin-inline-end: var(--ac-space-3);
-  padding: var(--ac-space-1) var(--ac-space-2);
-  border: 0;
-  border-radius: var(--ac-radius-sm);
-  background: var(--ac-color-bg-muted);
+  padding: var(--ac-space-1) var(--ac-space-2-5);
+  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-radius: min(var(--ac-radius-control), var(--ac-radius-sm));
+  background: var(--ac-color-bg-subtle);
   color: var(--ac-color-text-primary);
   font: inherit;
+  font-size: var(--ac-type-label-sm-size);
   font-weight: var(--ac-font-weight-medium);
+  cursor: pointer;
+  transition: background-color var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+.ac-input::file-selector-button:hover {
+  background: var(--ac-color-bg-hover);
+}
+
+.ac-input[type="file"] {
+  padding-inline-start: var(--ac-space-1);
+  cursor: pointer;
 }
 
 .ac-textarea {
@@ -95,6 +155,7 @@
   min-block-size: calc(var(--ac-size-control-md) * 2);
   padding-block: var(--ac-space-2);
   line-height: var(--ac-line-height-normal);
+  scroll-padding-block: var(--ac-space-2);
   resize: vertical;
 }
 
@@ -119,17 +180,32 @@
   cursor: pointer;
 }
 
+.ac-select__control:disabled {
+  cursor: not-allowed;
+}
+
 .ac-select__chevron {
   position: absolute;
   inset-block: 0;
   inset-inline-end: var(--ac-space-3);
   margin-block: auto;
-  inline-size: 1rem;
-  block-size: 1rem;
-  color: var(--ac-color-text-secondary);
+  inline-size: var(--ac-size-icon-sm);
+  block-size: var(--ac-size-icon-sm);
+  color: var(--ac-color-text-tertiary);
   pointer-events: none;
+  transition: color var(--ac-duration-fast) var(--ac-easing-standard);
 }
 
+.ac-select:hover .ac-select__chevron,
+.ac-select:focus-within .ac-select__chevron {
+  color: var(--ac-color-text-secondary);
+}
+
+.ac-select__control:disabled + .ac-select__chevron {
+  color: var(--ac-color-text-disabled);
+}
+
+/* Label: medium weight, a touch of negative tracking; required marks and hints stay quiet. */
 .ac-label {
   display: inline-flex;
   align-items: baseline;
@@ -137,14 +213,22 @@
   color: var(--ac-color-text-primary);
   font-size: var(--ac-type-label-md-size);
   font-weight: var(--ac-type-label-md-weight);
+  letter-spacing: var(--ac-type-label-md-tracking);
   line-height: var(--ac-type-label-md-line-height);
 }
 
 .ac-label__required {
   color: var(--ac-color-danger-text);
+  font-weight: var(--ac-font-weight-semibold);
 }
 
 .ac-label__hint {
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-weight: var(--ac-font-weight-regular);
+  letter-spacing: normal;
+}
+
+.ac-label:has(+ :disabled),
+.ac-label[data-disabled] {
+  color: var(--ac-color-text-disabled);
 }

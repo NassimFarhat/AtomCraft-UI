@@ -1,4 +1,7 @@
-/* Checkbox and Radio: the native input stays on top (invisible) and drives the visual box. */
+/*
+ * Checkbox and Radio: the native input stays on top (invisible) and drives the visual box.
+ * Checked fills carry the same lit edge as solid buttons; marks pop in with a spring.
+ */
 .ac-checkbox,
 .ac-radio {
   --_size: 1rem;
@@ -31,6 +34,14 @@
   cursor: pointer;
 }
 
+/* Touch screens: grow the invisible hit area to 24px without moving the visual box. */
+@media (pointer: coarse) {
+  .ac-checkbox__input,
+  .ac-radio__input {
+    inset: min(0px, calc((var(--_size) - 1.5rem) / 2));
+  }
+}
+
 .ac-checkbox__input:disabled,
 .ac-radio__input:disabled {
   cursor: not-allowed;
@@ -43,31 +54,53 @@
   inline-size: 100%;
   block-size: 100%;
   border: var(--ac-border-width-1) solid var(--ac-color-border-control);
-  background: var(--ac-color-bg-canvas);
+  background-color: var(--ac-color-bg-surface);
   color: var(--ac-tone-on-solid);
   box-shadow: var(--ac-shadow-xs);
-  transition-property: background-color, border-color, box-shadow;
+  transition-property: background-color, border-color, box-shadow, transform;
   transition-duration: var(--ac-duration-fast);
+  transition-timing-function: var(--ac-easing-standard);
 }
 
 .ac-checkbox__box {
-  border-radius: min(var(--ac-radius-control), 0.3rem);
+  border-radius: min(var(--ac-radius-control), calc(var(--_size) * 0.28));
 }
 
 .ac-radio__circle {
   border-radius: var(--ac-radius-full);
 }
 
-.ac-checkbox__input:hover:not(:disabled) + .ac-checkbox__box,
-.ac-radio__input:hover:not(:disabled) + .ac-radio__circle {
-  border-color: var(--ac-tone-solid);
+@media (hover: hover) {
+  .ac-checkbox__input:hover:not(:disabled) + .ac-checkbox__box,
+  .ac-radio__input:hover:not(:disabled) + .ac-radio__circle {
+    border-color: var(--ac-tone-solid);
+    box-shadow:
+      var(--ac-shadow-xs),
+      0 0 0 3px var(--ac-tone-soft);
+  }
 }
 
 .ac-checkbox__input:checked + .ac-checkbox__box,
 .ac-checkbox__input:indeterminate + .ac-checkbox__box,
 .ac-radio__input:checked + .ac-radio__circle {
   border-color: var(--ac-tone-solid);
-  background: var(--ac-tone-solid);
+  background-color: var(--ac-tone-solid);
+  background-image: var(--ac-gradient-sheen);
+  box-shadow: var(--ac-shadow-highlight), var(--ac-shadow-xs);
+}
+
+@media (hover: hover) {
+  .ac-checkbox__input:checked:hover:not(:disabled) + .ac-checkbox__box,
+  .ac-checkbox__input:indeterminate:hover:not(:disabled) + .ac-checkbox__box,
+  .ac-radio__input:checked:hover:not(:disabled) + .ac-radio__circle {
+    border-color: var(--ac-tone-solid-hover);
+    background-color: var(--ac-tone-solid-hover);
+  }
+}
+
+.ac-checkbox__input:active:not(:disabled) + .ac-checkbox__box,
+.ac-radio__input:active:not(:disabled) + .ac-radio__circle {
+  transform: scale(0.92);
 }
 
 .ac-checkbox__input:focus-visible + .ac-checkbox__box,
@@ -76,27 +109,38 @@
   outline-offset: var(--ac-focus-ring-offset);
 }
 
-.ac-checkbox[data-invalid] .ac-checkbox__box {
+.ac-checkbox[data-invalid] .ac-checkbox__box,
+.ac-radio[data-invalid] .ac-radio__circle {
   border-color: var(--ac-color-danger-solid);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-danger-solid) 18%, transparent);
 }
 
 .ac-checkbox__input:disabled + .ac-checkbox__box,
 .ac-radio__input:disabled + .ac-radio__circle {
-  opacity: var(--ac-opacity-disabled);
+  border-color: var(--ac-color-border-default);
+  background-color: var(--ac-color-bg-muted);
+  background-image: none;
   box-shadow: none;
+}
+
+.ac-checkbox__input:disabled:is(:checked, :indeterminate) + .ac-checkbox__box,
+.ac-radio__input:disabled:checked + .ac-radio__circle {
+  border-color: transparent;
+  background-color: var(--ac-tone-solid);
+  opacity: var(--ac-opacity-disabled);
 }
 
 .ac-checkbox__check,
 .ac-checkbox__dash {
   grid-area: 1 / 1;
-  inline-size: 80%;
-  block-size: 80%;
+  inline-size: 78%;
+  block-size: 78%;
   stroke-width: 3;
   opacity: 0;
-  transform: scale(0.6);
+  transform: scale(0.5);
   transition-property: opacity, transform;
-  transition-duration: var(--ac-duration-fast);
-  transition-timing-function: var(--ac-easing-emphasized);
+  transition-duration: var(--ac-duration-normal);
+  transition-timing-function: var(--ac-easing-spring);
 }
 
 .ac-checkbox__input:checked:not(:indeterminate) + .ac-checkbox__box .ac-checkbox__check,
@@ -111,18 +155,25 @@
   block-size: 40%;
   border-radius: var(--ac-radius-full);
   background: var(--ac-tone-on-solid);
+  box-shadow: 0 1px 1px color-mix(in oklab, black 18%, transparent);
   transform: scale(0);
-  transition: transform var(--ac-duration-fast) var(--ac-easing-emphasized);
+  transition: transform var(--ac-duration-normal) var(--ac-easing-spring);
 }
 
 .ac-radio__input:checked + .ac-radio__circle::after {
   transform: scale(1);
 }
 
+/*
+ * Switch: a recessed track and a raised thumb. The unchecked track keeps the 3:1 control
+ * color so its state stays perceivable; the thumb springs across and squashes on press.
+ */
 .ac-switch {
   --_width: 2.25rem;
   --_height: 1.25rem;
-  --_thumb: calc(var(--_height) - 4px);
+  --_inset: 2px;
+  --_thumb: calc(var(--_height) - var(--_inset) * 2);
+  --_track: var(--ac-color-border-control);
 
   position: relative;
   display: inline-flex;
@@ -130,12 +181,25 @@
   align-items: center;
   inline-size: var(--_width);
   block-size: var(--_height);
-  padding: 2px;
+  padding: var(--_inset);
   border: 0;
   border-radius: var(--ac-radius-full);
-  background: var(--ac-color-border-control);
+  background-color: var(--_track);
+  box-shadow: var(--ac-shadow-inner);
   cursor: pointer;
-  transition: background-color var(--ac-duration-normal) var(--ac-easing-standard);
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--ac-duration-normal) var(--ac-easing-standard),
+    box-shadow var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+/* Touch screens: a 24px+ hit area around the shorter sizes. */
+@media (pointer: coarse) {
+  .ac-switch::before {
+    content: "";
+    position: absolute;
+    inset: min(0px, calc((var(--_height) - 1.5rem) / 2)) 0;
+  }
 }
 
 .ac-switch[data-size="sm"] {
@@ -148,11 +212,29 @@
   --_height: 1.5rem;
 }
 
+@media (hover: hover) {
+  .ac-switch:hover:not(:disabled) {
+    --_track: color-mix(in oklab, var(--ac-color-border-control) 82%, var(--ac-color-text-primary));
+  }
+
+  .ac-switch[data-state="checked"]:hover:not(:disabled) {
+    --_track: var(--ac-tone-solid-hover);
+  }
+}
+
 .ac-switch[data-state="checked"] {
-  background: var(--ac-tone-solid);
+  --_track: var(--ac-tone-solid);
+
+  background-image: var(--ac-gradient-sheen);
+}
+
+.ac-switch:focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: var(--ac-focus-ring-offset);
 }
 
 .ac-switch:disabled {
+  box-shadow: none;
   opacity: var(--ac-opacity-disabled);
   cursor: not-allowed;
 }
@@ -161,9 +243,23 @@
   inline-size: var(--_thumb);
   block-size: var(--_thumb);
   border-radius: var(--ac-radius-full);
-  background: var(--ac-color-bg-canvas);
-  box-shadow: var(--ac-shadow-sm);
-  transition: transform var(--ac-duration-normal) var(--ac-easing-emphasized);
+  /* White on the 3:1 control track; the tone's on-solid color (contrast-tested) when on. */
+  background: white;
+  box-shadow:
+    var(--ac-shadow-sm),
+    0 0 0 0.5px color-mix(in oklab, black 8%, transparent);
+  transition:
+    transform var(--ac-duration-moderate) var(--ac-easing-spring),
+    scale var(--ac-duration-fast) var(--ac-easing-standard),
+    background-color var(--ac-duration-normal) var(--ac-easing-standard);
+}
+
+.ac-switch[data-state="checked"] .ac-switch__thumb {
+  background: var(--ac-tone-on-solid);
+}
+
+.ac-switch:active:not(:disabled) .ac-switch__thumb {
+  scale: 0.9;
 }
 
 .ac-switch[data-state="checked"] .ac-switch__thumb {
@@ -172,4 +268,27 @@
 
 [dir="rtl"] .ac-switch[data-state="checked"] .ac-switch__thumb {
   transform: translateX(calc(var(--_height) - var(--_width)));
+}
+
+@media (forced-colors: active) {
+  .ac-checkbox__box,
+  .ac-radio__circle,
+  .ac-switch {
+    border: 1px solid CanvasText;
+  }
+
+  .ac-checkbox__input:is(:checked, :indeterminate) + .ac-checkbox__box,
+  .ac-radio__input:checked + .ac-radio__circle,
+  .ac-switch[data-state="checked"] {
+    border-color: Highlight;
+    background-color: Highlight;
+  }
+
+  .ac-switch__thumb {
+    background: CanvasText;
+  }
+
+  .ac-radio__circle::after {
+    background: HighlightText;
+  }
 }

@@ -10,18 +10,19 @@ export const white = "#ffffff";
 export const black = "#000000";
 
 export const palettes = {
+  /** Graphite: a faintly cool neutral, so surfaces read crisp rather than grey. */
   neutral: {
-    50: "#fafafa",
-    100: "#f4f4f5",
-    200: "#e4e4e7",
-    300: "#d4d4d8",
-    400: "#a1a1aa",
-    500: "#71717a",
-    600: "#52525b",
-    700: "#3f3f46",
-    800: "#27272a",
-    900: "#18181b",
-    950: "#09090b",
+    50: "#fafafb",
+    100: "#f4f4f6",
+    200: "#e6e6ea",
+    300: "#d3d3da",
+    400: "#a0a0ab",
+    500: "#70707b",
+    600: "#51515b",
+    700: "#3d3d46",
+    800: "#26262d",
+    900: "#17171c",
+    950: "#0b0b0e",
   },
   indigo: {
     50: "#eef2ff",
@@ -127,6 +128,45 @@ export const palettes = {
     900: "#7c2d12",
     950: "#431407",
   },
+  sky: {
+    50: "#f0f9ff",
+    100: "#e0f2fe",
+    200: "#bae6fd",
+    300: "#7dd3fc",
+    400: "#38bdf8",
+    500: "#0ea5e9",
+    600: "#0284c7",
+    700: "#0369a1",
+    800: "#075985",
+    900: "#0c4a6e",
+    950: "#082f49",
+  },
+  cyan: {
+    50: "#ecfeff",
+    100: "#cffafe",
+    200: "#a5f3fc",
+    300: "#67e8f9",
+    400: "#22d3ee",
+    500: "#06b6d4",
+    600: "#0891b2",
+    700: "#0e7490",
+    800: "#155e75",
+    900: "#164e63",
+    950: "#083344",
+  },
+  fuchsia: {
+    50: "#fdf4ff",
+    100: "#fae8ff",
+    200: "#f5d0fe",
+    300: "#f0abfc",
+    400: "#e879f9",
+    500: "#d946ef",
+    600: "#c026d3",
+    700: "#a21caf",
+    800: "#86198f",
+    900: "#701a75",
+    950: "#4a044e",
+  },
   amber: {
     50: "#fffbeb",
     100: "#fef3c7",
@@ -156,17 +196,30 @@ export const space = {
   4: "1rem",
   5: "1.25rem",
   6: "1.5rem",
+  7: "1.75rem",
   8: "2rem",
   10: "2.5rem",
   12: "3rem",
+  14: "3.5rem",
   16: "4rem",
   20: "5rem",
   24: "6rem",
+  32: "8rem",
 } as const;
 
 export const fontFamily = {
   sans: '"Inter", "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", sans-serif',
+  /** Headlines: optical display cuts when the application loads them, the text face otherwise. */
+  display:
+    '"Inter Display", "Geist", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", sans-serif',
   mono: '"JetBrains Mono", "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+} as const;
+
+/** OpenType features: Inter's open digits and disambiguated glyphs; ignored by other faces. */
+export const fontFeatures = {
+  text: '"cv02", "cv03", "cv04", "cv11"',
+  display: '"cv02", "cv03", "cv04", "cv11", "ss01"',
+  tabular: '"tnum", "cv11"',
 } as const;
 
 /** Modular scale around a 16px body (ratio ~1.2). */
@@ -191,6 +244,8 @@ export const fontWeight = {
 } as const;
 
 export const lineHeight = {
+  none: "1",
+  tighter: "1.1",
   tight: "1.2",
   snug: "1.375",
   normal: "1.5",
@@ -198,10 +253,13 @@ export const lineHeight = {
 } as const;
 
 export const letterSpacing = {
-  tighter: "-0.03em",
-  tight: "-0.015em",
+  tightest: "-0.035em",
+  tighter: "-0.025em",
+  tight: "-0.012em",
+  snug: "-0.006em",
   normal: "0",
   wide: "0.04em",
+  wider: "0.08em",
 } as const;
 
 export const radius = {
@@ -223,19 +281,51 @@ export const borderWidth = {
   4: "4px",
 } as const;
 
-export const shadow = {
-  xs: "0 1px 2px 0 rgb(0 0 0 / 0.05)",
-  sm: "0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)",
-  md: "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
-  lg: "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-  xl: "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
-  "2xl": "0 25px 50px -12px rgb(0 0 0 / 0.25)",
-  /** Thin top light on solid buttons. */
-  highlight: "inset 0 1px 0 rgb(255 255 255 / 0.14)",
-} as const;
+type ShadowScale = Readonly<
+  Record<"xs" | "sm" | "md" | "lg" | "xl" | "2xl" | "inner" | "highlight", string>
+>;
+
+/**
+ * Layered shadows: a tight contact shadow plus a soft ambient one. Light mode uses an
+ * ink-tinted shadow; dark mode needs deeper shadows and a faint top edge light, because
+ * a dark shadow alone disappears on a dark canvas.
+ */
+export const shadows: Readonly<Record<"light" | "dark", ShadowScale>> = {
+  light: {
+    xs: "0 1px 2px 0 rgb(17 17 26 / 0.05)",
+    sm: "0 1px 2px 0 rgb(17 17 26 / 0.06), 0 1px 3px 0 rgb(17 17 26 / 0.08)",
+    md: "0 1px 2px 0 rgb(17 17 26 / 0.05), 0 4px 8px -2px rgb(17 17 26 / 0.08)",
+    lg: "0 2px 4px -1px rgb(17 17 26 / 0.05), 0 12px 24px -6px rgb(17 17 26 / 0.12)",
+    xl: "0 4px 8px -2px rgb(17 17 26 / 0.06), 0 24px 40px -10px rgb(17 17 26 / 0.16)",
+    "2xl": "0 8px 16px -4px rgb(17 17 26 / 0.08), 0 40px 72px -16px rgb(17 17 26 / 0.26)",
+    inner: "inset 0 1px 2px 0 rgb(17 17 26 / 0.06)",
+    highlight: "inset 0 1px 0 rgb(255 255 255 / 0.16)",
+  },
+  dark: {
+    xs: "0 1px 2px 0 rgb(0 0 0 / 0.32)",
+    sm: "0 1px 2px 0 rgb(0 0 0 / 0.36), 0 1px 3px 0 rgb(0 0 0 / 0.28)",
+    md: "inset 0 1px 0 rgb(255 255 255 / 0.03), 0 1px 2px 0 rgb(0 0 0 / 0.32), 0 4px 8px -2px rgb(0 0 0 / 0.36)",
+    lg: "inset 0 1px 0 rgb(255 255 255 / 0.04), 0 2px 4px -1px rgb(0 0 0 / 0.36), 0 12px 24px -6px rgb(0 0 0 / 0.5)",
+    xl: "inset 0 1px 0 rgb(255 255 255 / 0.05), 0 4px 8px -2px rgb(0 0 0 / 0.4), 0 24px 40px -10px rgb(0 0 0 / 0.56)",
+    "2xl":
+      "inset 0 1px 0 rgb(255 255 255 / 0.06), 0 8px 16px -4px rgb(0 0 0 / 0.44), 0 40px 72px -16px rgb(0 0 0 / 0.64)",
+    inner: "inset 0 1px 2px 0 rgb(0 0 0 / 0.32)",
+    highlight: "inset 0 1px 0 rgb(255 255 255 / 0.12)",
+  },
+};
+
+/** Light-mode shadows, kept as the mode-independent export earlier releases shipped. */
+export const shadow = shadows.light;
 
 /** Dimmed layer behind modal dialogs. */
-export const backdrop = "rgb(9 9 11 / 0.6)";
+export const backdrop = "rgb(11 11 14 / 0.56)";
+
+/** Background blur for translucent layers (sticky headers, overlays, glass surfaces). */
+export const blur = {
+  sm: "4px",
+  md: "12px",
+  lg: "24px",
+} as const;
 
 export const duration = {
   0: "0ms",
@@ -243,6 +333,7 @@ export const duration = {
   100: "100ms",
   150: "150ms",
   200: "200ms",
+  250: "250ms",
   300: "300ms",
   500: "500ms",
 } as const;
@@ -253,6 +344,10 @@ export const easing = {
   emphasized: "cubic-bezier(0.3, 0, 0, 1.2)",
   decelerate: "cubic-bezier(0, 0, 0, 1)",
   accelerate: "cubic-bezier(0.3, 0, 1, 1)",
+  /** Gentle overshoot for things that pop in: toggles, toasts, menus. */
+  spring: "cubic-bezier(0.34, 1.4, 0.64, 1)",
+  /** Symmetric ease for state changes that go both ways. */
+  smooth: "cubic-bezier(0.45, 0, 0.25, 1)",
 } as const;
 
 export const opacity = {

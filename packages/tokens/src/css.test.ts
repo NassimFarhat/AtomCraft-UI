@@ -45,6 +45,26 @@ describe("renderTokensCss", () => {
     expect(css).toContain("@media (prefers-contrast: more)");
   });
 
+  it("resolves shadows, gradients and glass per color mode", () => {
+    const light = css.slice(css.indexOf(':root,\n[data-ac-mode="light"] {'));
+    const dark = css.slice(css.indexOf('[data-ac-mode="dark"] {'));
+    for (const block of [light, dark]) {
+      expect(block).toMatch(/--ac-shadow-lg: [^;]+;/);
+      expect(block).toMatch(/--ac-elevation-dialog: [^;]+;/);
+      expect(block).toMatch(/--ac-color-bg-glass: rgb\(/);
+      expect(block).toMatch(/--ac-color-chart-8: #[0-9a-f]{6};/);
+    }
+    expect(css).toContain("--ac-gradient-brand: linear-gradient(135deg,");
+    expect(css).toContain("--ac-gradient-brand-mesh: radial-gradient(");
+    expect(css).toContain("--ac-shadow-focus: 0 0 0 3px rgb(");
+  });
+
+  it("declares every brand gradient for both modes", () => {
+    const count = css.match(/--ac-gradient-brand:/g)?.length ?? 0;
+    // light + dark for every brand, plus the system-preference copies.
+    expect(count).toBeGreaterThanOrEqual(BRAND_NAMES.length * 2);
+  });
+
   it("is deterministic", () => {
     expect(renderTokensCss()).toBe(css);
   });

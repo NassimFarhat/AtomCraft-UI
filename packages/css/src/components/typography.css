@@ -57,10 +57,21 @@
   white-space: nowrap;
 }
 
+/* Headings use the display face and its stylistic set; large sizes tighten via tokens. */
 .ac-heading {
   margin: 0;
   color: var(--_color, var(--ac-color-text-primary));
+  font-family: var(--ac-font-family-display);
+  font-feature-settings: var(--ac-font-features-display);
   text-wrap: balance;
+}
+
+.ac-text {
+  text-wrap: pretty;
+}
+
+.ac-text :is(strong, b) {
+  font-weight: var(--ac-font-weight-semibold);
 }
 
 .ac-heading[data-size="display-lg"] {
@@ -109,18 +120,21 @@
   font-size: var(--ac-type-heading-4-size);
   font-weight: var(--ac-type-heading-4-weight);
   line-height: var(--ac-type-heading-4-line-height);
+  letter-spacing: var(--ac-type-heading-4-tracking);
 }
 
 .ac-heading[data-size="5"] {
   font-size: var(--ac-type-heading-5-size);
   font-weight: var(--ac-type-heading-5-weight);
   line-height: var(--ac-type-heading-5-line-height);
+  letter-spacing: var(--ac-type-heading-5-tracking);
 }
 
 .ac-heading[data-size="6"] {
   font-size: var(--ac-type-heading-6-size);
   font-weight: var(--ac-type-heading-6-weight);
   line-height: var(--ac-type-heading-6-line-height);
+  letter-spacing: var(--ac-type-heading-6-tracking);
 }
 
 [lang|="ar"] :is(.ac-heading, .ac-text) {
@@ -128,6 +142,7 @@
   line-height: var(--ac-line-height-relaxed);
 }
 
+/* Link: "always" underlines sit at 40% so body copy stays calm; hover brings them to full. */
 .ac-link {
   display: inline-flex;
   align-items: center;
@@ -135,21 +150,35 @@
   border-radius: var(--ac-radius-xs);
   color: var(--ac-color-primary-text);
   font-weight: var(--ac-font-weight-medium);
-  text-decoration: none;
-  text-underline-offset: 0.22em;
+  text-decoration: underline;
+  text-decoration-color: transparent;
   text-decoration-thickness: from-font;
+  text-underline-offset: 0.22em;
+  transition-property: color, text-decoration-color;
+  transition-duration: var(--ac-duration-fast);
+  transition-timing-function: var(--ac-easing-standard);
 }
 
 .ac-link[data-tone="neutral"] {
   color: var(--ac-color-text-primary);
 }
 
-.ac-link[data-underline="always"],
+.ac-link[data-underline="always"] {
+  text-decoration-color: color-mix(in oklab, currentcolor 40%, transparent);
+}
+
+.ac-link[data-underline="always"]:hover,
 .ac-link[data-underline="hover"]:hover {
-  text-decoration-line: underline;
+  text-decoration-color: currentcolor;
+}
+
+.ac-link:focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: var(--ac-focus-ring-offset);
 }
 
 .ac-link__external {
   inline-size: 0.875em;
   block-size: 0.875em;
+  opacity: 0.72;
 }

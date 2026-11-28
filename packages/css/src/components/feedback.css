@@ -1,8 +1,12 @@
+/*
+ * Alert: soft (tinted), outline (neutral card with a tone accent on the leading edge)
+ * and solid (lit fill). The tone variables come from data-tone (tokens.css).
+ */
 .ac-alert {
   --_bg: var(--ac-tone-soft);
   --_fg: var(--ac-color-text-primary);
   --_accent: var(--ac-tone-text);
-  --_border: var(--ac-tone-border);
+  --_border: color-mix(in oklab, var(--ac-tone-border) 75%, transparent);
 
   position: relative;
   display: flex;
@@ -10,7 +14,7 @@
   padding: var(--ac-space-inset-sm) var(--ac-space-inset-md);
   border: var(--ac-border-width-1) solid var(--_border);
   border-radius: var(--ac-radius-card);
-  background: var(--_bg);
+  background-color: var(--_bg);
   color: var(--_fg);
   font-size: var(--ac-type-body-sm-size);
 }
@@ -18,6 +22,18 @@
 .ac-alert[data-variant="outline"] {
   --_bg: var(--ac-color-bg-surface);
   --_border: var(--ac-color-border-default);
+
+  overflow: hidden;
+  box-shadow: var(--ac-shadow-xs);
+}
+
+.ac-alert[data-variant="outline"]::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 3px;
+  background: var(--ac-tone-solid);
 }
 
 .ac-alert[data-variant="solid"] {
@@ -25,6 +41,9 @@
   --_fg: var(--ac-tone-on-solid);
   --_accent: var(--ac-tone-on-solid);
   --_border: transparent;
+
+  background-image: var(--ac-gradient-sheen);
+  box-shadow: var(--ac-shadow-highlight), var(--ac-shadow-sm);
 }
 
 .ac-alert__icon {
@@ -50,6 +69,7 @@
 .ac-alert__title {
   margin: 0;
   font-weight: var(--ac-font-weight-semibold);
+  letter-spacing: var(--ac-letter-spacing-snug);
   line-height: var(--ac-line-height-snug);
 }
 
@@ -58,6 +78,7 @@
 }
 
 .ac-alert__description {
+  line-height: var(--ac-line-height-normal);
   opacity: 0.9;
 }
 
@@ -80,12 +101,15 @@
   color: inherit;
 }
 
+/* EmptyState: a soft brand glow behind a floating icon tile. */
 .ac-empty-state {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--ac-space-2);
   padding: var(--ac-space-12) var(--ac-space-6);
+  border-radius: var(--ac-radius-card);
+  background-image: var(--ac-gradient-brand-glow);
   text-align: center;
 }
 
@@ -97,9 +121,10 @@
   margin-block-end: var(--ac-space-2);
   border: var(--ac-border-width-1) solid var(--ac-color-border-default);
   border-radius: var(--ac-radius-card);
-  background: var(--ac-color-bg-surface);
-  color: var(--ac-color-text-secondary);
-  box-shadow: var(--ac-shadow-sm);
+  background-color: var(--ac-color-bg-surface-raised);
+  background-image: var(--ac-gradient-surface);
+  color: var(--ac-color-primary-text);
+  box-shadow: var(--ac-shadow-highlight), var(--ac-shadow-md);
 }
 
 .ac-empty-state__icon .ac-icon {
@@ -109,8 +134,11 @@
 
 .ac-empty-state__title {
   margin: 0;
+  font-family: var(--ac-font-family-display);
   font-size: var(--ac-type-heading-5-size);
   font-weight: var(--ac-font-weight-semibold);
+  letter-spacing: var(--ac-type-heading-5-tracking);
+  text-wrap: balance;
 }
 
 .ac-empty-state__description {
@@ -118,6 +146,7 @@
   margin: 0;
   color: var(--ac-color-text-secondary);
   font-size: var(--ac-type-body-sm-size);
+  text-wrap: pretty;
 }
 
 .ac-empty-state__actions {
@@ -128,6 +157,7 @@
   margin-block-start: var(--ac-space-3);
 }
 
+/* Toaster and Toast */
 .ac-toaster {
   position: fixed;
   z-index: var(--ac-z-toast);
@@ -165,6 +195,7 @@
   list-style: none;
 }
 
+/* A toast floats on frosted glass where supported, a raised surface otherwise. */
 .ac-toast {
   position: relative;
   display: flex;
@@ -178,10 +209,25 @@
   color: var(--ac-color-text-primary);
   box-shadow: var(--ac-elevation-toast);
   pointer-events: auto;
-  animation: ac-pop-in var(--ac-duration-normal) var(--ac-easing-emphasized);
+  animation: ac-pop-in var(--ac-duration-moderate) var(--ac-easing-spring);
+}
+
+@supports (backdrop-filter: blur(1px)) {
+  .ac-toast {
+    background: var(--ac-color-bg-glass);
+    backdrop-filter: blur(var(--ac-blur-md)) saturate(1.4);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .ac-toast {
+    background: var(--ac-color-bg-surface-raised);
+    backdrop-filter: none;
+  }
 }
 
 .ac-toast__icon {
+  flex: none;
   inline-size: 1.125rem;
   block-size: 1.125rem;
   margin-block-start: 0.125rem;
@@ -203,6 +249,7 @@
   margin: 0;
   font-size: var(--ac-type-label-md-size);
   font-weight: var(--ac-font-weight-semibold);
+  letter-spacing: var(--ac-type-label-md-tracking);
 }
 
 .ac-toast__description {
@@ -223,6 +270,7 @@
   block-size: var(--ac-border-width-2);
   inline-size: 100%;
   background: var(--ac-tone-solid);
+  opacity: 0.8;
   animation: ac-toast-progress var(--_toast-duration) linear forwards;
 }
 
@@ -235,50 +283,22 @@
     inline-size: 0;
   }
 }
+
+/* Banner: a full-width tinted strip; data-tone (tokens.css) supplies the tone. */
 .ac-banner {
   display: flex;
   align-items: center;
   gap: var(--ac-space-3);
   padding: var(--ac-space-3) var(--ac-space-4);
-  border: var(--ac-border-width-1) solid var(--ac-tone-border);
+  border: var(--ac-border-width-1) solid color-mix(in oklab, var(--ac-tone-border) 75%, transparent);
   border-radius: var(--ac-radius-card);
-  background: var(--ac-tone-soft);
+  background-color: var(--ac-tone-soft);
+  background-image: linear-gradient(
+    90deg,
+    var(--ac-tone-soft) 0%,
+    color-mix(in oklab, var(--ac-tone-soft) 40%, var(--ac-color-bg-surface)) 100%
+  );
   color: var(--ac-tone-text);
-}
-
-.ac-banner[data-tone="neutral"] {
-  --ac-tone-solid: var(--ac-color-neutral-solid);
-  --ac-tone-soft: var(--ac-color-neutral-soft);
-  --ac-tone-border: var(--ac-color-neutral-border);
-  --ac-tone-text: var(--ac-color-neutral-text);
-}
-
-.ac-banner[data-tone="info"] {
-  --ac-tone-solid: var(--ac-color-info-solid);
-  --ac-tone-soft: var(--ac-color-info-soft);
-  --ac-tone-border: var(--ac-color-info-border);
-  --ac-tone-text: var(--ac-color-info-text);
-}
-
-.ac-banner[data-tone="success"] {
-  --ac-tone-solid: var(--ac-color-success-solid);
-  --ac-tone-soft: var(--ac-color-success-soft);
-  --ac-tone-border: var(--ac-color-success-border);
-  --ac-tone-text: var(--ac-color-success-text);
-}
-
-.ac-banner[data-tone="warning"] {
-  --ac-tone-solid: var(--ac-color-warning-solid);
-  --ac-tone-soft: var(--ac-color-warning-soft);
-  --ac-tone-border: var(--ac-color-warning-border);
-  --ac-tone-text: var(--ac-color-warning-text);
-}
-
-.ac-banner[data-tone="danger"] {
-  --ac-tone-solid: var(--ac-color-danger-solid);
-  --ac-tone-soft: var(--ac-color-danger-soft);
-  --ac-tone-border: var(--ac-color-danger-border);
-  --ac-tone-text: var(--ac-color-danger-text);
 }
 
 .ac-banner__icon {

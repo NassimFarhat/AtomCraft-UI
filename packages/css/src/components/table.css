@@ -1,3 +1,7 @@
+/*
+ * Table: a card-like container, a quiet tinted header, hairline row dividers, and row
+ * states (hover, striped, selected) layered so selection always wins.
+ */
 .ac-table-container {
   position: relative;
   inline-size: 100%;
@@ -5,6 +9,9 @@
   border: var(--ac-border-width-1) solid var(--ac-color-border-default);
   border-radius: var(--ac-radius-card);
   background: var(--ac-color-bg-surface);
+  box-shadow: var(--ac-shadow-xs);
+  scrollbar-color: var(--ac-color-border-strong) transparent;
+  scrollbar-width: thin;
 }
 
 .ac-table-container[data-sticky-header] {
@@ -18,7 +25,7 @@
   inline-size: 100%;
   border-collapse: collapse;
   font-size: var(--ac-type-body-sm-size);
-  font-variant-numeric: tabular-nums;
+  font-feature-settings: var(--ac-font-features-tabular);
 }
 
 .ac-table[data-density="compact"] {
@@ -36,22 +43,27 @@
 .ac-table__head,
 .ac-table__cell {
   padding: var(--_cell-y) var(--ac-space-4);
-  border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
   text-align: start;
   white-space: nowrap;
 }
 
 .ac-table__head {
+  border-block-end-color: var(--ac-color-border-default);
   background: var(--ac-color-bg-subtle);
   color: var(--ac-color-text-secondary);
-  font-size: var(--ac-type-label-md-size);
+  font-size: var(--ac-type-label-sm-size);
   font-weight: var(--ac-font-weight-medium);
+  letter-spacing: var(--ac-letter-spacing-snug);
 }
 
+/* A sticky header frosts the rows scrolling beneath it. */
 .ac-table-container[data-sticky-header] .ac-table__head {
   position: sticky;
   inset-block-start: 0;
   z-index: var(--ac-z-raised);
+  background: color-mix(in oklab, var(--ac-color-bg-subtle) 88%, transparent);
+  backdrop-filter: blur(var(--ac-blur-sm));
 }
 
 .ac-table__body .ac-table__row:last-child .ac-table__cell {
@@ -59,20 +71,30 @@
 }
 
 .ac-table__body .ac-table__row {
-  transition: background-color var(--ac-duration-fast);
-}
-
-.ac-table__body .ac-table__row:hover {
-  background: var(--ac-color-bg-subtle);
+  transition: background-color var(--ac-duration-fast) var(--ac-easing-standard);
 }
 
 .ac-table[data-striped] .ac-table__body .ac-table__row:nth-child(even) {
   background: var(--ac-color-bg-subtle);
 }
 
+@media (hover: hover) {
+  .ac-table__body .ac-table__row:hover {
+    background: color-mix(in oklab, var(--ac-color-text-primary) 4%, transparent);
+  }
+}
+
 .ac-table__row[data-state="selected"],
 .ac-table__body .ac-table__row[data-state="selected"]:hover {
-  background: var(--ac-color-primary-soft);
+  background: color-mix(in oklab, var(--ac-color-primary-soft) 80%, transparent);
+}
+
+.ac-table__row[data-state="selected"] .ac-table__cell:first-child {
+  box-shadow: inset var(--ac-border-width-2) 0 0 var(--ac-color-primary-solid);
+}
+
+[dir="rtl"] .ac-table__row[data-state="selected"] .ac-table__cell:first-child {
+  box-shadow: inset calc(var(--ac-border-width-2) * -1) 0 0 var(--ac-color-primary-solid);
 }
 
 .ac-table :is(.ac-table__head, .ac-table__cell)[data-align="center"] {
@@ -88,6 +110,7 @@
   padding-inline-end: 0;
 }
 
+/* Sortable headers: the active column's arrow and label take the primary text color. */
 .ac-table__sort {
   display: inline-flex;
   align-items: center;
@@ -99,12 +122,31 @@
   background: transparent;
   color: inherit;
   font: inherit;
+  letter-spacing: inherit;
   cursor: pointer;
+  transition:
+    background-color var(--ac-duration-fast) var(--ac-easing-standard),
+    color var(--ac-duration-fast) var(--ac-easing-standard);
 }
 
-.ac-table__sort:hover {
-  background: var(--ac-color-bg-muted);
+@media (hover: hover) {
+  .ac-table__sort:hover {
+    background: var(--ac-color-bg-hover);
+    color: var(--ac-color-text-primary);
+  }
+}
+
+.ac-table__sort:focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: 0;
+}
+
+.ac-table__head:is([aria-sort="ascending"], [aria-sort="descending"]) {
   color: var(--ac-color-text-primary);
+}
+
+.ac-table__head:is([aria-sort="ascending"], [aria-sort="descending"]) .ac-table__sort .ac-icon {
+  color: var(--ac-color-primary-text);
 }
 
 .ac-table__sort .ac-icon {
@@ -117,15 +159,17 @@
 }
 
 .ac-table__empty {
-  padding-block: var(--ac-space-10);
-  color: var(--ac-color-text-secondary);
+  padding-block: var(--ac-space-12);
+  color: var(--ac-color-text-tertiary);
   text-align: center;
   white-space: normal;
+  background-image: var(--ac-gradient-brand-glow);
 }
 
 .ac-table__footer .ac-table__cell {
   border-block-start: var(--ac-border-width-1) solid var(--ac-color-border-default);
   border-block-end: 0;
+  background: var(--ac-color-bg-subtle);
   font-weight: var(--ac-font-weight-medium);
 }
 
@@ -176,8 +220,9 @@
 }
 
 .ac-data-table__status {
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-body-sm-size);
+  font-feature-settings: var(--ac-font-features-tabular);
 }
 
 .ac-data-table__page-size {
@@ -201,6 +246,12 @@
 
 /* Below the medium breakpoint each row becomes a card of labelled values. */
 @media (max-width: 47.99rem) {
+  .ac-data-table[data-responsive] .ac-table-container {
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
   .ac-data-table[data-responsive] .ac-table__header {
     position: absolute;
     overflow: hidden;
@@ -223,6 +274,19 @@
     border: var(--ac-border-width-1) solid var(--ac-color-border-default);
     border-radius: var(--ac-radius-card);
     padding: var(--ac-space-2);
+    background: var(--ac-color-bg-surface);
+    box-shadow: var(--ac-shadow-xs);
+  }
+
+  .ac-data-table[data-responsive] .ac-table__row[data-state="selected"] {
+    border-color: var(--ac-color-primary-solid);
+    box-shadow: 0 0 0 1px var(--ac-color-primary-solid);
+  }
+
+  .ac-data-table[data-responsive]
+    .ac-table__row[data-state="selected"]
+    .ac-table__cell:first-child {
+    box-shadow: none;
   }
 
   .ac-data-table[data-responsive] .ac-table__cell {
@@ -238,7 +302,7 @@
   .ac-data-table[data-responsive] .ac-table__cell[data-label]::before {
     content: attr(data-label);
     flex: none;
-    color: var(--ac-color-text-secondary);
+    color: var(--ac-color-text-tertiary);
     font-size: var(--ac-type-caption-size);
     font-weight: var(--ac-font-weight-medium);
   }

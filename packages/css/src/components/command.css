@@ -4,6 +4,8 @@
 
   /* A modal dialog is centred by its auto margins; this lifts it towards the top. */
   margin-block: 12vh auto;
+  overflow: hidden;
+  border-radius: var(--ac-radius-popover);
 }
 
 .ac-command .ac-dialog__panel {
@@ -11,30 +13,38 @@
   padding: 0;
 }
 
+/* The search row reads as the palette's title: larger text, a quiet icon. */
 .ac-command__search {
   display: flex;
   align-items: center;
-  gap: var(--ac-space-2);
+  gap: var(--ac-space-2-5);
   padding-inline: var(--ac-space-4);
   border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
 }
 
 .ac-command__search-icon {
   flex: none;
-  inline-size: 1rem;
-  block-size: 1rem;
-  color: var(--ac-color-text-secondary);
+  inline-size: var(--ac-size-icon-md);
+  block-size: var(--ac-size-icon-md);
+  color: var(--ac-color-text-tertiary);
+  transition: color var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+.ac-command__search:focus-within .ac-command__search-icon {
+  color: var(--ac-color-primary-text);
 }
 
 .ac-command__input {
   flex: 1;
   min-inline-size: 0;
-  block-size: var(--ac-size-control-lg);
+  block-size: calc(var(--ac-size-control-lg) + var(--ac-space-2));
   border: none;
   background: none;
   color: inherit;
   font: inherit;
   font-size: var(--ac-type-body-md-size);
+  letter-spacing: var(--ac-letter-spacing-snug);
+  caret-color: var(--ac-color-focus-ring);
   outline: none;
 }
 
@@ -42,8 +52,11 @@
   color: var(--ac-color-text-tertiary);
 }
 
+/* The list reuses the listbox option rows (surfaces.css) without the popup chrome. */
 .ac-command__list {
   max-block-size: min(24rem, 60vh);
   overflow-y: auto;
-  padding: var(--ac-space-1);
+  padding: var(--ac-space-1-5);
+  scrollbar-color: var(--ac-color-border-strong) transparent;
+  scrollbar-width: thin;
 }

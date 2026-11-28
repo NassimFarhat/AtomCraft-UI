@@ -4,6 +4,7 @@ import {
   BRAND_NAMES,
   baseThemes,
   brandIntent,
+  chartColors,
   highContrastOverrides,
   readablePairs,
   statusIntents,
@@ -29,6 +30,24 @@ describe.each(modes)("%s mode", (mode) => {
       const ratio = contrastRatio(foreground, background);
       expect(ratio, `${foreground} on ${background}`).toBeGreaterThanOrEqual(minimum);
     }
+  });
+
+  it("chart series clear 3:1 on every surface (WCAG 1.4.11)", () => {
+    for (const color of chartColors(mode)) {
+      for (const surface of [base.bgCanvas, base.bgSurface, base.bgSurfaceRaised]) {
+        expect(contrastRatio(color, surface), `${color} on ${surface}`).toBeGreaterThanOrEqual(3);
+      }
+    }
+  });
+
+  it("orders surfaces and text so each step is distinguishable", () => {
+    expect(base.textSecondary).not.toBe(base.textTertiary);
+    expect(contrastRatio(base.textPrimary, base.bgCanvas)).toBeGreaterThan(
+      contrastRatio(base.textSecondary, base.bgCanvas),
+    );
+    expect(contrastRatio(base.textSecondary, base.bgCanvas)).toBeGreaterThan(
+      contrastRatio(base.textTertiary, base.bgCanvas),
+    );
   });
 
   it("high contrast raises secondary text to at least 7:1 (AAA)", () => {
