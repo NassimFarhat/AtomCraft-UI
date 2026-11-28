@@ -66,6 +66,8 @@ const preview: Preview = {
       "teal",
       "rose",
       "orange",
+      "cyan",
+      "fuchsia",
       "mono",
     ]),
     density: toolbar("Density", "component", ["compact", "comfortable", "spacious"]),
@@ -87,7 +89,7 @@ const preview: Preview = {
     a11y: { test: "error" },
     options: {
       storySort: {
-        order: ["Foundations", "Atoms", "Molecules", "Organisms", "Layout", "Examples"],
+        order: ["Foundations", "Atoms", "Molecules", "Organisms", "Layout", "Blocks", "Examples"],
       },
     },
   },

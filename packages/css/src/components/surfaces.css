@@ -1,0 +1,228 @@
+/*
+ * Shared molecule surfaces. Three patterns repeat across molecules; they are defined
+ * once here, and component files keep only layout and genuine differences.
+ *
+ *   1. Control frame: a box that looks and behaves like a text field but wraps several
+ *      parts (InputGroup, Combobox, SelectMenu, DatePicker, TagInput, PromptInput, OTP).
+ *   2. Popup surface: anything that floats above the page (Popover, Menu, Listbox,
+ *      HoverCard, DatePicker popup).
+ *   3. List item: a row inside a popup (Menu items, Listbox options).
+ *
+ * The frame mirrors the atom text controls in form-controls.css, so a SelectMenu and a
+ * native Select are indistinguishable at rest, on hover, on focus and when invalid.
+ */
+
+/* 1. Control frame ---------------------------------------------------------------- */
+:is(
+  .ac-input-group,
+  .ac-combobox,
+  .ac-select-menu__trigger,
+  .ac-date-picker__control,
+  .ac-tag-input,
+  .ac-prompt-input,
+  .ac-rich-text-editor,
+  .ac-otp-input__digit
+) {
+  --_ring: var(--ac-color-focus-ring);
+  --_halo: var(--ac-shadow-focus);
+
+  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
+  border-radius: var(--ac-radius-control);
+  background: var(--ac-color-bg-surface);
+  color: var(--ac-color-text-primary);
+  box-shadow: var(--ac-shadow-xs);
+  transition-property: border-color, box-shadow, background-color;
+  transition-duration: var(--ac-duration-fast);
+  transition-timing-function: var(--ac-easing-standard);
+}
+
+@media (hover: hover) {
+  :is(
+      .ac-input-group,
+      .ac-combobox,
+      .ac-date-picker__control,
+      .ac-tag-input,
+      .ac-prompt-input,
+      .ac-rich-text-editor
+    ):hover:not(:focus-within, [data-disabled], :has(:disabled)),
+  :is(.ac-select-menu__trigger, .ac-otp-input__digit):hover:not(:focus, :disabled) {
+    border-color: var(--ac-color-text-tertiary);
+  }
+}
+
+:is(
+  .ac-input-group,
+  .ac-combobox,
+  .ac-date-picker__control,
+  .ac-tag-input,
+  .ac-prompt-input,
+  .ac-rich-text-editor
+):focus-within,
+:is(.ac-select-menu__trigger, .ac-otp-input__digit):focus-visible {
+  outline: none;
+  border-color: var(--_ring);
+  box-shadow:
+    var(--ac-shadow-xs),
+    0 0 0 1px var(--_ring),
+    var(--_halo);
+}
+
+/* Invalid: each composite marks it in its own way; the treatment is shared. */
+.ac-input-group:has(.ac-input[data-invalid]),
+.ac-combobox[data-invalid],
+.ac-select-menu[data-invalid] .ac-select-menu__trigger,
+.ac-date-picker[data-invalid] .ac-date-picker__control,
+.ac-tag-input[data-invalid],
+.ac-otp-input[data-invalid] .ac-otp-input__digit {
+  --_ring: var(--ac-color-danger-solid);
+  --_halo: 0 0 0 3px color-mix(in oklab, var(--ac-color-danger-solid) 24%, transparent);
+
+  border-color: var(--ac-color-danger-solid);
+  background: color-mix(in oklab, var(--ac-color-danger-soft) 45%, var(--ac-color-bg-surface));
+}
+
+/* Disabled: muted fill and quiet border, text stays readable. */
+.ac-input-group:has(.ac-input:disabled),
+.ac-combobox[data-disabled],
+.ac-select-menu__trigger:disabled,
+.ac-date-picker[data-disabled] .ac-date-picker__control,
+.ac-tag-input[data-disabled],
+.ac-otp-input__digit:disabled {
+  border-color: var(--ac-color-border-default);
+  background: var(--ac-color-bg-muted);
+  color: var(--ac-color-text-disabled);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+/* Inner inputs of a frame are bare: the frame draws the chrome. */
+:is(.ac-input-group, .ac-tag-input, .ac-prompt-input) > :is(.ac-input, .ac-textarea),
+.ac-tag-input .ac-tag-input__control,
+.ac-prompt-input .ac-prompt-input__control {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+:is(.ac-input-group, .ac-tag-input, .ac-prompt-input) :is(.ac-input, .ac-textarea):focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+:is(.ac-input-group, .ac-tag-input, .ac-prompt-input) :is(.ac-input, .ac-textarea):disabled {
+  background: transparent;
+}
+
+/* 2. Popup surface ---------------------------------------------------------------- */
+:is(
+  .ac-popover,
+  .ac-menu,
+  .ac-listbox,
+  .ac-hover-card,
+  .ac-date-picker__popup,
+  .ac-navigation-menu__submenu
+) {
+  --_enter-y: 4px;
+
+  z-index: var(--ac-z-popover);
+  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-radius: var(--ac-radius-popover);
+  background: var(--ac-color-bg-surface-raised);
+  color: var(--ac-color-text-primary);
+  box-shadow: var(--ac-elevation-popover);
+  transform-origin: var(--_origin, top center);
+  animation: ac-pop-in var(--ac-duration-normal) var(--ac-easing-decelerate);
+}
+
+:is(.ac-popover, .ac-menu, .ac-listbox, .ac-hover-card, .ac-tooltip)[data-side="bottom"] {
+  --_enter-y: -4px;
+}
+
+:is(.ac-popover, .ac-menu, .ac-listbox, .ac-hover-card, .ac-tooltip)[data-side="top"] {
+  --_origin: bottom center;
+}
+
+/* Scrolling popups keep their rounded corners and a slim, quiet scrollbar. */
+:is(.ac-menu, .ac-listbox) {
+  scrollbar-color: var(--ac-color-border-strong) transparent;
+  scrollbar-width: thin;
+  overscroll-behavior: contain;
+}
+
+/* 3. List item -------------------------------------------------------------------- */
+:is(.ac-menu__item, .ac-listbox__option) {
+  display: flex;
+  align-items: center;
+  gap: var(--ac-space-2);
+  min-block-size: var(--ac-size-control-sm);
+  padding: var(--ac-space-1) var(--ac-space-2);
+  border-radius: max(0px, calc(var(--ac-radius-popover) - var(--ac-space-1)));
+  color: var(--ac-color-text-primary);
+  font-size: var(--ac-type-body-sm-size);
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+  transition: background-color var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+/*
+ * Highlight follows the keyboard (data-active / focus) and the pointer alike. It is a
+ * translucent ink wash rather than a fixed surface color, so it stays visible on the
+ * raised popup surface in both modes.
+ */
+.ac-menu__item:focus-visible,
+.ac-listbox__option[data-active] {
+  background: color-mix(in oklab, var(--ac-color-text-primary) 7%, transparent);
+}
+
+@media (hover: hover) {
+  .ac-menu__item:hover:not([data-disabled]) {
+    background: color-mix(in oklab, var(--ac-color-text-primary) 7%, transparent);
+  }
+}
+
+.ac-menu__item:active:not([data-disabled]),
+.ac-listbox__option:active:not([data-disabled]) {
+  background: color-mix(in oklab, var(--ac-color-text-primary) 11%, transparent);
+}
+
+:is(.ac-menu__item, .ac-listbox__option)[data-disabled] {
+  color: var(--ac-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Group labels and separators inside popups. */
+:is(.ac-menu__group-label, .ac-listbox__group-label) {
+  padding: var(--ac-space-2) var(--ac-space-2) var(--ac-space-1);
+  color: var(--ac-color-text-tertiary);
+  font-size: var(--ac-type-caption-size);
+  font-weight: var(--ac-font-weight-medium);
+  letter-spacing: var(--ac-letter-spacing-snug);
+}
+
+:is(.ac-menu__shortcut, .ac-listbox__shortcut) {
+  margin-inline-start: auto;
+  color: var(--ac-color-text-tertiary);
+  font-size: var(--ac-type-caption-size);
+  font-feature-settings: var(--ac-font-features-tabular);
+  letter-spacing: var(--ac-letter-spacing-wide);
+}
+
+@media (forced-colors: active) {
+  :is(
+    .ac-popover,
+    .ac-menu,
+    .ac-listbox,
+    .ac-hover-card,
+    .ac-date-picker__popup,
+    .ac-navigation-menu__submenu
+  ) {
+    border-color: CanvasText;
+  }
+
+  .ac-menu__item:is(:focus-visible, :hover),
+  .ac-listbox__option[data-active] {
+    outline: 1px solid Highlight;
+  }
+}

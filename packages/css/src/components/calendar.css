@@ -17,19 +17,22 @@
 .ac-calendar__title {
   flex: 1;
   color: var(--ac-color-text-primary);
+  font-family: var(--ac-font-family-display);
   font-size: var(--ac-type-label-md-size);
   font-weight: var(--ac-font-weight-semibold);
+  letter-spacing: var(--ac-type-label-md-tracking);
   text-align: center;
   text-transform: capitalize;
 }
 
 .ac-calendar__grid {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 2px;
 }
 
 .ac-calendar__grid th {
   padding-block-end: var(--ac-space-1);
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-caption-size);
   font-weight: var(--ac-font-weight-medium);
   text-transform: capitalize;
@@ -40,6 +43,7 @@
 }
 
 .ac-calendar__day {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -51,12 +55,22 @@
   color: var(--ac-color-text-primary);
   font: inherit;
   font-size: var(--ac-type-body-sm-size);
-  font-variant-numeric: tabular-nums;
+  font-feature-settings: var(--ac-font-features-tabular);
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition-property: background-color, color, box-shadow;
+  transition-duration: var(--ac-duration-fast);
+  transition-timing-function: var(--ac-easing-standard);
 }
 
-.ac-calendar__day:hover:not([aria-disabled]) {
-  background: var(--ac-color-bg-muted);
+@media (hover: hover) {
+  .ac-calendar__day:hover:not([aria-disabled], [data-selected]) {
+    background: var(--ac-color-bg-hover);
+  }
+}
+
+.ac-calendar__day:active:not([aria-disabled], [data-selected]) {
+  background: var(--ac-color-bg-active);
 }
 
 .ac-calendar__day:focus-visible {
@@ -68,29 +82,54 @@
   color: var(--ac-color-text-tertiary);
 }
 
+/* Today: a small brand dot under the number instead of a heavy box. */
 .ac-calendar__day[data-today] {
-  border-color: var(--ac-color-border-control);
+  color: var(--ac-color-primary-text);
   font-weight: var(--ac-font-weight-semibold);
+}
+
+.ac-calendar__day[data-today]::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 0.3rem;
+  inset-inline-start: 50%;
+  inline-size: 0.25rem;
+  block-size: 0.25rem;
+  border-radius: var(--ac-radius-full);
+  background: currentcolor;
+  translate: -50% 0;
+}
+
+[dir="rtl"] .ac-calendar__day[data-today]::after {
+  translate: 50% 0;
 }
 
 .ac-calendar__day[data-in-range] {
   border-radius: 0;
   background: var(--ac-color-primary-soft);
+  color: var(--ac-color-primary-text);
 }
 
 .ac-calendar__day[data-selected] {
-  background: var(--ac-color-primary-solid);
+  background-color: var(--ac-color-primary-solid);
+  background-image: var(--ac-gradient-sheen);
   color: var(--ac-color-primary-on-solid);
+  box-shadow: var(--ac-shadow-highlight), var(--ac-shadow-xs);
   font-weight: var(--ac-font-weight-semibold);
 }
 
+.ac-calendar__day[data-selected][data-today]::after {
+  background: currentcolor;
+}
+
 .ac-calendar__day[aria-disabled] {
-  color: var(--ac-color-text-tertiary);
-  opacity: var(--ac-opacity-disabled);
+  color: var(--ac-color-text-disabled);
+  text-decoration: line-through;
+  text-decoration-color: color-mix(in oklab, currentcolor 50%, transparent);
   cursor: not-allowed;
 }
 
-/* DatePicker: text field, calendar button and the popup. */
+/* DatePicker: text field, calendar button and the popup (frame + surface: surfaces.css). */
 .ac-date-picker {
   display: flex;
   flex-direction: column;
@@ -104,25 +143,6 @@
   align-items: center;
   gap: var(--ac-space-1);
   padding-inline-end: var(--ac-space-1);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
-  border-radius: var(--ac-radius-control);
-  background: var(--ac-color-bg-canvas);
-  box-shadow: var(--ac-shadow-xs);
-}
-
-.ac-date-picker__control:focus-within {
-  border-color: var(--ac-color-focus-ring);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 28%, transparent);
-}
-
-.ac-date-picker[data-invalid] .ac-date-picker__control {
-  border-color: var(--ac-color-danger-solid);
-}
-
-.ac-date-picker[data-disabled] .ac-date-picker__control {
-  background: var(--ac-color-bg-muted);
-  box-shadow: none;
-  opacity: var(--ac-opacity-disabled);
 }
 
 .ac-date-picker__input {
@@ -135,8 +155,12 @@
   color: inherit;
   font: inherit;
   font-size: var(--ac-type-body-sm-size);
-  font-variant-numeric: tabular-nums;
+  font-feature-settings: var(--ac-font-features-tabular);
   outline: none;
+}
+
+.ac-date-picker__input::placeholder {
+  color: var(--ac-color-text-tertiary);
 }
 
 .ac-date-picker[data-size="sm"] .ac-date-picker__input {
@@ -148,17 +172,14 @@
 }
 
 .ac-date-picker__hint {
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-caption-size);
 }
 
-.ac-date-picker__popup {
-  z-index: var(--ac-z-popover);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
-  border-radius: var(--ac-radius-popover);
-  background: var(--ac-color-bg-surface-raised);
-  box-shadow: var(--ac-elevation-popover);
-  animation: ac-pop-in var(--ac-duration-fast) var(--ac-easing-decelerate);
+@media (pointer: coarse) {
+  .ac-date-picker__input {
+    font-size: var(--ac-type-body-md-size);
+  }
 }
 
 @media (max-width: 359px) {

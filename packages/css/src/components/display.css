@@ -1,7 +1,11 @@
+/*
+ * Badge: soft badges get a hairline of their own tone so they stay crisp on any surface;
+ * solid badges share the buttons' lit edge. Numbers align as tabular figures.
+ */
 .ac-badge {
   --_bg: var(--ac-tone-soft);
   --_fg: var(--ac-tone-text);
-  --_border: transparent;
+  --_border: color-mix(in oklab, var(--ac-tone-border) 70%, transparent);
 
   display: inline-flex;
   align-items: center;
@@ -10,10 +14,11 @@
   padding-inline: var(--ac-space-2);
   border: var(--ac-border-width-1) solid var(--_border);
   border-radius: var(--ac-radius-badge);
-  background: var(--_bg);
+  background-color: var(--_bg);
   color: var(--_fg);
   font-size: var(--ac-type-label-sm-size);
   font-weight: var(--ac-font-weight-medium);
+  font-feature-settings: var(--ac-font-features-tabular);
   line-height: 1;
   white-space: nowrap;
 }
@@ -21,10 +26,14 @@
 .ac-badge[data-variant="solid"] {
   --_bg: var(--ac-tone-solid);
   --_fg: var(--ac-tone-on-solid);
+  --_border: transparent;
+
+  background-image: var(--ac-gradient-sheen);
+  box-shadow: var(--ac-shadow-highlight);
 }
 
 .ac-badge[data-variant="outline"] {
-  --_bg: transparent;
+  --_bg: var(--ac-color-bg-surface);
   --_border: var(--ac-tone-border);
 }
 
@@ -54,6 +63,7 @@
   block-size: 0.375rem;
   border-radius: var(--ac-radius-full);
   background: var(--ac-tone-solid);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ac-tone-solid) 18%, transparent);
 }
 
 .ac-badge[data-variant="solid"] .ac-badge__dot {
@@ -71,11 +81,23 @@
   inline-size: var(--_size);
   block-size: var(--_size);
   border-radius: var(--ac-radius-full);
-  background: var(--ac-tone-soft);
+  background-color: var(--ac-tone-soft);
+  background-image: linear-gradient(180deg, var(--ac-tone-soft) 0%, var(--ac-tone-soft-hover) 100%);
   color: var(--ac-tone-text);
   font-size: calc(var(--_size) * 0.38);
   font-weight: var(--ac-font-weight-semibold);
+  letter-spacing: var(--ac-letter-spacing-snug);
   user-select: none;
+}
+
+/* A hairline ring drawn above the image, so photos never bleed into the surface. */
+.ac-avatar::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ac-color-text-primary) 10%, transparent);
+  pointer-events: none;
 }
 
 .ac-avatar[data-shape="square"] {
@@ -111,7 +133,8 @@
   inset-inline-end: 0;
   inline-size: max(0.5rem, calc(var(--_size) * 0.27));
   block-size: max(0.5rem, calc(var(--_size) * 0.27));
-  border: 2px solid var(--ac-color-bg-canvas);
+  z-index: var(--ac-z-raised);
+  border: 2px solid var(--ac-color-bg-surface);
   border-radius: var(--ac-radius-full);
   background: var(--ac-color-neutral-solid);
 }
@@ -139,10 +162,11 @@
   flex-shrink: 0;
   inline-size: var(--_size);
   block-size: var(--_size);
-  border: 2px solid currentcolor;
-  border-block-start-color: transparent;
+  /* A faint full ring with a bright arc travelling around it. */
+  border: 2px solid color-mix(in oklab, currentcolor 22%, transparent);
+  border-block-start-color: currentcolor;
   border-radius: var(--ac-radius-full);
-  animation: ac-spin 0.65s linear infinite;
+  animation: ac-spin 0.7s linear infinite;
 }
 
 .ac-spinner[data-size="xs"] {
@@ -167,11 +191,13 @@
   background: linear-gradient(
       90deg,
       var(--ac-color-bg-muted) 0%,
-      var(--ac-color-bg-subtle) 50%,
+      var(--ac-color-bg-muted) 30%,
+      var(--ac-color-bg-hover) 50%,
+      var(--ac-color-bg-muted) 70%,
       var(--ac-color-bg-muted) 100%
     )
     0 0 / 200% 100%;
-  animation: ac-shimmer 1.4s linear infinite;
+  animation: ac-shimmer 1.6s var(--ac-easing-smooth) infinite;
 }
 
 .ac-skeleton[data-shape="rect"] {
@@ -193,12 +219,17 @@
   block-size: 1.375rem;
   padding-inline: var(--ac-space-1-5);
   border: var(--ac-border-width-1) solid var(--ac-color-border-default);
-  border-block-end-width: 2px;
   border-radius: min(var(--ac-radius-control), var(--ac-radius-md));
-  background: var(--ac-color-bg-subtle);
+  background: var(--ac-gradient-surface);
   color: var(--ac-color-text-secondary);
-  font-family: var(--ac-font-family-mono);
+  /* A key cap: a lit top, a deeper bottom edge. */
+  box-shadow:
+    inset 0 -1px 0 var(--ac-color-border-default),
+    var(--ac-shadow-xs);
+  font-family: var(--ac-font-family-sans);
   font-size: var(--ac-type-caption-size);
+  font-weight: var(--ac-font-weight-medium);
+  font-feature-settings: var(--ac-font-features-tabular);
   line-height: 1;
 }
 
@@ -223,8 +254,16 @@
   gap: var(--ac-space-3);
   block-size: auto;
   background: none;
-  color: var(--ac-color-text-secondary);
-  font-size: var(--ac-type-caption-size);
+  color: var(--ac-color-text-tertiary);
+  font-size: var(--ac-type-overline-size);
+  font-weight: var(--ac-type-overline-weight);
+  letter-spacing: var(--ac-type-overline-tracking);
+  text-transform: uppercase;
+}
+
+[lang|="ar"] .ac-separator[data-labeled] {
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .ac-separator[data-labeled]::before,
@@ -244,6 +283,7 @@
   overflow: hidden;
   border-radius: var(--ac-radius-full);
   background: var(--ac-tone-soft-hover);
+  box-shadow: var(--ac-shadow-inner);
 }
 
 .ac-progress[data-size="sm"] {
@@ -259,7 +299,8 @@
   inline-size: var(--_value);
   block-size: 100%;
   border-radius: inherit;
-  background: var(--ac-tone-solid);
+  background-color: var(--ac-tone-solid);
+  background-image: var(--ac-gradient-sheen);
   transition: inline-size var(--ac-duration-slow) var(--ac-easing-standard);
 }
 
@@ -282,7 +323,7 @@
 .ac-tag {
   --_bg: var(--ac-tone-soft);
   --_fg: var(--ac-tone-text);
-  --_border: transparent;
+  --_border: color-mix(in oklab, var(--ac-tone-border) 70%, transparent);
 
   display: inline-flex;
   align-items: center;
@@ -292,20 +333,25 @@
   padding-inline: var(--ac-space-2);
   border: var(--ac-border-width-1) solid var(--_border);
   border-radius: var(--ac-radius-badge);
-  background: var(--_bg);
+  background-color: var(--_bg);
   color: var(--_fg);
   font-size: var(--ac-type-label-sm-size);
   font-weight: var(--ac-font-weight-medium);
   line-height: 1;
+  transition: opacity var(--ac-duration-fast) var(--ac-easing-standard);
 }
 
 .ac-tag[data-variant="solid"] {
   --_bg: var(--ac-tone-solid);
   --_fg: var(--ac-tone-on-solid);
+  --_border: transparent;
+
+  background-image: var(--ac-gradient-sheen);
+  box-shadow: var(--ac-shadow-highlight);
 }
 
 .ac-tag[data-variant="outline"] {
-  --_bg: transparent;
+  --_bg: var(--ac-color-bg-surface);
   --_border: var(--ac-tone-border);
 }
 
@@ -356,7 +402,24 @@
   border-radius: var(--ac-radius-full);
   background: none;
   color: inherit;
+  opacity: 0.7;
   cursor: pointer;
+  transition:
+    opacity var(--ac-duration-fast) var(--ac-easing-standard),
+    background-color var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+/* Touch screens: a 24px hit area around the small remove control. */
+@media (pointer: coarse) {
+  .ac-tag__remove {
+    position: relative;
+  }
+
+  .ac-tag__remove::after {
+    content: "";
+    position: absolute;
+    inset: -0.25rem;
+  }
 }
 
 .ac-tag__remove .ac-icon {
@@ -366,11 +429,13 @@
 
 .ac-tag__remove:hover:not(:disabled) {
   background: color-mix(in oklab, currentcolor 15%, transparent);
+  opacity: 1;
 }
 
 .ac-tag__remove:focus-visible {
   outline: var(--ac-focus-ring-width) solid currentcolor;
   outline-offset: 1px;
+  opacity: 1;
 }
 
 .ac-tag__remove:disabled {
@@ -405,7 +470,7 @@
 
 .ac-progress-circle__track {
   fill: none;
-  stroke: var(--ac-color-bg-muted);
+  stroke: var(--ac-color-bg-active);
 }
 
 .ac-progress-circle__indicator {
@@ -423,14 +488,18 @@
 }
 
 .ac-code {
-  padding-inline: var(--ac-space-1);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
-  border-radius: var(--ac-radius-sm);
+  padding: 0.1em 0.35em;
+  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-radius: min(var(--ac-radius-control), var(--ac-radius-sm));
   background: var(--ac-color-bg-subtle);
   color: var(--ac-color-text-primary);
   font-family: var(--ac-font-family-mono);
-  font-size: 0.92em;
+  font-size: 0.875em;
+  font-variant-ligatures: none;
+  letter-spacing: normal;
   overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
 }
 
 .ac-image {
@@ -441,6 +510,16 @@
   overflow: hidden;
   border-radius: var(--ac-radius-card);
   background: var(--ac-color-bg-muted);
+}
+
+/* Hairline inner ring: keeps light photos from dissolving into a light surface. */
+.ac-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ac-color-text-primary) 8%, transparent);
+  pointer-events: none;
 }
 
 .ac-image__content,
@@ -475,7 +554,8 @@
   place-items: center;
   padding: var(--ac-space-4);
   background: var(--ac-color-bg-muted);
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
+  font-size: var(--ac-type-body-sm-size);
   text-align: center;
 }
 
@@ -484,7 +564,9 @@
   align-items: center;
   gap: var(--ac-space-2);
   color: var(--ac-color-text-primary);
+  font-family: var(--ac-font-family-display);
   font-weight: var(--ac-font-weight-semibold);
+  letter-spacing: var(--ac-letter-spacing-tight);
   line-height: 1;
 }
 
@@ -510,8 +592,12 @@
   block-size: 1.75em;
   overflow: hidden;
   border-radius: var(--ac-radius-control);
-  background: var(--ac-color-primary-solid);
+  /* The brand gradient is the one expressive accent of the mark. */
+  background-color: var(--ac-color-primary-solid);
+  /* The "text" gradient's stops keep on-solid content at 4.5:1 in both modes. */
+  background-image: var(--ac-gradient-sheen), var(--ac-gradient-brand-text);
   color: var(--ac-color-primary-on-solid);
+  box-shadow: var(--ac-shadow-highlight), var(--ac-shadow-sm);
 }
 
 .ac-logo__mark > * {
@@ -550,13 +636,20 @@
   border-radius: var(--ac-radius-control);
   background: var(--ac-color-bg-surface);
   color: var(--ac-color-text-primary);
+  box-shadow: var(--ac-shadow-xs);
   font: inherit;
   text-align: start;
   cursor: pointer;
+  transition-property: background-color, border-color, box-shadow;
+  transition-duration: var(--ac-duration-fast);
+  transition-timing-function: var(--ac-easing-standard);
 }
 
-.ac-color-swatch:hover:not(:disabled) {
-  background: var(--ac-color-bg-subtle);
+@media (hover: hover) {
+  .ac-color-swatch:hover:not(:disabled) {
+    border-color: var(--ac-color-border-strong);
+    background: var(--ac-color-bg-hover);
+  }
 }
 
 .ac-color-swatch:focus-visible {
@@ -571,7 +664,7 @@
 
 .ac-color-swatch[data-selected="true"] {
   border-color: var(--ac-color-focus-ring);
-  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ac-color-focus-ring) 25%, transparent);
+  box-shadow: var(--ac-shadow-focus);
 }
 
 .ac-color-swatch__sample {
@@ -580,8 +673,9 @@
   flex: none;
   border: var(--ac-border-width-1) solid
     color-mix(in oklab, var(--ac-color-text-primary) 15%, transparent);
-  border-radius: var(--ac-radius-sm);
+  border-radius: min(var(--ac-radius-control), var(--ac-radius-sm));
   background: var(--_swatch-color);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, white 25%, transparent);
 }
 
 .ac-color-swatch[data-size="sm"] .ac-color-swatch__sample {
@@ -630,56 +724,85 @@
 .ac-meter::-webkit-meter-suboptimum-value,
 .ac-meter::-webkit-meter-even-less-good-value {
   border-radius: inherit;
-  background: var(--ac-tone-solid);
+  background-color: var(--ac-tone-solid);
+  background-image: var(--ac-gradient-sheen);
 }
 
 .ac-meter::-moz-meter-bar {
   border-radius: inherit;
-  background: var(--ac-tone-solid);
+  background-color: var(--ac-tone-solid);
+  background-image: var(--ac-gradient-sheen);
 }
 
+/* Toggle: an outline control that settles into a tinted, slightly pressed "on" state. */
 .ac-toggle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: var(--ac-space-1-5);
   min-inline-size: var(--ac-size-control-md);
   min-block-size: var(--ac-size-control-md);
   padding-inline: var(--ac-space-3);
   border: var(--ac-border-width-1) solid var(--ac-color-border-default);
   border-radius: var(--ac-radius-control);
   background: var(--ac-color-bg-surface);
-  color: var(--ac-color-text-primary);
+  color: var(--ac-color-text-secondary);
+  box-shadow: var(--ac-shadow-xs);
   font: inherit;
+  font-size: var(--ac-type-label-md-size);
   font-weight: var(--ac-font-weight-medium);
+  letter-spacing: var(--ac-type-label-md-tracking);
   cursor: pointer;
-  transition:
-    color var(--ac-duration-fast) var(--ac-easing-standard),
-    background-color var(--ac-duration-fast) var(--ac-easing-standard),
-    border-color var(--ac-duration-fast) var(--ac-easing-standard),
-    box-shadow var(--ac-duration-fast) var(--ac-easing-standard);
+  -webkit-tap-highlight-color: transparent;
+  transition-property: color, background-color, border-color, box-shadow, transform;
+  transition-duration: var(--ac-duration-fast);
+  transition-timing-function: var(--ac-easing-standard);
+}
+
+.ac-toggle .ac-icon {
+  inline-size: var(--ac-size-icon-sm);
+  block-size: var(--ac-size-icon-sm);
 }
 
 .ac-toggle[data-size="sm"] {
   min-inline-size: var(--ac-size-control-sm);
   min-block-size: var(--ac-size-control-sm);
   padding-inline: var(--ac-space-2);
-  font-size: var(--ac-type-body-sm-size);
+  font-size: var(--ac-type-label-sm-size);
 }
 
 .ac-toggle[data-size="lg"] {
   min-inline-size: var(--ac-size-control-lg);
   min-block-size: var(--ac-size-control-lg);
   padding-inline: var(--ac-space-4);
+  font-size: var(--ac-type-label-lg-size);
+}
+
+@media (hover: hover) {
+  .ac-toggle:hover:not(:disabled) {
+    border-color: var(--ac-color-border-strong);
+    background: var(--ac-color-bg-hover);
+    color: var(--ac-color-text-primary);
+  }
+}
+
+.ac-toggle:active:not(:disabled) {
+  transform: scale(0.985);
 }
 
 .ac-toggle[data-state="on"] {
-  border-color: var(--ac-tone-solid);
+  border-color: var(--ac-tone-border);
   background: var(--ac-tone-soft);
   color: var(--ac-tone-text);
+  box-shadow: var(--ac-shadow-inner);
 }
 
-.ac-toggle:hover:not(:disabled) {
-  background: var(--ac-tone-soft-hover);
+@media (hover: hover) {
+  .ac-toggle[data-state="on"]:hover:not(:disabled) {
+    border-color: var(--ac-tone-border);
+    background: var(--ac-tone-soft-hover);
+    color: var(--ac-tone-text);
+  }
 }
 
 .ac-toggle:focus-visible {
@@ -688,8 +811,16 @@
 }
 
 .ac-toggle:disabled {
+  box-shadow: none;
   opacity: var(--ac-opacity-disabled);
   cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+  .ac-toggle[data-state="on"] {
+    border-color: Highlight;
+    outline: 1px solid Highlight;
+  }
 }
 
 .ac-meter:focus-visible,
@@ -713,10 +844,25 @@
   padding: var(--ac-space-3);
   border-radius: var(--ac-radius-item);
   color: var(--ac-color-text-primary);
+  transition: background-color var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+/* Interactive list items (links/buttons) get the shared hover and focus treatment. */
+@media (hover: hover) {
+  :is(a, button).ac-list-item:hover,
+  .ac-list-item:has(> :is(a, button):only-child):hover {
+    background: var(--ac-color-bg-hover);
+  }
+}
+
+.ac-list-item:focus-visible {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: calc(var(--ac-focus-ring-offset) * -1);
 }
 
 .ac-list-item[data-selected="true"] {
-  background: var(--ac-color-bg-muted);
+  background: var(--ac-color-primary-soft);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ac-color-primary-border) 70%, transparent);
 }
 
 .ac-list-item__leading,
@@ -724,7 +870,7 @@
   display: inline-flex;
   flex: none;
   align-items: center;
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
 }
 
 .ac-list-item__body {
@@ -744,7 +890,7 @@
 
 .ac-list-item__description {
   overflow: hidden;
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-caption-size);
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -776,18 +922,33 @@
   font-weight: var(--ac-font-weight-medium);
 }
 
+/* Message bubbles: the corner nearest the author is tighter, like a speech tail. */
 .ac-message__content {
   padding: var(--ac-space-2-5) var(--ac-space-3);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
+  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
   border-radius: var(--ac-radius-card);
+  border-start-start-radius: var(--ac-radius-sm);
   background: var(--ac-color-bg-surface);
   color: var(--ac-color-text-primary);
+  box-shadow: var(--ac-shadow-xs);
+  line-height: var(--ac-line-height-normal);
   overflow-wrap: anywhere;
 }
 
 .ac-message[data-direction="outgoing"] .ac-message__content {
-  border-color: var(--ac-color-primary-border);
-  background: var(--ac-color-primary-soft);
+  border-color: transparent;
+  border-start-start-radius: var(--ac-radius-card);
+  border-start-end-radius: var(--ac-radius-sm);
+  /* Solid fill, not the brand gradient: body text needs 4.5:1 across the whole bubble. */
+  background-color: var(--ac-color-primary-solid);
+  background-image: var(--ac-gradient-sheen);
+  color: var(--ac-color-primary-on-solid);
+  box-shadow: var(--ac-shadow-highlight), var(--ac-shadow-sm);
+}
+
+.ac-message[data-direction="outgoing"] .ac-message__content :is(a, .ac-link) {
+  color: inherit;
+  text-decoration-color: currentcolor;
 }
 
 .ac-price-display {
@@ -800,10 +961,14 @@
 
 .ac-price-display__current {
   color: var(--ac-color-text-primary);
+  font-family: var(--ac-font-family-display);
   font-weight: var(--ac-font-weight-semibold);
+  font-feature-settings: var(--ac-font-features-tabular);
+  letter-spacing: var(--ac-letter-spacing-tight);
 }
 
 .ac-price-display__previous {
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-body-sm-size);
+  text-decoration-color: color-mix(in oklab, currentcolor 60%, transparent);
 }

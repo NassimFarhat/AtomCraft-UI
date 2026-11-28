@@ -1,3 +1,7 @@
+/*
+ * Sidebar: a tinted step below the content (bg-subtle) so the main area reads as the
+ * working surface; hairline edge, slim scrollbar.
+ */
 .ac-sidebar {
   --_width: 16rem;
 
@@ -8,15 +12,15 @@
   block-size: 100dvh;
   position: sticky;
   inset-block-start: 0;
-  border-inline-end: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-inline-end: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
   background: var(--ac-color-bg-subtle);
-  transition: inline-size var(--ac-duration-normal) var(--ac-easing-standard);
+  transition: inline-size var(--ac-duration-moderate) var(--ac-easing-smooth);
 }
 
 .ac-sidebar[data-side="end"] {
   order: 1;
   border-inline-end: 0;
-  border-inline-start: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-inline-start: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
 }
 
 .ac-sidebar[data-state="collapsed"] {
@@ -34,17 +38,19 @@
 
 .ac-sidebar__footer {
   margin-block-start: auto;
-  border-block-start: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border-block-start: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
 }
 
 .ac-sidebar__content {
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--ac-space-4);
+  gap: var(--ac-space-5);
   padding: var(--ac-space-2) var(--ac-space-3);
   overflow-y: auto;
   overflow-x: hidden;
+  scrollbar-color: var(--ac-color-border-strong) transparent;
+  scrollbar-width: thin;
 }
 
 .ac-sidebar__group {
@@ -92,6 +98,21 @@
   padding-inline: 0;
 }
 
+/* Collapsed: the active indicator moves under the icon tile instead of the edge. */
+.ac-sidebar[data-state="collapsed"] .ac-nav-item[data-active]::before {
+  inset-block: auto 0.2rem;
+  inset-inline: 30%;
+  inline-size: auto;
+  block-size: 2px;
+}
+
+/* Nav items on the sidebar's tinted surface hover with an ink wash, not a fixed fill. */
+@media (hover: hover) {
+  .ac-sidebar .ac-nav-item:hover:not([data-active]) {
+    background: color-mix(in oklab, var(--ac-color-text-primary) 6%, transparent);
+  }
+}
+
 .ac-sidebar-sheet {
   inline-size: min(18rem, 85vw);
 }
@@ -106,15 +127,23 @@
   border: 0;
 }
 
+/* Header: frosted glass over the canvas, so content scrolls softly beneath a sticky bar. */
 .ac-header {
   display: flex;
   align-items: center;
   gap: var(--ac-space-3);
   min-block-size: 3.5rem;
-  padding-inline: var(--ac-space-4);
-  border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-default);
-  background: color-mix(in oklab, var(--ac-color-bg-canvas) 85%, transparent);
-  backdrop-filter: saturate(1.6) blur(12px);
+  padding-inline: var(--ac-layout-gutter);
+  border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
+  background: color-mix(in oklab, var(--ac-color-bg-canvas) 80%, transparent);
+  backdrop-filter: saturate(1.6) blur(var(--ac-blur-md));
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .ac-header {
+    background: var(--ac-color-bg-canvas);
+    backdrop-filter: none;
+  }
 }
 
 .ac-header[data-sticky] {
@@ -127,7 +156,9 @@
   display: flex;
   align-items: center;
   gap: var(--ac-space-2);
+  font-family: var(--ac-font-family-display);
   font-weight: var(--ac-font-weight-semibold);
+  letter-spacing: var(--ac-letter-spacing-tight);
 }
 
 .ac-header__nav {
@@ -182,21 +213,30 @@
   outline: none;
 }
 
+/*
+ * SkipLink (the single definition; it was previously duplicated in organism-catalog.css).
+ * Hidden above the viewport until focused, then slides in as a lit primary chip.
+ */
 .ac-skip-link {
   position: fixed;
-  inset-block-start: var(--ac-space-2);
-  inset-inline-start: var(--ac-space-2);
+  inset-block-start: var(--ac-space-3);
+  inset-inline-start: var(--ac-space-3);
   z-index: var(--ac-z-tooltip);
   padding: var(--ac-space-2) var(--ac-space-3);
   border-radius: var(--ac-radius-control);
-  background: var(--ac-color-primary-solid);
+  background-color: var(--ac-color-primary-solid);
+  background-image: var(--ac-gradient-sheen);
   color: var(--ac-color-primary-on-solid);
+  box-shadow: var(--ac-shadow-highlight), var(--ac-shadow-lg);
   font-weight: var(--ac-font-weight-medium);
   text-decoration: none;
-  transform: translateY(-200%);
+  transform: translateY(calc(-100% - var(--ac-space-6)));
+  transition: transform var(--ac-duration-normal) var(--ac-easing-spring);
 }
 
-.ac-skip-link:focus-visible {
+.ac-skip-link:focus {
+  outline: var(--ac-focus-ring-width) solid var(--ac-color-focus-ring);
+  outline-offset: var(--ac-focus-ring-offset);
   transform: none;
 }
 
@@ -406,6 +446,7 @@
   border: var(--ac-border-width-1) solid var(--ac-color-border-default);
   border-radius: var(--ac-radius-card);
   background: var(--ac-color-bg-surface);
+  box-shadow: var(--ac-shadow-xs);
 }
 
 .ac-resizable-panel[data-axis="inline"] {
@@ -430,23 +471,24 @@
   grid-template-columns: repeat(auto-fill, minmax(min(var(--_min-item), 100%), 1fr));
 }
 
+/* Container: widths and the fluid gutter come from the layout tokens. */
 .ac-container {
   inline-size: 100%;
-  max-inline-size: var(--_max, 64rem);
+  max-inline-size: var(--_max, var(--ac-layout-container-lg));
   margin-inline: auto;
-  padding-inline: var(--ac-space-4);
+  padding-inline: var(--ac-layout-gutter);
 }
 
 .ac-container[data-size="sm"] {
-  --_max: 40rem;
+  --_max: var(--ac-layout-container-sm);
 }
 
 .ac-container[data-size="md"] {
-  --_max: 48rem;
+  --_max: var(--ac-layout-container-md);
 }
 
 .ac-container[data-size="xl"] {
-  --_max: 80rem;
+  --_max: var(--ac-layout-container-xl);
 }
 
 .ac-container[data-size="full"] {
@@ -465,10 +507,6 @@
 
   .ac-grid:not([data-fluid]) {
     grid-template-columns: repeat(var(--_columns-sm, var(--_columns-base, 1)), minmax(0, 1fr));
-  }
-
-  .ac-container {
-    padding-inline: var(--ac-space-6);
   }
 }
 
@@ -509,10 +547,6 @@
       var(--_columns-lg, var(--_columns-md, var(--_columns-sm, var(--_columns-base, 1)))),
       minmax(0, 1fr)
     );
-  }
-
-  .ac-container {
-    padding-inline: var(--ac-space-8);
   }
 }
 

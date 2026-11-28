@@ -23,33 +23,47 @@
   inline-size: fit-content;
 }
 
+/* SegmentedControl: a recessed track holding a raised, sliding-feel active tile. */
 .ac-segmented-control {
   max-inline-size: 100%;
-  padding: var(--ac-space-1);
+  padding: 3px;
   border: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
   border-radius: var(--ac-radius-control);
   background: var(--ac-color-bg-muted);
+  box-shadow: var(--ac-shadow-inner);
 }
 
 .ac-segmented-control__item {
   min-block-size: var(--ac-size-control-sm);
   padding-inline: var(--ac-space-3);
-  border: var(--ac-border-width-1) solid transparent;
-  border-radius: min(var(--ac-radius-control), var(--ac-radius-md));
+  border: 0;
+  border-radius: max(0px, calc(var(--ac-radius-control) - 4px));
   background: transparent;
   color: var(--ac-color-text-secondary);
   font: inherit;
-  font-size: var(--ac-type-body-sm-size);
+  font-size: var(--ac-type-label-md-size);
   font-weight: var(--ac-font-weight-medium);
+  letter-spacing: var(--ac-type-label-md-tracking);
   white-space: nowrap;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition-property: color, background-color, box-shadow;
+  transition-duration: var(--ac-duration-normal);
+  transition-timing-function: var(--ac-easing-standard);
+}
+
+@media (hover: hover) {
+  .ac-segmented-control__item:hover:not(:disabled, [aria-checked="true"]) {
+    color: var(--ac-color-text-primary);
+  }
 }
 
 .ac-segmented-control__item[aria-checked="true"] {
-  border-color: var(--ac-color-border-subtle);
   background: var(--ac-color-bg-surface-raised);
   color: var(--ac-color-text-primary);
-  box-shadow: var(--ac-elevation-card);
+  box-shadow:
+    var(--ac-shadow-sm),
+    0 0 0 0.5px var(--ac-color-border-default);
 }
 
 .ac-segmented-control__item:focus-visible {
@@ -58,58 +72,105 @@
 }
 
 .ac-segmented-control__item:disabled {
-  opacity: var(--ac-opacity-disabled);
+  color: var(--ac-color-text-disabled);
   cursor: not-allowed;
 }
 
+/* ToggleGroup: the "on" toggle of a single-choice group carries the brand. */
 .ac-toggle-group[data-type="single"] .ac-toggle[aria-pressed="true"] {
-  border-color: var(--ac-color-focus-ring);
+  border-color: var(--ac-color-primary-border);
+  background: var(--ac-color-primary-soft);
+  color: var(--ac-color-primary-text);
+}
+
+/*
+ * ButtonGroup: buttons fuse into one control. Overlapping hairline borders collapse;
+ * the hovered or focused button rises above its neighbours so its edge stays whole.
+ */
+.ac-button-group > .ac-button {
+  position: relative;
+}
+
+.ac-button-group > .ac-button:is(:hover, :focus-visible) {
+  z-index: var(--ac-z-raised);
+}
+
+.ac-button-group[data-orientation="horizontal"] {
+  gap: 0;
 }
 
 .ac-button-group[data-orientation="horizontal"] > * + * {
-  margin-inline-start: calc(var(--ac-space-1) * -1);
+  margin-inline-start: calc(var(--ac-border-width-1) * -1);
 }
 
-.ac-button-group[data-orientation="horizontal"] > :first-child {
+.ac-button-group[data-orientation="horizontal"] > :not(:last-child) {
   border-start-end-radius: 0;
   border-end-end-radius: 0;
 }
 
-.ac-button-group[data-orientation="horizontal"] > :last-child {
+.ac-button-group[data-orientation="horizontal"] > :not(:first-child) {
   border-start-start-radius: 0;
   border-end-start-radius: 0;
+}
+
+.ac-button-group[data-orientation="vertical"] {
+  gap: 0;
 }
 
 .ac-button-group[data-orientation="vertical"] > * + * {
-  margin-block-start: calc(var(--ac-space-1) * -1);
+  margin-block-start: calc(var(--ac-border-width-1) * -1);
 }
 
-.ac-button-group[data-orientation="vertical"] > :first-child {
+.ac-button-group[data-orientation="vertical"] > :not(:last-child) {
   border-end-start-radius: 0;
   border-end-end-radius: 0;
 }
 
-.ac-button-group[data-orientation="vertical"] > :last-child {
+.ac-button-group[data-orientation="vertical"] > :not(:first-child) {
   border-start-start-radius: 0;
   border-start-end-radius: 0;
 }
 
+/* Solid buttons inside a group drop their individual shadows; the group casts one. */
+.ac-button-group > .ac-button[data-variant="solid"] {
+  --_shadow: var(--ac-shadow-highlight), var(--_edge);
+  --_shadow-hover: var(--ac-shadow-highlight), var(--_edge);
+}
+
+.ac-button-group:has(> .ac-button[data-variant="solid"]),
+.ac-button-group:has(> .ac-button[data-variant="outline"]) {
+  border-radius: var(--ac-radius-control);
+  box-shadow: var(--ac-shadow-xs);
+}
+
+/* SplitButton: a hairline divider of the fill's own hue between the two halves. */
 .ac-split-button {
-  gap: 1px;
+  gap: 0;
   overflow: visible;
   border-radius: var(--ac-radius-control);
 }
 
-.ac-split-button > .ac-button {
+.ac-split-button:has(.ac-button[data-variant="solid"]) {
+  box-shadow: var(--ac-shadow-xs);
+}
+
+.ac-split-button .ac-button[data-variant="solid"] {
+  --_shadow: var(--ac-shadow-highlight), var(--_edge);
+  --_shadow-hover: var(--ac-shadow-highlight), var(--_edge);
+}
+
+.ac-split-button > .ac-button:not(.ac-split-button__trigger) {
   border-start-end-radius: 0;
   border-end-end-radius: 0;
 }
 
 .ac-split-button__trigger {
+  margin-inline-start: 1px;
   border-start-start-radius: 0;
   border-end-start-radius: 0;
 }
 
+/* Stepper: numbered markers joined by a progress line; complete steps fill in. */
 .ac-stepper {
   display: flex;
   gap: var(--ac-space-4);
@@ -129,7 +190,7 @@
   align-items: flex-start;
   gap: var(--ac-space-2);
   min-inline-size: 0;
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
 }
 
 .ac-stepper__indicator {
@@ -138,23 +199,37 @@
   place-items: center;
   inline-size: 1.75rem;
   block-size: 1.75rem;
-  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
+  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
   border-radius: var(--ac-radius-full);
   background: var(--ac-color-bg-surface);
   color: var(--ac-color-text-secondary);
   font-size: var(--ac-type-label-sm-size);
   font-weight: var(--ac-font-weight-semibold);
+  font-feature-settings: var(--ac-font-features-tabular);
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: var(--ac-duration-normal);
+  transition-timing-function: var(--ac-easing-standard);
 }
 
-.ac-stepper__item[data-state="current"] {
+.ac-stepper__item[data-state="current"],
+.ac-stepper__item[data-state="complete"] {
   color: var(--ac-color-text-primary);
 }
 
-.ac-stepper__item[data-state="current"] .ac-stepper__indicator,
 .ac-stepper__item[data-state="complete"] .ac-stepper__indicator {
   border-color: var(--ac-color-primary-solid);
-  background: var(--ac-color-primary-solid);
+  background-color: var(--ac-color-primary-solid);
+  background-image: var(--ac-gradient-sheen);
   color: var(--ac-color-primary-on-solid);
+  box-shadow: var(--ac-shadow-highlight);
+}
+
+/* Current: outlined in the brand with a soft halo, so it reads as "here", not "done". */
+.ac-stepper__item[data-state="current"] .ac-stepper__indicator {
+  border-color: var(--ac-color-primary-solid);
+  background: var(--ac-color-bg-surface);
+  color: var(--ac-color-primary-text);
+  box-shadow: 0 0 0 4px var(--ac-color-primary-soft);
 }
 
 .ac-stepper__text {
@@ -168,24 +243,19 @@
   color: inherit;
   font-size: var(--ac-type-label-md-size);
   font-weight: var(--ac-font-weight-medium);
+  letter-spacing: var(--ac-type-label-md-tracking);
 }
 
 .ac-stepper__description {
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-caption-size);
 }
 
+/* HoverCard: surface from surfaces.css; only sizing here. */
 .ac-hover-card {
-  z-index: var(--ac-z-popover);
   inline-size: max-content;
   max-inline-size: min(24rem, calc(100vw - 2rem));
   padding: var(--ac-space-inset-md);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
-  border-radius: var(--ac-radius-popover);
-  background: var(--ac-color-bg-surface-raised);
-  color: var(--ac-color-text-primary);
-  box-shadow: var(--ac-elevation-popover);
-  animation: ac-pop-in var(--ac-duration-fast) var(--ac-easing-decelerate);
 }
 
 @media (max-width: 639px) {

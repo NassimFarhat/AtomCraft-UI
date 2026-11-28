@@ -1,46 +1,21 @@
-/* The popup list shared by Combobox, MultiSelect, SelectMenu and CommandPalette. */
+/*
+ * The popup list shared by Combobox, MultiSelect, SelectMenu and CommandPalette.
+ * Surface, option rows and the control frame come from surfaces.css.
+ */
 .ac-listbox {
-  z-index: var(--ac-z-popover);
   min-inline-size: 12rem;
   max-block-size: min(20rem, calc(100vh - 2rem));
   overflow-y: auto;
   padding: var(--ac-space-1);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
-  border-radius: var(--ac-radius-popover);
-  background: var(--ac-color-bg-surface-raised);
-  color: var(--ac-color-text-primary);
-  box-shadow: var(--ac-elevation-dropdown);
-  animation: ac-pop-in var(--ac-duration-fast) var(--ac-easing-decelerate);
-}
-
-.ac-listbox__option {
-  display: flex;
-  align-items: center;
-  gap: var(--ac-space-2);
-  min-block-size: var(--ac-size-control-sm);
-  padding: var(--ac-space-1) var(--ac-space-2);
-  border-radius: min(var(--ac-radius-item), var(--ac-radius-md));
-  cursor: pointer;
-  user-select: none;
 }
 
 .ac-listbox[data-size="sm"] .ac-listbox__option {
   min-block-size: var(--ac-size-control-xs);
-  font-size: var(--ac-type-body-sm-size);
 }
 
-/* The active option follows the keyboard, so it is styled, not focused. */
-.ac-listbox__option[data-active] {
-  background: var(--ac-color-bg-muted);
-}
-
+/* The selected option carries a brand check; weight alone is too subtle. */
 .ac-listbox__option[aria-selected="true"] {
   font-weight: var(--ac-font-weight-medium);
-}
-
-.ac-listbox__option[data-disabled] {
-  opacity: var(--ac-opacity-disabled);
-  cursor: not-allowed;
 }
 
 .ac-listbox__text {
@@ -57,35 +32,41 @@
 }
 
 .ac-listbox__description {
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-caption-size);
+  font-weight: var(--ac-font-weight-regular);
   line-height: var(--ac-line-height-snug);
 }
 
 .ac-listbox__match {
-  background: var(--ac-color-primary-soft);
+  border-radius: var(--ac-radius-xs);
+  background: transparent;
   color: var(--ac-color-primary-text);
   font-weight: var(--ac-font-weight-semibold);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, currentcolor 35%, transparent);
+  text-underline-offset: 0.2em;
 }
 
 .ac-listbox__icon,
 .ac-listbox__check {
   display: inline-flex;
   flex: none;
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
 }
 
 .ac-listbox__icon .ac-icon,
 .ac-listbox__check {
-  inline-size: 1rem;
-  block-size: 1rem;
+  inline-size: var(--ac-size-icon-sm);
+  block-size: var(--ac-size-icon-sm);
 }
 
 .ac-listbox__check {
+  margin-inline-start: auto;
   color: var(--ac-color-primary-text);
 }
 
-/* Multiple choice: a box in front of every option, like a checkbox list. */
+/* Multiple choice: a checkbox-like box in front of every option. */
 .ac-listbox__box {
   display: inline-flex;
   flex: none;
@@ -94,8 +75,12 @@
   inline-size: 1rem;
   block-size: 1rem;
   border: var(--ac-border-width-1) solid var(--ac-color-border-control);
-  border-radius: min(var(--ac-radius-xs), var(--ac-radius-control));
+  border-radius: min(var(--ac-radius-control), 0.28rem);
+  background: var(--ac-color-bg-surface);
   color: var(--ac-color-primary-on-solid);
+  box-shadow: var(--ac-shadow-xs);
+  transition-property: background-color, border-color;
+  transition-duration: var(--ac-duration-fast);
 }
 
 .ac-listbox__box .ac-icon {
@@ -105,13 +90,8 @@
 
 .ac-listbox__option[aria-selected="true"] .ac-listbox__box {
   border-color: var(--ac-color-primary-solid);
-  background: var(--ac-color-primary-solid);
-}
-
-.ac-listbox__shortcut {
-  color: var(--ac-color-text-tertiary);
-  font-size: var(--ac-type-caption-size);
-  letter-spacing: var(--ac-letter-spacing-wide);
+  background-color: var(--ac-color-primary-solid);
+  background-image: var(--ac-gradient-sheen);
 }
 
 .ac-listbox__group + .ac-listbox__group {
@@ -120,16 +100,9 @@
   padding-block-start: var(--ac-space-1);
 }
 
-.ac-listbox__group-label {
-  padding: var(--ac-space-1-5) var(--ac-space-2);
-  color: var(--ac-color-text-secondary);
-  font-size: var(--ac-type-caption-size);
-  font-weight: var(--ac-font-weight-semibold);
-}
-
 .ac-listbox__empty {
-  padding: var(--ac-space-4) var(--ac-space-3);
-  color: var(--ac-color-text-secondary);
+  padding: var(--ac-space-6) var(--ac-space-3);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-body-sm-size);
   text-align: center;
 }
@@ -146,31 +119,7 @@
 .ac-combobox {
   align-items: center;
   gap: var(--ac-space-1);
-  padding-inline: var(--ac-space-1) var(--ac-space-1);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
-  border-radius: var(--ac-radius-control);
-  background: var(--ac-color-bg-canvas);
-  box-shadow: var(--ac-shadow-xs);
-  transition: border-color var(--ac-duration-fast) var(--ac-easing-standard);
-}
-
-.ac-combobox:focus-within {
-  border-color: var(--ac-color-focus-ring);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 28%, transparent);
-}
-
-.ac-combobox[data-invalid] {
-  border-color: var(--ac-color-danger-solid);
-}
-
-.ac-combobox[data-invalid]:focus-within {
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-danger-solid) 28%, transparent);
-}
-
-.ac-combobox[data-disabled] {
-  background: var(--ac-color-bg-muted);
-  box-shadow: none;
-  opacity: var(--ac-opacity-disabled);
+  padding-inline: var(--ac-space-1);
 }
 
 .ac-combobox__input {
@@ -203,6 +152,7 @@
   flex: none;
   align-items: center;
   gap: var(--ac-space-0-5);
+  color: var(--ac-color-text-tertiary);
 }
 
 /* Multiple choice: the tags share the box with the text input. */
@@ -226,7 +176,7 @@
   padding-inline: var(--ac-space-1);
 }
 
-/* SelectMenu: a button that looks like a text control. */
+/* SelectMenu: a button that looks exactly like a text control. */
 .ac-select-menu__trigger {
   display: flex;
   flex: 1;
@@ -237,11 +187,6 @@
   min-inline-size: 0;
   block-size: var(--ac-size-control-md);
   padding-inline: var(--ac-space-3);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
-  border-radius: var(--ac-radius-control);
-  background: var(--ac-color-bg-canvas);
-  color: var(--ac-color-text-primary);
-  box-shadow: var(--ac-shadow-xs);
   font: inherit;
   font-size: var(--ac-type-body-sm-size);
   text-align: start;
@@ -255,27 +200,8 @@
 
 .ac-select-menu[data-size="lg"] .ac-select-menu__trigger {
   block-size: var(--ac-size-control-lg);
-}
-
-.ac-select-menu__trigger:hover:not(:disabled) {
-  border-color: var(--ac-color-text-tertiary);
-}
-
-.ac-select-menu__trigger:focus-visible {
-  outline: none;
-  border-color: var(--ac-color-focus-ring);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 28%, transparent);
-}
-
-.ac-select-menu[data-invalid] .ac-select-menu__trigger {
-  border-color: var(--ac-color-danger-solid);
-}
-
-.ac-select-menu__trigger:disabled {
-  background: var(--ac-color-bg-muted);
-  box-shadow: none;
-  opacity: var(--ac-opacity-disabled);
-  cursor: not-allowed;
+  padding-inline: var(--ac-space-4);
+  font-size: var(--ac-type-body-md-size);
 }
 
 .ac-select-menu__trigger[data-placeholder] .ac-select-menu__value {
@@ -290,7 +216,19 @@
 
 .ac-select-menu__indicator {
   flex: none;
-  inline-size: 1rem;
-  block-size: 1rem;
+  inline-size: var(--ac-size-icon-sm);
+  block-size: var(--ac-size-icon-sm);
+  color: var(--ac-color-text-tertiary);
+  transition: color var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+.ac-select-menu__trigger:is(:hover, [aria-expanded="true"]) .ac-select-menu__indicator {
   color: var(--ac-color-text-secondary);
+}
+
+@media (pointer: coarse) {
+  .ac-combobox__input,
+  .ac-select-menu__trigger {
+    font-size: var(--ac-type-body-md-size);
+  }
 }

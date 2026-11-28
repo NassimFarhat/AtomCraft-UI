@@ -1,90 +1,55 @@
-.ac-tooltip,
-.ac-popover,
-.ac-menu {
-  --_enter-y: 4px;
-  animation: ac-pop-in var(--ac-duration-fast) var(--ac-easing-decelerate);
-}
+/* Tooltip, Popover and Menu. Surface, list-item and motion basics live in surfaces.css. */
 
-.ac-tooltip[data-side="bottom"],
-.ac-popover[data-side="bottom"],
-.ac-menu[data-side="bottom"] {
-  --_enter-y: -4px;
-}
-
+/* Tooltip: a compact inverse chip; it appears quickly and never steals attention. */
 .ac-tooltip {
+  --_enter-y: 2px;
+
   z-index: var(--ac-z-tooltip);
   max-inline-size: 18rem;
-  padding: var(--ac-space-1-5) var(--ac-space-2-5);
+  padding: var(--ac-space-1) var(--ac-space-2);
   border-radius: min(var(--ac-radius-popover), var(--ac-radius-md));
   background: var(--ac-color-bg-inverse);
   color: var(--ac-color-text-inverse);
-  box-shadow: var(--ac-elevation-popover);
+  box-shadow: var(--ac-shadow-md);
   font-size: var(--ac-type-caption-size);
   font-weight: var(--ac-font-weight-medium);
+  letter-spacing: var(--ac-letter-spacing-snug);
   line-height: var(--ac-line-height-snug);
+  text-wrap: balance;
+  animation: ac-pop-in var(--ac-duration-fast) var(--ac-easing-decelerate);
 }
 
 .ac-popover {
-  z-index: var(--ac-z-popover);
   inline-size: max-content;
   max-inline-size: min(22rem, calc(100vw - 1rem));
   padding: var(--ac-space-inset-md);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
-  border-radius: var(--ac-radius-popover);
-  background: var(--ac-color-bg-surface-raised);
-  color: var(--ac-color-text-primary);
-  box-shadow: var(--ac-elevation-popover);
   outline: none;
 }
 
 .ac-menu {
-  z-index: var(--ac-z-popover);
   min-inline-size: 12rem;
   max-inline-size: min(22rem, calc(100vw - 1rem));
   max-block-size: min(24rem, calc(100vh - 2rem));
   overflow-y: auto;
   padding: var(--ac-space-1);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-default);
-  border-radius: var(--ac-radius-popover);
-  background: var(--ac-color-bg-surface-raised);
-  color: var(--ac-color-text-primary);
-  box-shadow: var(--ac-elevation-dropdown);
-}
-
-.ac-menu__item {
-  display: flex;
-  align-items: center;
-  gap: var(--ac-space-2);
-  min-block-size: var(--ac-size-control-sm);
-  padding-inline: var(--ac-space-2);
-  border-radius: min(var(--ac-radius-item), var(--ac-radius-md));
-  font-size: var(--ac-type-body-sm-size);
-  cursor: pointer;
-  user-select: none;
-  outline: none;
-}
-
-.ac-menu__item:focus-visible,
-.ac-menu__item:hover:not([data-disabled]) {
-  background: var(--ac-color-bg-muted);
 }
 
 .ac-menu__item[data-tone="danger"] {
   color: var(--ac-color-danger-text);
 }
 
-.ac-menu__item[data-tone="danger"]:is(:focus-visible, :hover) {
+.ac-menu__item[data-tone="danger"]:is(:focus-visible, :hover):not([data-disabled]) {
   background: var(--ac-color-danger-soft);
-}
-
-.ac-menu__item[data-disabled] {
-  opacity: var(--ac-opacity-disabled);
-  cursor: not-allowed;
 }
 
 .ac-menu__icon {
   display: inline-flex;
-  inline-size: 1rem;
+  inline-size: var(--ac-size-icon-sm);
+  color: var(--ac-color-text-tertiary);
+  transition: color var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+.ac-menu__item:is(:focus-visible, :hover) .ac-menu__icon {
   color: var(--ac-color-text-secondary);
 }
 
@@ -93,29 +58,16 @@
 }
 
 .ac-menu__icon .ac-icon {
-  inline-size: 1rem;
-  block-size: 1rem;
+  inline-size: var(--ac-size-icon-sm);
+  block-size: var(--ac-size-icon-sm);
 }
 
 .ac-menu__label {
   flex: 1;
 }
 
-.ac-menu__shortcut {
-  color: var(--ac-color-text-tertiary);
-  font-size: var(--ac-type-caption-size);
-  letter-spacing: var(--ac-letter-spacing-wide);
-}
-
-.ac-menu__group-label {
-  padding: var(--ac-space-1-5) var(--ac-space-2);
-  color: var(--ac-color-text-secondary);
-  font-size: var(--ac-type-caption-size);
-  font-weight: var(--ac-font-weight-semibold);
-}
-
 .ac-menu__separator {
   block-size: 1px;
   margin: var(--ac-space-1) calc(var(--ac-space-1) * -1);
-  background: var(--ac-color-border-default);
+  background: var(--ac-color-border-subtle);
 }

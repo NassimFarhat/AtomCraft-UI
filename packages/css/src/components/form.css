@@ -33,16 +33,28 @@
   border: none;
 }
 
+/*
+ * Consecutive sections are separated by a hairline and generous space. The line sits on
+ * the bottom of the earlier section: a fieldset draws its legend inside the top border,
+ * so a top border would strike through the next section's title.
+ */
+.ac-form__section:has(+ .ac-form__section) {
+  padding-block-end: var(--ac-space-6);
+  border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
+}
+
 .ac-form__legend {
   padding: 0;
   color: var(--ac-color-text-primary);
-  font-size: var(--ac-type-heading-6-size);
+  font-family: var(--ac-font-family-display);
+  font-size: var(--ac-type-heading-5-size);
   font-weight: var(--ac-font-weight-semibold);
+  letter-spacing: var(--ac-type-heading-5-tracking);
 }
 
 .ac-form__section-description {
   margin-block-start: var(--ac-space-1);
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-body-sm-size);
 }
 
@@ -68,14 +80,28 @@
   justify-content: space-between;
 }
 
+/* ErrorSummary: matches the soft danger Alert, with a leading accent bar. */
 .ac-error-summary {
+  position: relative;
   display: grid;
   gap: var(--ac-space-2);
+  overflow: hidden;
   padding: var(--ac-space-inset-md);
-  border: var(--ac-border-width-1) solid var(--ac-color-danger-border);
+  border: var(--ac-border-width-1) solid
+    color-mix(in oklab, var(--ac-color-danger-border) 75%, transparent);
   border-radius: var(--ac-radius-card);
   background: var(--ac-color-danger-soft);
   color: var(--ac-color-danger-text);
+  animation: ac-fade-in var(--ac-duration-normal) var(--ac-easing-standard);
+}
+
+.ac-error-summary::before {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  inline-size: 3px;
+  background: var(--ac-color-danger-solid);
 }
 
 .ac-error-summary:focus-visible {

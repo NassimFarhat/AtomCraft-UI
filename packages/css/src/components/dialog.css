@@ -3,6 +3,10 @@
   overflow: hidden;
 }
 
+/*
+ * Dialog: the highest surface in the system. A lit raised surface, the deepest shadow,
+ * a blurred backdrop, and a spring-in entrance.
+ */
 .ac-dialog {
   --_width: 32rem;
 
@@ -13,19 +17,27 @@
   overflow: visible;
   border: var(--ac-border-width-1) solid var(--ac-color-border-default);
   border-radius: var(--ac-radius-dialog);
-  background: var(--ac-color-bg-surface);
+  background-color: var(--ac-color-bg-surface-raised);
+  background-image: var(--ac-gradient-surface);
   color: var(--ac-color-text-primary);
-  box-shadow: var(--ac-elevation-dialog);
+  box-shadow: var(--ac-shadow-highlight), var(--ac-elevation-dialog);
 }
 
 .ac-dialog[open] {
   display: flex;
-  animation: ac-pop-in var(--ac-duration-normal) var(--ac-easing-emphasized);
+  animation: ac-dialog-in var(--ac-duration-moderate) var(--ac-easing-spring);
+}
+
+@keyframes ac-dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.97);
+  }
 }
 
 .ac-dialog::backdrop {
   background: var(--ac-color-backdrop);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(var(--ac-blur-sm));
   animation: ac-fade-in var(--ac-duration-normal) var(--ac-easing-standard);
 }
 
@@ -65,22 +77,27 @@
 
 .ac-dialog__title {
   margin: 0;
+  font-family: var(--ac-font-family-display);
   font-size: var(--ac-type-heading-4-size);
   font-weight: var(--ac-type-heading-4-weight);
   line-height: var(--ac-type-heading-4-line-height);
   letter-spacing: var(--ac-letter-spacing-tight);
+  text-wrap: balance;
 }
 
 .ac-dialog__description {
   margin: 0;
   color: var(--ac-color-text-secondary);
   font-size: var(--ac-type-body-sm-size);
+  text-wrap: pretty;
 }
 
 .ac-dialog__body {
   flex: 1;
   min-block-size: 0;
   overflow-y: auto;
+  scrollbar-color: var(--ac-color-border-strong) transparent;
+  scrollbar-width: thin;
 }
 
 .ac-dialog__footer {
@@ -90,10 +107,36 @@
   gap: var(--ac-space-2);
 }
 
+/*
+ * When the footer closes the panel (the usual case; the close button is positioned out of
+ * flow), it bleeds to the edges on a hairline-topped tray, so long bodies end cleanly.
+ */
+.ac-dialog__panel > .ac-dialog__footer:is(:last-child, :has(+ .ac-dialog__close:last-child)) {
+  margin-inline: calc(var(--ac-space-inset-lg) * -1);
+  margin-block-end: calc(var(--ac-space-inset-lg) * -1);
+  padding: var(--ac-space-4) var(--ac-space-inset-lg);
+  border-block-start: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
+  /* The panel has no radius of its own; follow the dialog's, inside its 1px border. */
+  border-end-start-radius: max(0px, calc(var(--ac-radius-dialog) - var(--ac-border-width-1)));
+  border-end-end-radius: max(0px, calc(var(--ac-radius-dialog) - var(--ac-border-width-1)));
+  background: color-mix(in oklab, var(--ac-color-bg-subtle) 70%, transparent);
+}
+
 .ac-dialog__close {
   position: absolute;
   inset-block-start: var(--ac-space-3);
   inset-inline-end: var(--ac-space-3);
+}
+
+/* Small screens: footer buttons stack full-width, primary action last (nearest the thumb). */
+@media (max-width: 479px) {
+  .ac-dialog__footer {
+    flex-direction: column-reverse;
+  }
+
+  .ac-dialog__footer > .ac-button {
+    inline-size: 100%;
+  }
 }
 
 /* Sheets: a dialog pinned to an edge. */
@@ -101,6 +144,15 @@
   margin: 0;
   max-block-size: 100dvh;
   border-radius: 0;
+}
+
+.ac-dialog:not([data-placement="center"]) .ac-dialog__panel > .ac-dialog__footer {
+  border-radius: 0;
+}
+
+/* Panels without padding (command palette, sidebar sheet) keep a plain footer. */
+:is(.ac-command, .ac-sidebar-sheet) .ac-dialog__panel > .ac-dialog__footer {
+  margin: 0;
 }
 
 .ac-dialog:is([data-placement="start"], [data-placement="end"]) {
@@ -149,6 +201,27 @@
   border-start-start-radius: var(--ac-radius-dialog);
   border-start-end-radius: var(--ac-radius-dialog);
   --_enter-y-sheet: 100%;
+}
+
+/* Bottom sheets show a grab handle, the familiar mobile affordance. */
+.ac-dialog[data-placement="bottom"] .ac-dialog__panel {
+  padding-block-start: calc(var(--ac-space-inset-lg) + var(--ac-space-2));
+}
+
+.ac-dialog[data-placement="bottom"] .ac-dialog__panel::before {
+  content: "";
+  position: absolute;
+  inset-block-start: var(--ac-space-2);
+  inset-inline-start: 50%;
+  inline-size: 2.5rem;
+  block-size: 0.25rem;
+  border-radius: var(--ac-radius-full);
+  background: var(--ac-color-border-strong);
+  translate: -50% 0;
+}
+
+[dir="rtl"] .ac-dialog[data-placement="bottom"] .ac-dialog__panel::before {
+  translate: 50% 0;
 }
 
 .ac-dialog[open]:not([data-placement="center"]) {

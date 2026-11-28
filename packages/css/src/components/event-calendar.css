@@ -7,8 +7,9 @@
   overflow: hidden;
   border: var(--ac-border-width-1) solid var(--ac-color-border-default);
   border-radius: var(--ac-radius-card);
-  background: var(--ac-color-bg-canvas);
+  background: var(--ac-color-bg-surface);
   color: var(--ac-color-text-primary);
+  box-shadow: var(--ac-shadow-xs);
 }
 
 .ac-event-calendar__toolbar {
@@ -30,18 +31,22 @@
 .ac-event-calendar__period {
   margin: 0;
   color: var(--ac-color-text-primary);
+  font-family: var(--ac-font-family-display);
   font-size: var(--ac-type-heading-5-size);
   font-weight: var(--ac-font-weight-semibold);
+  letter-spacing: var(--ac-type-heading-5-tracking);
   text-align: center;
   text-wrap: balance;
 }
 
+/* The view switcher matches the segmented controls: a recessed track. */
 .ac-event-calendar__view-switcher {
   justify-content: end;
-  padding: var(--ac-space-0-5);
+  padding: 3px;
   border: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
   border-radius: var(--ac-radius-control);
-  background: var(--ac-color-bg-subtle);
+  background: var(--ac-color-bg-muted);
+  box-shadow: var(--ac-shadow-inner);
 }
 
 .ac-event-calendar__view-switcher .ac-button {
@@ -62,9 +67,9 @@
 
 .ac-event-calendar__month th {
   padding: var(--ac-space-2);
-  border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
+  border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-default);
   background: var(--ac-color-bg-subtle);
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-caption-size);
   font-weight: var(--ac-font-weight-medium);
   text-align: start;
@@ -78,6 +83,13 @@
   border-block-end: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
   border-inline-end: var(--ac-border-width-1) solid var(--ac-color-border-subtle);
   vertical-align: top;
+  transition: background-color var(--ac-duration-fast) var(--ac-easing-standard);
+}
+
+@media (hover: hover) {
+  .ac-event-calendar__month-cell:hover {
+    background: color-mix(in oklab, var(--ac-color-text-primary) 3%, transparent);
+  }
 }
 
 .ac-event-calendar__month-cell[data-outside] {
@@ -89,10 +101,25 @@
 }
 
 .ac-event-calendar__date {
+  display: inline-grid;
+  place-items: center;
   min-inline-size: var(--ac-size-control-xs);
+  block-size: var(--ac-size-control-xs);
   margin-block-end: var(--ac-space-1);
   padding-inline: var(--ac-space-1);
-  font-variant-numeric: tabular-nums;
+  border-radius: var(--ac-radius-full);
+  font-size: var(--ac-type-label-sm-size);
+  font-weight: var(--ac-font-weight-medium);
+  font-feature-settings: var(--ac-font-features-tabular);
+}
+
+/* Today: the date sits in a lit brand pill. */
+.ac-event-calendar__month-cell[data-today] .ac-event-calendar__date {
+  background-color: var(--ac-color-primary-solid);
+  background-image: var(--ac-gradient-sheen);
+  color: var(--ac-color-primary-on-solid);
+  box-shadow: var(--ac-shadow-highlight);
+  font-weight: var(--ac-font-weight-semibold);
 }
 
 .ac-event-calendar__month-events {
@@ -114,9 +141,9 @@
   align-items: flex-start;
   overflow: hidden;
   padding: var(--ac-space-1) var(--ac-space-2);
-  border: var(--ac-border-width-1) solid var(--_event-border);
-  border-inline-start-width: var(--ac-border-width-2);
-  border-radius: var(--ac-radius-item);
+  border: var(--ac-border-width-1) solid color-mix(in oklab, var(--_event-border) 70%, transparent);
+  border-inline-start: var(--ac-border-width-2) solid var(--ac-tone-solid);
+  border-radius: min(var(--ac-radius-item), var(--ac-radius-md));
   background: var(--_event-bg);
   color: var(--_event-fg);
   font: inherit;
@@ -124,10 +151,16 @@
   line-height: var(--ac-type-caption-line-height);
   text-align: start;
   cursor: pointer;
+  transition:
+    background-color var(--ac-duration-fast) var(--ac-easing-standard),
+    box-shadow var(--ac-duration-fast) var(--ac-easing-standard);
 }
 
-.ac-event-calendar__event:hover {
-  background: var(--ac-tone-soft-hover);
+@media (hover: hover) {
+  .ac-event-calendar__event:hover {
+    background: var(--ac-tone-soft-hover);
+    box-shadow: var(--ac-shadow-sm);
+  }
 }
 
 .ac-event-calendar__event:focus-visible,
@@ -175,10 +208,17 @@
   color: var(--ac-color-primary-text);
   font: inherit;
   font-size: var(--ac-type-caption-size);
+  font-weight: var(--ac-font-weight-medium);
   text-align: start;
   text-overflow: ellipsis;
   white-space: nowrap;
   cursor: pointer;
+}
+
+@media (hover: hover) {
+  .ac-event-calendar__more:hover {
+    background: var(--ac-color-primary-soft);
+  }
 }
 
 .ac-event-calendar__schedule {
@@ -197,7 +237,8 @@
   position: sticky;
   z-index: 1;
   inset-block-start: 0;
-  background: var(--ac-color-bg-canvas);
+  background: color-mix(in oklab, var(--ac-color-bg-surface) 90%, transparent);
+  backdrop-filter: blur(var(--ac-blur-sm));
 }
 
 .ac-event-calendar__time-heading,
@@ -290,7 +331,7 @@
 }
 
 .ac-event-calendar__day-column[data-today] {
-  background-color: var(--ac-color-bg-subtle);
+  background-color: color-mix(in oklab, var(--ac-color-primary-soft) 45%, transparent);
 }
 
 .ac-event-calendar__day-column > .ac-event-calendar__event {
@@ -317,10 +358,14 @@
 }
 
 .ac-event-calendar__agenda-date {
+  position: sticky;
+  inset-block-start: 0;
   margin: 0;
   color: var(--ac-color-text-secondary);
+  font-family: var(--ac-font-family-display);
   font-size: var(--ac-type-label-md-size);
   font-weight: var(--ac-font-weight-semibold);
+  letter-spacing: var(--ac-type-label-md-tracking);
 }
 
 .ac-event-calendar__agenda-events {
@@ -333,8 +378,9 @@
 
 .ac-event-calendar__empty {
   margin: 0;
-  padding: var(--ac-space-8) var(--ac-space-4);
-  color: var(--ac-color-text-secondary);
+  padding: var(--ac-space-12) var(--ac-space-4);
+  background-image: var(--ac-gradient-brand-glow);
+  color: var(--ac-color-text-tertiary);
   text-align: center;
 }
 
