@@ -28,31 +28,17 @@ installation commands, working examples, API areas, themes, accessibility,
 related packages and links to the repository. The documentation release is
 prepared as `0.1.1` for all four packages.
 
-## In progress: AtomCraft Studio
+## Not in this repository: AtomCraft Studio
 
-The first public-facing Studio slice is implemented in `apps/studio`. It uses
-the published AtomCraft package architecture and currently includes:
+An earlier version of this file described a Studio app in `apps/studio`. That
+directory is not in the repository: it isn't in the git history of `main` or in
+the saved pre-sync local work (checked on 2026-11-28). `apps/` contains only
+`storybook`.
 
-- AtomCraft-branded responsive shell with desktop and mobile navigation
-- Live component preview using `@atomscraft/react` and `@atomscraft/css`
-- Component catalog filters, search and Atomic Design layer navigation
-- Theme and density controls powered by `@atomscraft/tokens`
-- Installation and usage code panels with copy actions
-- Foundations, examples, packages and next-release sections
-- A registry-shaped catalog model that can grow into full component pages,
-  blocks, templates, theme generation and builder features
-- Seven catalog cards with visible preview art and component detail pages with
-  four package-backed variants each (Button, Field, Alert, DatePicker, Dialog,
-  DataTable and AppShell)
-- Working per-variant usage snippets, independent from the installation tabs
-
-The first slice is local and not deployed yet. The Studio catalog is not a full
-inventory: the React package currently has 66 Storybook story files, while
-Studio documents seven component entries. Its Examples section is still a small
-set of static page concepts. Next work should add route-level component pages,
-catalog coverage for the remaining exports, generated API documentation,
-interactive examples/blocks/templates, functional theme generation and builder
-features, and deployment configuration.
+The page-level examples planned for Studio are covered in Storybook instead.
+They are listed under "Blocks and documentation (2026-11-28)" below. If Studio
+work exists elsewhere, it should be brought into the repository before it is
+documented here again.
 
 ## Verification
 
@@ -283,3 +269,153 @@ Final verification:
 
 Future changes should use the Changesets workflow described in
 `docs/RELEASING.md`.
+
+## Modern Minimal design foundations (2026-11-28)
+
+Token-level redesign (Phase 1 of `DESIGN_PLAN.md`). Additive and backwards
+compatible: every existing `--ac-*` variable still exists, and no component CSS
+was restyled.
+
+- Graphite neutral ramp; new `sky`, `cyan` and `fuchsia` palettes; new `cyan`
+  and `fuchsia` brand themes.
+- New base roles: `bg-surface-sunken`, `bg-hover`, `bg-active`,
+  `text-disabled` and `border-strong`. Light mode has an off-white canvas;
+  dark mode has evenly stepped surfaces and distinct secondary/tertiary text.
+- New `effects.ts`, emitted per mode and brand:
+  - layered shadows and elevation, with dark-mode variants
+  - ring shadows, glass surface and blur tokens
+  - brand gradients (solid, text, soft, border, glow, mesh)
+  - surface, sheen and fade gradients
+  - focus halo
+  - an 8-color chart series
+- Typography: display family, OpenType feature tokens, tighter display and
+  heading tracking, and a `label-lg` style. Spacing, layout container, icon
+  size and motion (`spring`, `smooth`, `250ms`) tokens were added.
+- Storybook: `Foundations/Effects` page; the theme toolbar includes the new
+  brands.
+
+Verification:
+
+- `pnpm install --frozen-lockfile`
+- `pnpm format:check`
+- `pnpm lint`: 0 errors and 28 existing complexity warnings
+- `pnpm typecheck`
+- `pnpm generate`
+- `pnpm test`: tokens 117, core 58, react 174
+- `pnpm build`
+- `pnpm build-storybook`
+
+A visual Storybook pass is still pending. Component restyling is Phase 2.
+
+## Atom redesign (2026-11-28)
+
+Phase 2 of `DESIGN_PLAN.md`: all atoms were restyled in CSS, with no API changes.
+
+- New interactive states throughout: hover (pointer devices only), active, explicit
+  focus-visible, disabled (including `Button asChild`), loading and invalid.
+- New shared visual language: a lit sheen and hairline edge on solid fills, toned
+  hairlines on soft badges and tags.
+- Accessibility and responsiveness: 24px coarse-pointer hit areas, 16px text in
+  touch fields, and forced-colors fallbacks.
+- Typography: the display face for headings and tabular figures for numbers.
+- New Storybook page `Examples/Atom states`.
+
+Verification:
+
+- `pnpm format:check`
+- `pnpm lint`: 0 errors and 28 existing warnings
+- `pnpm typecheck`
+- `pnpm test`: tokens 117, core 58, react 174
+- `pnpm build-storybook`
+
+A visual check was done in Storybook dev for light, dark and RTL with the pill shape.
+
+## Molecule redesign (2026-11-28)
+
+Phase 3 of `DESIGN_PLAN.md`: all molecules were restyled in CSS, with no API changes.
+
+- New `components/surfaces.css` shares three patterns across molecules:
+  - the control frame (InputGroup, Combobox, SelectMenu, DatePicker, TagInput,
+    PromptInput, OTP)
+  - the popup surface (Popover, Menu, Listbox, HoverCard, DatePicker popup)
+  - menu and list rows
+- Duplicated chrome was removed from the component files.
+- Visual refresh across navigation, tabs, accordion, feedback, cards, pickers and
+  composites.
+- In light mode, the second stop of the brand text gradient moved to shade 700,
+  so on-solid text over it reaches 4.5:1 for every brand. New `effects.test.ts`
+  checks this.
+
+Verification:
+
+- `pnpm generate`
+- `pnpm format:check`
+- `pnpm lint`: 0 errors and 28 existing warnings
+- `pnpm typecheck`
+- `pnpm test`: tokens 161, core 58, react 174
+- `pnpm build-storybook`
+
+A visual check was done in Storybook dev, including the dark-mode menu opened from
+the keyboard.
+
+## Organism and template redesign (2026-11-28)
+
+Phase 4 of `DESIGN_PLAN.md`: organisms and the AppShell template were restyled in
+CSS, with no API changes.
+
+- Dialog: lit raised surface, spring entrance, footer tray, stacked footer on
+  mobile, and a grab handle on bottom sheets.
+- CommandPalette: refined search row.
+- Tables: selected-row bar, frosted sticky header, sort states, and responsive
+  card rows.
+- Shell and calendar:
+  - frosted header and bottom navigation
+  - sidebar and rail indicators
+  - EventCalendar today pill and tone-edged events
+- Catalog organisms refreshed.
+- Duplicates removed: the SkipLink was defined twice, and the NavigationMenu
+  submenu and RichTextEditor frame now use `surfaces.css`.
+- Two older PricingTable issues fixed: the price was being styled as the muted
+  period text, and the features list spread out to fill the column.
+
+Verification:
+
+- `pnpm format:check`
+- `pnpm lint`: 0 errors and 28 existing warnings
+- `pnpm typecheck`
+- `pnpm test`: tokens 161, core 58, react 174
+- `pnpm build-storybook`
+
+A visual check was done in Storybook dev in light, dark and RTL.
+
+## Blocks and documentation (2026-11-28)
+
+Phase 5 of `DESIGN_PLAN.md`.
+
+- New Storybook "Blocks" section in `apps/storybook/src/blocks/`:
+  - Settings
+  - Analytics
+  - Authentication (sign up, reset password, verify email)
+  - Pricing page
+  - Onboarding
+  - Status pages (404, server error, empty project, maintenance)
+- New `Foundations/Theme playground`: all brand themes side by side, plus nested
+  light and dark zones.
+- CSS fixes:
+  - Vertical Tabs stack on narrow screens.
+  - The FormSection divider moved to the bottom of the earlier section, so it no
+    longer cuts through the next legend.
+- Release prep: added `.changeset/modern-minimal-redesign.md` (minor bump for
+  tokens and css; the fixed group versions all four packages together). Not
+  published.
+
+Verification:
+
+- `pnpm format:check`
+- `pnpm lint`: 0 errors and 28 existing warnings
+- `pnpm typecheck`
+- `pnpm test`: tokens 161, core 58, react 174
+- `pnpm build-storybook`: 486 entries
+
+A visual check of the blocks was done in Storybook dev in light, dark and at mobile
+width.

@@ -1,5 +1,5 @@
 import { palettes } from "./primitives";
-import { BRAND_NAMES, baseThemes, brandIntent, statusIntents } from "./semantic";
+import { BRAND_NAMES, baseThemes, brandIntent, chartColors, statusIntents } from "./semantic";
 import type { ColorMode, IntentTokens } from "./semantic";
 
 /** Export in the W3C Design Tokens Community Group format, for Figma and other tools. */
@@ -21,7 +21,8 @@ function modeGroup(mode: ColorMode): DtcgGroup {
   const brands = Object.fromEntries(
     BRAND_NAMES.map((brand) => [brand, intentGroup(brandIntent(brand, mode))]),
   );
-  return { base: group(baseThemes[mode]), status, brand: brands };
+  const chart = group(Object.fromEntries(chartColors(mode).map((value, i) => [i + 1, value])));
+  return { base: group(baseThemes[mode]), status, brand: brands, chart };
 }
 
 export function renderDtcgJson(): string {

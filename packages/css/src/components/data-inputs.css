@@ -1,3 +1,4 @@
+/* DateRangePicker: two DatePickers side by side, stacked on narrow screens. */
 .ac-date-range-picker {
   min-inline-size: 0;
   margin: 0;
@@ -7,9 +8,11 @@
 
 .ac-date-range-picker__label {
   margin-block-end: var(--ac-space-2);
+  padding: 0;
   color: var(--ac-color-text-primary);
   font-size: var(--ac-type-label-md-size);
   font-weight: var(--ac-font-weight-medium);
+  letter-spacing: var(--ac-type-label-md-tracking);
 }
 
 .ac-date-range-picker__fields {
@@ -18,6 +21,7 @@
   gap: var(--ac-space-3);
 }
 
+/* ColorPicker: the native swatch inside an input frame, with a subtle inner ring. */
 .ac-color-picker {
   inline-size: 3.25rem;
   padding: var(--ac-space-1);
@@ -30,18 +34,21 @@
 
 .ac-color-picker::-webkit-color-swatch {
   border: 0;
-  border-radius: var(--ac-radius-sm);
+  border-radius: min(var(--ac-radius-control), var(--ac-radius-sm));
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, black 12%, transparent);
 }
 
 .ac-color-picker::-moz-color-swatch {
   border: 0;
-  border-radius: var(--ac-radius-sm);
+  border-radius: min(var(--ac-radius-control), var(--ac-radius-sm));
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, black 12%, transparent);
 }
 
+/* Rating: stars warm up on hover and pop when chosen. */
 .ac-rating {
   display: inline-flex;
   align-items: center;
-  gap: var(--ac-space-1);
+  gap: var(--ac-space-0-5);
 }
 
 .ac-rating__item {
@@ -53,18 +60,32 @@
   border: 0;
   border-radius: var(--ac-radius-sm);
   background: transparent;
-  color: var(--ac-color-text-tertiary);
+  color: var(--ac-color-border-control);
   font-size: var(--ac-type-heading-3-size);
   line-height: 1;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color var(--ac-duration-fast) var(--ac-easing-standard),
+    transform var(--ac-duration-fast) var(--ac-easing-spring);
 }
 
 .ac-rating__item[data-filled] {
   color: var(--ac-color-warning-solid);
+  filter: drop-shadow(
+    0 1px 1px color-mix(in oklab, var(--ac-color-warning-solid) 35%, transparent)
+  );
 }
 
-.ac-rating__item:hover:not(:disabled) {
-  color: var(--ac-color-warning-text);
+@media (hover: hover) {
+  .ac-rating__item:hover:not(:disabled) {
+    color: var(--ac-color-warning-solid);
+    transform: scale(1.12);
+  }
+}
+
+.ac-rating__item:active:not(:disabled) {
+  transform: scale(0.92);
 }
 
 .ac-rating__item:focus-visible {
@@ -77,6 +98,7 @@
   cursor: not-allowed;
 }
 
+/* FileUpload: a dashed dropzone that glows in the brand color while dragging. */
 .ac-file-upload {
   display: grid;
   gap: var(--ac-space-3);
@@ -101,16 +123,26 @@
     box-shadow var(--ac-duration-fast) var(--ac-easing-standard);
 }
 
+@media (hover: hover) {
+  .ac-file-upload:not([data-disabled="true"]) .ac-file-upload__dropzone:hover {
+    border-color: var(--ac-color-text-tertiary);
+    background: var(--ac-color-bg-hover);
+  }
+}
+
 .ac-file-upload__dropzone:focus-within,
 .ac-file-upload__dropzone[data-dragging="true"] {
   border-color: var(--ac-color-focus-ring);
-  background: var(--ac-color-primary-soft);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 20%, transparent);
+  border-style: solid;
+  background-color: var(--ac-color-primary-soft);
+  background-image: var(--ac-gradient-brand-glow);
+  box-shadow: var(--ac-shadow-focus);
 }
 
 .ac-file-upload[data-disabled="true"] .ac-file-upload__dropzone {
+  border-color: var(--ac-color-border-default);
   background: var(--ac-color-bg-muted);
-  opacity: var(--ac-opacity-disabled);
+  color: var(--ac-color-text-disabled);
   cursor: not-allowed;
 }
 
@@ -120,7 +152,7 @@
 }
 
 .ac-file-upload__description {
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-body-sm-size);
 }
 
@@ -150,6 +182,8 @@
   border: var(--ac-border-width-1) solid var(--ac-color-border-default);
   border-radius: var(--ac-radius-item);
   background: var(--ac-color-bg-surface);
+  box-shadow: var(--ac-shadow-xs);
+  animation: ac-pop-in var(--ac-duration-normal) var(--ac-easing-decelerate);
 }
 
 .ac-file-upload__name {
@@ -157,15 +191,16 @@
   overflow: hidden;
   color: var(--ac-color-text-primary);
   font-size: var(--ac-type-body-sm-size);
+  font-weight: var(--ac-font-weight-medium);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .ac-file-upload__size {
   flex: none;
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-caption-size);
-  font-variant-numeric: tabular-nums;
+  font-feature-settings: var(--ac-font-features-tabular);
 }
 
 @media (max-width: 639px) {

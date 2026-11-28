@@ -1,20 +1,30 @@
+import { brandEffects, modeEffects } from "./effects";
 import {
   backdrop,
+  blur,
   borderWidth,
   duration,
   easing,
   fontFamily,
+  fontFeatures,
   fontSize,
   fontWeight,
   letterSpacing,
   lineHeight,
   opacity,
   radius,
-  shadow,
   space,
   zIndex,
 } from "./primitives";
-import { DEFAULT_DENSITY, DEFAULT_SHAPE, densities, elevation, shapes, typeStyles } from "./scales";
+import {
+  DEFAULT_DENSITY,
+  DEFAULT_SHAPE,
+  densities,
+  iconSize,
+  layout,
+  shapes,
+  typeStyles,
+} from "./scales";
 import {
   BRAND_NAMES,
   DEFAULT_BRAND,
@@ -72,24 +82,27 @@ const typeDeclarations: Declarations = Object.entries(typeStyles).flatMap(
 const foundationDeclarations: Declarations = [
   ...scale("space", space),
   ...scale("font-family", fontFamily),
+  ...scale("font-features", fontFeatures),
   ...scale("font-size", fontSize),
   ...scale("font-weight", fontWeight),
   ...scale("line-height", lineHeight),
   ...scale("letter-spacing", letterSpacing),
   ...scale("radius", radius),
   ...scale("border-width", borderWidth),
-  ...scale("shadow", shadow),
-  ...scale("elevation", elevation),
+  ...scale("blur", blur),
   ...scale("duration", duration),
   ...scale("easing", easing),
   ...scale("opacity", opacity),
   ...scale("z", zIndex),
+  ...scale("layout", layout),
+  ...scale("size-icon", iconSize),
   ...typeDeclarations,
   ["color-backdrop", backdrop],
   ["focus-ring-width", borderWidth[2]],
   ["focus-ring-offset", borderWidth[2]],
   ["duration-fast", duration[150]],
   ["duration-normal", duration[200]],
+  ["duration-moderate", duration[250]],
   ["duration-slow", duration[300]],
 ];
 
@@ -101,12 +114,16 @@ function modeDeclarations(mode: ColorMode): Declarations {
   const status = Object.entries(statusIntents(mode)).flatMap(([intent, tokens]) =>
     intentDeclarations(intent, tokens),
   );
-  return [["color-scheme", mode], ...base, ...status];
+  return [["color-scheme", mode], ...base, ...status, ...Object.entries(modeEffects(mode))];
 }
 
 function brandDeclarations(brand: BrandTheme, mode: ColorMode): Declarations {
   const tokens = brandIntent(brand, mode);
-  return [...intentDeclarations("primary", tokens), ["color-focus-ring", tokens.solid]];
+  return [
+    ...intentDeclarations("primary", tokens),
+    ["color-focus-ring", tokens.solid],
+    ...Object.entries(brandEffects(brand, mode)),
+  ];
 }
 
 const contrastDeclarations = (mode: ColorMode): Declarations =>

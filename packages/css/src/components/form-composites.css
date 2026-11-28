@@ -1,3 +1,4 @@
+/* NumberInput: stepper buttons flank a centered, tabular value. */
 .ac-number-input {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
@@ -7,8 +8,9 @@
 }
 
 .ac-number-input__control {
+  appearance: textfield;
   text-align: center;
-  font-variant-numeric: tabular-nums;
+  font-feature-settings: var(--ac-font-features-tabular);
 }
 
 .ac-number-input__control::-webkit-inner-spin-button,
@@ -17,10 +19,7 @@
   appearance: none;
 }
 
-.ac-number-input__control {
-  appearance: textfield;
-}
-
+/* CheckboxGroup */
 .ac-checkbox-group {
   min-inline-size: 0;
   margin: 0;
@@ -30,9 +29,11 @@
 
 .ac-checkbox-group__legend {
   margin-block-end: var(--ac-space-2);
+  padding: 0;
   color: var(--ac-color-text-primary);
   font-size: var(--ac-type-label-md-size);
   font-weight: var(--ac-font-weight-medium);
+  letter-spacing: var(--ac-type-label-md-tracking);
 }
 
 .ac-checkbox-group__options {
@@ -50,11 +51,17 @@
 .ac-checkbox-group__option {
   display: flex;
   align-items: flex-start;
-  gap: var(--ac-space-2);
+  gap: var(--ac-space-2-5);
 }
 
 .ac-checkbox-group__option > .ac-checkbox {
   margin-block-start: 0.125rem;
+}
+
+.ac-checkbox-group__option:has(:disabled)
+  :is(.ac-checkbox-group__label, .ac-checkbox-group__description) {
+  color: var(--ac-color-text-disabled);
+  cursor: not-allowed;
 }
 
 .ac-checkbox-group__text {
@@ -65,15 +72,17 @@
 .ac-checkbox-group__label {
   color: var(--ac-color-text-primary);
   font-size: var(--ac-type-body-sm-size);
+  font-weight: var(--ac-font-weight-medium);
   cursor: pointer;
 }
 
 .ac-checkbox-group__description {
   margin: 0;
-  color: var(--ac-color-text-secondary);
+  color: var(--ac-color-text-tertiary);
   font-size: var(--ac-type-caption-size);
 }
 
+/* OTP / PIN: each digit is a frame (surfaces.css); filled digits gain weight. */
 .ac-otp-input {
   display: inline-flex;
   flex-wrap: wrap;
@@ -84,35 +93,15 @@
 
 .ac-otp-input__digit {
   inline-size: var(--ac-size-control-lg);
-  block-size: var(--ac-size-control-lg);
+  block-size: calc(var(--ac-size-control-lg) + var(--ac-space-1));
   padding: 0;
-  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
-  border-radius: var(--ac-radius-control);
-  background: var(--ac-color-bg-surface);
-  color: var(--ac-color-text-primary);
   font: inherit;
+  font-family: var(--ac-font-family-display);
   font-size: var(--ac-type-heading-4-size);
-  font-variant-numeric: tabular-nums;
+  font-weight: var(--ac-font-weight-semibold);
+  font-feature-settings: var(--ac-font-features-tabular);
   text-align: center;
-  transition:
-    border-color var(--ac-duration-fast) var(--ac-easing-standard),
-    box-shadow var(--ac-duration-fast) var(--ac-easing-standard);
-}
-
-.ac-otp-input__digit:focus-visible {
-  outline: none;
-  border-color: var(--ac-color-focus-ring);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 25%, transparent);
-}
-
-.ac-otp-input[data-invalid] .ac-otp-input__digit {
-  border-color: var(--ac-color-danger-solid);
-}
-
-.ac-otp-input__digit:disabled {
-  background: var(--ac-color-bg-muted);
-  opacity: var(--ac-opacity-disabled);
-  cursor: not-allowed;
+  caret-color: var(--ac-color-focus-ring);
 }
 
 @media (max-width: 359px) {
@@ -122,38 +111,32 @@
 
   .ac-otp-input__digit {
     inline-size: var(--ac-size-control-sm);
-    block-size: var(--ac-size-control-sm);
+    block-size: var(--ac-size-control-md);
     font-size: var(--ac-type-body-md-size);
   }
 }
 
+/* PromptInput: a roomy composer; the frame comes from surfaces.css. */
 .ac-prompt-input {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   gap: var(--ac-space-2);
   padding: var(--ac-space-2);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
-  border-radius: var(--ac-radius-control);
-  background: var(--ac-color-bg-surface);
+  border-radius: var(--ac-radius-card);
+  box-shadow: var(--ac-shadow-sm);
 }
 
 .ac-prompt-input:focus-within {
-  border-color: var(--ac-color-focus-ring);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 24%, transparent);
+  box-shadow:
+    var(--ac-shadow-md),
+    0 0 0 1px var(--_ring),
+    var(--_halo);
 }
 
 .ac-prompt-input__control {
   min-block-size: 2.5rem;
-  border: 0;
-  background: transparent;
-  box-shadow: none;
   resize: vertical;
-}
-
-.ac-prompt-input__control:focus-visible {
-  outline: none;
-  box-shadow: none;
 }
 
 @media (max-width: 479px) {
@@ -162,29 +145,14 @@
   }
 }
 
+/* TagInput: chips wrap inside a frame (surfaces.css) alongside the text input. */
 .ac-tag-input {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: var(--ac-space-2);
+  gap: var(--ac-space-1-5);
   min-block-size: var(--ac-size-control-md);
-  padding: var(--ac-space-1-5) var(--ac-space-2);
-  border: var(--ac-border-width-1) solid var(--ac-color-border-control);
-  border-radius: var(--ac-radius-control);
-  background: var(--ac-color-bg-surface);
-  transition:
-    border-color var(--ac-duration-fast) var(--ac-easing-standard),
-    box-shadow var(--ac-duration-fast) var(--ac-easing-standard);
-}
-
-.ac-tag-input:focus-within {
-  border-color: var(--ac-color-focus-ring);
-  box-shadow: 0 0 0 3px color-mix(in oklab, var(--ac-color-focus-ring) 24%, transparent);
-}
-
-.ac-tag-input[data-disabled="true"] {
-  background: var(--ac-color-bg-muted);
-  opacity: var(--ac-opacity-disabled);
+  padding: var(--ac-space-1) var(--ac-space-1-5);
 }
 
 .ac-tag-input__tags {
@@ -199,12 +167,4 @@
   min-inline-size: 5rem;
   block-size: var(--ac-size-control-sm);
   padding-inline: var(--ac-space-1);
-  border: 0;
-  background: transparent;
-  box-shadow: none;
-}
-
-.ac-tag-input__control:focus-visible {
-  outline: 0;
-  box-shadow: none;
 }
