@@ -222,7 +222,6 @@ All 29 atoms were restyled in CSS only. No React API, class name or `data-*` att
 **Docs and validation**
 
 - New Storybook page `Examples/Atom states` (`packages/react/src/atoms/states.stories.tsx`): Buttons (5 variants × tones/loading/disabled, sizes, icon buttons, toggle), FormControls, ChoiceControls and DisplayAtoms.
-- `.claude/launch.json` starts Storybook for the in-app preview.
 - Visual check in Storybook dev: light mode, dark mode, and Arabic RTL with the pill shape. A first pass found the loading button rendering as disabled; the cause was Storybook reading the stale `packages/css/dist`. After `pnpm --filter @atomscraft/css build` it rendered correctly.
 - Passing: `format:check`, `lint` (0 errors, 28 existing warnings), `typecheck`, `test` (tokens 117, core 58, react 174) and `build-storybook`.
 - Not checked: forced-colors mode and real touch devices were not tested by hand.
