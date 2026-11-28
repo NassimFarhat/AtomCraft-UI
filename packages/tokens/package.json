@@ -1,6 +1,6 @@
 {
   "name": "@atomscraft/tokens",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Design tokens for AtomCraft: primitives, semantic themes and visual styles.",
   "license": "MIT",
   "type": "module",
